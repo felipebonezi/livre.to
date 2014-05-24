@@ -21,4 +21,6 @@ Mais informações em [Documentation - Installing](http://www.playframework.com/
 2. Digite *play* na linha de comando e depois *idea with-sources=yes*.
 3. Abre o IntelliJ e vá em *File > Import* e adicione o seu repositório local do Git (onde você deu clone).
 
-Play instalado, Eclipse configurado, agora é só rodar utilizando *play debug run* na linha de comando. Mais informações em [Documentation - IDE](http://www.playframework.com/documentation/2.2.x/IDE) e [Documentation](http://www.playframework.com/documentation/2.2.x/Home).
+#### Executando ####
+
+Play instalado, IDE configurada, agora é só rodar utilizando *play debug run* na linha de comando. Mais informações em [Documentation - IDE](http://www.playframework.com/documentation/2.2.x/IDE) e [Documentation](http://www.playframework.com/documentation/2.2.x/Home).
