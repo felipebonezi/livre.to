@@ -12,14 +12,8 @@ Mais informações em [Documentation - Installing](http://www.playframework.com/
 #### Importando projeto no Eclipse ####
 
 1. Clone o projeto do GitHub e navegue até a pasta no cmd.
-<<<<<<< HEAD
-2. Digite *play* na linha de comando e depois *eclipse*.
-3. Abra o Eclipe e vá em *File > Import > Projects from Git > Existing local repository* e adicione o seu repositório local do Git (onde você deu clone).
-
-Play instalado, Eclipse configurado, agora é só rodar utilizando *play debug run* na linha de comando. Mais informações em [Documentation - IDE](http://www.playframework.com/documentation/2.2.x/IDE) e [Documentation](http://www.playframework.com/documentation/2.2.x/Home).  
-=======
 2. Digite *play* na linha de comando e depois *eclipsify*.
-3. Abre o Eclipe e vá em *File > Import > Projects from Git > Existing local repository* e adicione o seu repositório local do Git (onde você deu clone).
+3. Abra o Eclipe e vá em *File > Import > Projects from Git > Existing local repository* e adicione o seu repositório local do Git (onde você deu clone).
 
 #### Importando projeto no IntelliJ ####
 
@@ -27,5 +21,4 @@ Play instalado, Eclipse configurado, agora é só rodar utilizando *play debug r
 2. Digite *play* na linha de comando e depois *idea with-sources=yes*.
 3. Abre o IntelliJ e vá em *File > Import* e adicione o seu repositório local do Git (onde você deu clone).
 
-Play instalado, Eclipse configurado, agora é só rodar utilizando *play ~run* na linha de comando. Mais informações em [Documentation - IDE](http://www.playframework.com/documentation/2.2.x/IDE) e [Documentation](http://www.playframework.com/documentation/2.2.x/Home).  
->>>>>>> 269aaf6d6ee968916eeb8b65dde4b1cc18589480
+Play instalado, Eclipse configurado, agora é só rodar utilizando *play debug run* na linha de comando. Mais informações em [Documentation - IDE](http://www.playframework.com/documentation/2.2.x/IDE) e [Documentation](http://www.playframework.com/documentation/2.2.x/Home).
