@@ -25,7 +25,7 @@ import static org.fest.assertions.Assertions.*;
 * If you are interested in mocking a whole application, see the wiki for more details.
 *
 */
-public class ApplicationTest {
+public class AbstractApplicationTest {
 
     @Test
     public void simpleCheck() {
