@@ -15,7 +15,7 @@ import java.util.UUID;
 /**
  * Created by felipebonezi on 27/05/14.
  */
-public class AuthenticationControlller extends AbstractApplication {
+public class AuthenticationController extends AbstractApplication {
 
     @With(AjaxAction.class)
     public static Result authorize() {
