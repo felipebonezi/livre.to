@@ -17,6 +17,10 @@ public class User extends Model {
         ACTIVE, BLOCKED;
     }
 
+    public enum Gender {
+        FEMALE, MALE;
+    }
+
     @Id
     private long id;
 
@@ -27,6 +31,9 @@ public class User extends Model {
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
+
+    @Enumerated(value = EnumType.STRING)
+    private Gender gender;
 
     @Version
     private Calendar modifiedAt;
@@ -40,6 +47,7 @@ public class User extends Model {
         this.id = id;
     }
 
+    @JsonIgnore
     public String getAccessToken() {
         return accessToken;
     }
@@ -79,6 +87,14 @@ public class User extends Model {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public Gender getGender() {
+        return gender;
+    }
+
+    public void setGender(Gender gender) {
+        this.gender = gender;
     }
 
     @JsonIgnore

@@ -21,8 +21,8 @@ public class AuthenticationController extends AbstractApplication {
     public static Result authorize() {
         Map<String, String[]> form = request().body().asFormUrlEncoded();
         if (form != null) {
-            String login = form.get("login")[0];
-            String password = form.get("password")[0];
+            String login = form.get(ParameterKey.LOGIN)[0];
+            String password = form.get(ParameterKey.PASSWORD)[0];
 
             if (login != null && !login.isEmpty() &&
                     password != null && !password.isEmpty()) {

@@ -17,6 +17,13 @@ public class AbstractApplication extends Controller {
         public static final String PASSWORD = "password";
     }
 
+    public static final class ParameterKey {
+        public static final String LOGIN = "login";
+        public static final String PASSWORD = "password";
+        public static final String NAME = "name";
+        public static final String GENDER = "gender";
+    }
+
     /**
      * Método responsável pelas requisições em HTTP OPTIONS method.
      * Utilizada em requisições browser (e.g. Chrome, etc).
