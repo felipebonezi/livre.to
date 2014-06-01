@@ -18,3 +18,4 @@ OPTIONS		/register							controllers.AbstractApplication.options()
 
 # Import CRUD routes
 GET   		/material							controllers.MaterialController.create()
+POST   		/material/upload					controllers.MaterialController.upload()
