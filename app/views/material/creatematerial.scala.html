@@ -1,0 +1,34 @@
+@(message: String) @main("Adicionar material") {
+	<div class="container">
+		<form role="form">
+			<div class="form-group">
+				<label for="InputTitle">Título</label> <input type="text" class="form-control" id="InputTitle" placeholder="Digite o título do material">
+			</div>
+			<div class="form-group">
+				<label for="InputTitle">Política de pagamento</label>
+				<div class="radio">
+					<label> <input type="radio" name="pricePolicyRadios" id="fixedValueRadio" value="option1" checked> Valor fixo
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="pricePolicyRadios" id="minimumValueRadio" value="option2"> Valor mínimo
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="pricePolicyRadios" id="forFreeRadio" value="option2"> Gratuito
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="InputPrice">Valor</label>
+				<div class="input-group">
+					<span class="input-group-addon">R$</span> <input type="text" class="form-control" id="InputPrice" placeholder="Valor do material">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="InputFile">Arquivo</label> <input type="file" id="InputFile">
+			</div>
+			<button type="submit" class="btn btn-default">Enviar</button>
+		</form>
+	</div>
+}
