@@ -1,7 +1,10 @@
-@(message: String)
-
-@main("Welcome to Play") {
-
-    @play20.welcome(message, style = "Java")
-
+@main("Tela inicial") {
+	<div class="container">
+		<div class="options">
+			<h2>Escolha uma opção</h2>
+			<a class="btn btn-lg btn-primary btn-block" href="login">Login</a> 
+			<a class="btn btn-lg btn-primary btn-block" href="user">Usuários</a> 
+			<a class="btn btn-lg btn-primary btn-block" href="material">Material</a>
+		</div>
+	</div>
 }
