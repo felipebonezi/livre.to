@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 
 import play.data.format.Formats;
@@ -47,7 +48,8 @@ public class Material extends Model {
     private Date modifiedAt;
 
     @Constraints.Required
-    public File materialFile;
+    @Lob
+    public byte[] materialFile;
 
     /**
      * Generic query helper for entity Computer with id Long
@@ -87,11 +89,11 @@ public class Material extends Model {
 	this.price = price;
     }
 
-    public File getMaterialFile() {
+    public byte[] getMaterialFile() {
 	return materialFile;
     }
 
-    public void setMaterialFile(File materialFile) {
+    public void setMaterialFile(byte[] materialFile) {
 	this.materialFile = materialFile;
     }
 }

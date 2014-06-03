@@ -11,7 +11,8 @@ create table material (
   price                     varchar(255),
   created                   timestamp,
   modified_at               timestamp,
-  constraint ck_material_price_policy check (price_policy in ('M','F')),
+  material_file             blob,
+  constraint ck_material_price_policy check (price_policy in ('F','M')),
   constraint pk_material primary key (id))
 ;
 

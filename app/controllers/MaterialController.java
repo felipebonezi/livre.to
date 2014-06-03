@@ -1,5 +1,7 @@
 package controllers;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Map;
 
 import models.classes.Material;
@@ -7,6 +9,9 @@ import models.classes.Material.PricePolicy;
 import models.classes.User;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
+
+import org.apache.commons.io.IOUtils;
+
 import play.mvc.Controller;
 import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
@@ -52,7 +57,13 @@ public class MaterialController extends Controller {
 	material.setTitle(title[0]);
 	material.setPricePolicy(policy);
 	material.setPrice(price[0]);
-	material.setMaterialFile(materialFile.getFile());
+	byte[] lob = null;
+	try {
+	    lob = IOUtils.toByteArray(new FileInputStream(materialFile.getFile()));
+	} catch (IOException e) {
+	    return internalServerError(e.getMessage());
+	}
+	material.setMaterialFile(lob);
 
 	// Vai pegar o autor da sessão, considerando que quem faz o upload são
 	// os autores
