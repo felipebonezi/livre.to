@@ -1,16 +1,19 @@
 package models.classes;
 
 import java.io.File;
-import java.sql.Date;
+import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 
+import play.data.format.Formats;
 import play.data.validation.Constraints;
 import play.db.ebean.Model;
 
 import com.avaje.ebean.annotation.EnumMapping;
-
-import play.data.format.*;
 
 @Entity
 public class Material extends Model {
@@ -22,7 +25,7 @@ public class Material extends Model {
     }
 
     @Id
-    public Long id;
+    public long id;
 
     @ManyToOne
     public User author;
@@ -31,18 +34,17 @@ public class Material extends Model {
     public String title;
 
     @Constraints.Required
-    @ElementCollection
-    @Enumerated(EnumType.STRING)
+    @Enumerated(value = EnumType.STRING)
     public PricePolicy pricePolicy;
 
     public String price;
 
     @Constraints.Required
-    @Formats.DateTime(pattern = "yyyy-MM-dd")
-    public Date created;
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    private Date created;
 
-    @Formats.DateTime(pattern = "yyyy-MM-dd")
-    public Date lastModified;
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    private Date modifiedAt;
 
     @Constraints.Required
     public File materialFile;
@@ -50,7 +52,8 @@ public class Material extends Model {
     /**
      * Generic query helper for entity Computer with id Long
      */
-    public static Finder<Long, Material> find = new Finder<Long, Material>(Long.class, Material.class);
+    public static Finder<Long, Material> find = new Finder<Long, Material>(
+	    Long.class, Material.class);
 
     public User getAuthor() {
 	return author;

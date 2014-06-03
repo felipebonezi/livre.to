@@ -1,17 +1,23 @@
 package models.classes;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import play.db.ebean.Model;
 
 import javax.persistence.*;
+
 import java.util.Calendar;
+import java.util.Date;
+
+import play.data.format.*;
 
 /**
  * Created by felipebonezi on 27/05/14.
  */
 @Entity
-@Table(name = "user")
 public class User extends Model {
+
+    private static final long serialVersionUID = 1L;
 
     public enum Status {
 	ACTIVE, BLOCKED;
@@ -35,8 +41,8 @@ public class User extends Model {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
 
-    @Version
-    private Calendar modifiedAt;
+    @Formats.DateTime(pattern="yyyy-MM-dd")
+    private Date modifiedAt;
 
     @JsonIgnore
     public long getId() {
@@ -98,11 +104,11 @@ public class User extends Model {
     }
 
     @JsonIgnore
-    public Calendar getModifiedAt() {
+    public Date getModifiedAt() {
 	return modifiedAt;
     }
 
-    public void setModifiedAt(Calendar modifiedAt) {
+    public void setModifiedAt(Date modifiedAt) {
 	this.modifiedAt = modifiedAt;
     }
 }
