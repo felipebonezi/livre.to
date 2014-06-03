@@ -19,6 +19,7 @@ import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 import views.html.material.creatematerial;
+import views.html.material.listmaterial;
 import controllers.AbstractApplication.ControllerKey;
 
 public class MaterialController extends Controller {
@@ -27,9 +28,25 @@ public class MaterialController extends Controller {
 						       // estiver ok, remover o
 						       // código que depende
 						       // disso
-
+   
     public static Result create() {
 	return ok(creatematerial.render(""));
+    }
+    
+    public static Result edit() {
+	return ok(creatematerial.render(""));
+    }
+    
+    public static Result list(int page, String sortBy, String order, String filter) {
+	FinderFactory factory = FinderFactory.getInstance();
+	    IFinder<Material> finder = factory.get(Material.class);
+	    
+        return ok(
+                listmaterial.render(
+                    finder.page(page, 10, sortBy, order, filter),
+                    sortBy, order, filter
+                )
+            );
     }
 
     public static Result upload() {

@@ -27,6 +27,8 @@ public class FinderFactory extends AbstractFactory<Class<?>, IFinder> {
 
         if (id == User.class) {
             finder = new UserFinder();
+        } else if(id == Material.class) {
+            finder = new MaterialFinder();
         }
 
         return finder;

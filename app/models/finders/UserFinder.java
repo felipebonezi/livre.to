@@ -1,6 +1,9 @@
 package models.finders;
 
 import com.avaje.ebean.ExpressionList;
+import com.avaje.ebean.Page;
+
+import models.classes.Material;
 import models.classes.User;
 
 import java.util.List;
@@ -40,4 +43,24 @@ public class UserFinder extends AbstractFinder<User> implements IFinder<User> {
         return (expressionList != null ? expressionList.findList() : null);
     }
 
+    /**
+     * Retorna uma página de materiais
+     * 
+     * @param page Número da página a ser exibida
+     * @param pageSize Quantidade de itens por página
+     * @param sortBy
+     * @param order asc ou desc
+     * @param filter Filtro aplicado ao título
+     */
+    public Page<User> page(int page, int pageSize, String sortBy,
+	    String order, String filter) {
+	
+	return getFinder()
+		.where()
+		.ilike("login", "%" + filter + "%")
+		.orderBy(sortBy + " " + order)
+		.findPagingList(pageSize)
+		.setFetchAhead(false)
+		.getPage(page);
+    }
 }

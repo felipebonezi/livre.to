@@ -42,10 +42,10 @@ public class Material extends Model {
 
     @Constraints.Required
     @Formats.DateTime(pattern="yyyy-MM-dd")
-    private Date created;
+    public Date created;
 
     @Formats.DateTime(pattern="yyyy-MM-dd")
-    private Date modifiedAt;
+    public Date modifiedAt;
 
     @Constraints.Required
     @Lob
@@ -56,7 +56,7 @@ public class Material extends Model {
      */
     public static Finder<Long, Material> find = new Finder<Long, Material>(
 	    Long.class, Material.class);
-
+    
     public User getAuthor() {
 	return author;
     }

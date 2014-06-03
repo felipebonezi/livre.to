@@ -1,0 +1,117 @@
+@(currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage:Int, newSortBy:String) = @{
+    
+    var sortBy = currentSortBy
+    var order = currentOrder
+    
+    if(newSortBy != null) {
+        sortBy = newSortBy
+        if(currentSortBy == newSortBy) {
+            if(currentOrder == "asc") {
+                order = "desc"
+            } else {
+                order = "asc"
+            }
+        } else {
+            order = "asc"
+        }
+    }
+    
+    // Generate the link
+    routes.MaterialController.list(newPage, sortBy, order, currentFilter)
+    
+}
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(key:String, title:String) = {
+    <th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
+        <a href="@link(0, key)">@title</a>
+    </th>
+}
+
+@main("Adicionar material") {
+	<div class="container">
+	
+	    <form action="@link(0, "name")" method="GET">
+	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título">
+	        <input type="submit" id="searchsubmit" value="Filtrar." class="btn primary">
+	        <a class="btn btn-default" id="add" href="@routes.MaterialController.create()">Adicionar Material</a>
+	    </form>
+	
+		@if(currentPage.getTotalRowCount == 0) {
+		    
+		    <div class="well">
+		        <em>Nada para exibir</em>
+		    </div>
+		    
+		} else {
+		    
+		    <table class="table">
+		        <thead>
+		            <tr>
+		                @header("title", "Título")
+		                @header("created", "Adicionado Em")
+		                @header("author.name", "Autor")
+		            </tr>
+		        </thead>
+		        <tbody>
+		
+		            @for(material <- currentPage.getList) {
+		                <tr>
+		                    <td><a href="@routes.MaterialController.edit()">@material.title</a></td>
+		                    <td>
+		                        @if(material.created == null) {
+		                            <em>-</em>
+		                        } else {
+		                            @material.created.format("dd MMM yyyy")
+		                        }
+		                    </td>
+		                    <td>
+		                        @if(material.author.getName() == null) {
+		                            <em>-</em>
+		                        } else {
+		                            @material.author.getName()
+		                        }
+		                    </td>
+		                </tr>
+		            }
+		
+		        </tbody>
+		    </table>
+		
+		    <div id="pagination">
+		        <ul class="pagination">
+		            @if(currentPage.hasPrev) {
+		                <li class="prev">
+		                    <a href="@link(currentPage.getPageIndex - 1, null)">&larr; Anterior</a>
+		                </li>
+		            } else {
+		                <li class="prev disabled">
+		                    <a>&larr; Anterior</a>
+		                </li>
+		            }
+		            <li class="current">
+		                <a>Exibindo de @currentPage.getDisplayXtoYofZ(" a "," de um total de ")</a>
+		            </li>
+		            @if(currentPage.hasNext) {
+		                <li class="next">
+		                    <a href="@link(currentPage.getPageIndex + 1, null)">Próxima &rarr;</a>
+		                </li>
+		            } else {
+		                <li class="next disabled">
+		                    <a>Próxima &rarr;</a>
+		                </li>
+		            }
+		        </ul>
+		    </div>
+		    
+		}
+    </div>
+}
+          
