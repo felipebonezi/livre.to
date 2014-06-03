@@ -24,3 +24,15 @@ Mais informações em [Documentation - Installing](http://www.playframework.com/
 #### Executando ####
 
 Play instalado, IDE configurada, agora é só rodar utilizando *play debug run* na linha de comando. Mais informações em [Documentation - IDE](http://www.playframework.com/documentation/2.2.x/IDE) e [Documentation](http://www.playframework.com/documentation/2.2.x/Home).
+
+
+#### Visualizando a base de dados ####
+
+Muitas vezes, queremos visualizar a base de dados para saber se determinados valores estão sendo salvos corretamente. Para isso, deve-se seguir o seguinte passo a passo:
+
+1. Abrir o *cmd* e navegar até a pasta do projeto;
+2. Executar o *play*;
+3. Executar *h2-browser* (e não mexer);
+4. Rodar o projeto através de um *run* (o importante é que o *h2-browser* e a inicialização do projeto sejam feitas numa mesma instância do *play console*, na ordem aqui dita);
+5. Acessar a URL do projeto e inicializar o banco com o *evolutions* (basicamente abrir e seguir o passo que fala na tela, permitindo a criação da base);
+6. Voltar ao *h2-browser* e conectar sem usuário e senha.
