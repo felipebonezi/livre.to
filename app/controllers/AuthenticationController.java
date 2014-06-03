@@ -50,14 +50,21 @@ public class AuthenticationController extends AbstractApplication {
 
     public static Result logout() {
         Http.Session session = session();
+        String auth = session.get(ControllerKey.SESSION_AUTH);
+
+        FinderFactory factory = FinderFactory.getInstance();
+        IFinder<User> finder = factory.get(User.class);
+        User user = finder.selectUnique(
+            new String[] { ControllerKey.SESSION_AUTH },
+            new Object[] { auth });
+
+        user.setAccessToken(null);        
         session.clear();
-        
-        // TODO Talvez fosse bom limpar o access token do usuário também
 
         return ok("Logout efetuado com sucesso!");
     }
 
     public static Result login() {
-	return ok(login.render());
+        return ok(login.render());
     }
 }

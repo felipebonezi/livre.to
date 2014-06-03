@@ -98,19 +98,19 @@ public class MaterialController extends Controller {
 			material.setCreated(now);
 			material.setModifiedAt(now);
 
-				FinderFactory factory = FinderFactory.getInstance();
-				IFinder<User> finder = factory.get(User.class);
-				User user = finder.selectUnique(
-					new String[] { ControllerKey.SESSION_AUTH },
-					new Object[] { auth });
+			FinderFactory factory = FinderFactory.getInstance();
+			IFinder<User> finder = factory.get(User.class);
+			User user = finder.selectUnique(
+				new String[] { ControllerKey.SESSION_AUTH },
+				new Object[] { auth });
 
-				if (user != null) {
+			if (user != null) {
 				material.setAuthor(user);
 				material.save();
 				return ok("Arquivo enviado com sucesso!");
-				} else {
+			} else {
 				return unauthorized("Usuário não está logado! Sessão expirada?");
-				}
+			}
 		} else {
 			return unauthorized(unauthorized.render(""));
 		}
