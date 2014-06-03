@@ -8,6 +8,7 @@ import models.utils.UserUtil;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.With;
+import views.html.*;
 
 import java.util.Map;
 import java.util.UUID;
@@ -47,4 +48,7 @@ public class AuthenticationController extends AbstractApplication {
         return unauthorized("Você não está autorizado a efetuar esta operação.");
     }
 
+    public static Result login() {
+	return ok(login.render());
+    }
 }
