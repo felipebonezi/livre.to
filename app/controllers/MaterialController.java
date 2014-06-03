@@ -18,12 +18,7 @@ import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
-<<<<<<< HEAD
 import views.html.material.*;
-=======
-import views.html.material.listmaterial;
-import views.html.material.creatematerial;
->>>>>>> 3e6530ef8c660c7fed811fd27cfe26b382c2abd2
 import controllers.AbstractApplication.ControllerKey;
 
 public class MaterialController extends Controller {
