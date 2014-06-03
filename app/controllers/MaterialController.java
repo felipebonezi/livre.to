@@ -1,5 +1,6 @@
 package controllers;
 
+import java.util.Date;
 import java.util.Map;
 
 import models.classes.Material;
@@ -37,13 +38,13 @@ public class MaterialController extends Controller {
 
 	PricePolicy policy = null;
 	switch (pricePolicy[0]) {
-	case "fixedValueRadio":
+	case "fixedValue":
 	    policy = PricePolicy.FIXED_VALUE;
 	    break;
-	case "minimumValueRadio":
+	case "minimumValue":
 	    policy = PricePolicy.MINIMUM_VALUE;
 	    break;
-	case "forFreeRadio":
+	case "free":
 	    policy = PricePolicy.FREE;
 	    break;
 	}
@@ -53,6 +54,9 @@ public class MaterialController extends Controller {
 	material.setPricePolicy(policy);
 	material.setPrice(price[0]);
 	material.setMaterialFile(materialFile.getFile());
+	Date now = new Date();
+	material.setCreated(now);
+	material.setModifiedAt(now);
 
 	// Vai pegar o autor da sessão, considerando que quem faz o upload são
 	// os autores
