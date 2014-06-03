@@ -3,6 +3,7 @@ package controllers;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Date;
 
 import models.classes.Material;
 import models.classes.Material.PricePolicy;
@@ -42,13 +43,13 @@ public class MaterialController extends Controller {
 
 	PricePolicy policy = null;
 	switch (pricePolicy[0]) {
-	case "fixedValueRadio":
+	case "fixedValue":
 	    policy = PricePolicy.FIXED_VALUE;
 	    break;
-	case "minimumValueRadio":
+	case "minimumValue":
 	    policy = PricePolicy.MINIMUM_VALUE;
 	    break;
-	case "forFreeRadio":
+	case "free":
 	    policy = PricePolicy.FREE;
 	    break;
 	}
@@ -64,6 +65,10 @@ public class MaterialController extends Controller {
 	    return internalServerError(e.getMessage());
 	}
 	material.setMaterialFile(lob);
+	
+	Date now = new Date();
+	material.setCreated(now);
+	material.setModifiedAt(now);
 
 	// Vai pegar o autor da sessão, considerando que quem faz o upload são
 	// os autores
