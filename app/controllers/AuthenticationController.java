@@ -48,6 +48,15 @@ public class AuthenticationController extends AbstractApplication {
         return unauthorized("Você não está autorizado a efetuar esta operação.");
     }
 
+    public static Result logout() {
+        Http.Session session = session();
+        session.clear();
+        
+        // TODO Talvez fosse bom limpar o access token do usuário também
+
+        return ok("Logout efetuado com sucesso!");
+    }
+
     public static Result login() {
 	return ok(login.render());
     }
