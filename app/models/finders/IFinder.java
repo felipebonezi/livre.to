@@ -2,6 +2,10 @@ package models.finders;
 
 import java.util.List;
 
+import models.classes.Material;
+
+import com.avaje.ebean.Page;
+
 /**
  * Interface utilizada por todos os Finder para acesso ao banco.
  */
@@ -35,5 +39,15 @@ public interface IFinder<K> {
      * @return
      */
     List<K> selectAll(String[] columns, Object[] columnsArgs);
-
+    
+    /**
+     * Retorna uma página da entidade
+     * 
+     * @param page Número da página a ser exibida
+     * @param pageSize Quantidade de itens por página
+     * @param sortBy
+     * @param order asc ou desc
+     * @param filter Filtro aplicado ao título
+     */
+    Page<K> page(int page, int pageSize, String sortBy, String order, String filter);
 }

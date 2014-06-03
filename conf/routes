@@ -18,5 +18,7 @@ OPTIONS		/login								controllers.AbstractApplication.options()
 OPTIONS		/register							controllers.AbstractApplication.options()
 
 # Import CRUD routes
-GET   		/material							controllers.MaterialController.create()
+GET			/material							controllers.MaterialController.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+GET   		/material/edit						controllers.MaterialController.edit()
+GET   		/material/enviar					controllers.MaterialController.create()
 POST   		/material/upload					controllers.MaterialController.upload()
