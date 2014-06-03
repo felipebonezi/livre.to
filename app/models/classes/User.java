@@ -14,11 +14,11 @@ import java.util.Calendar;
 public class User extends Model {
 
     public enum Status {
-        ACTIVE, BLOCKED;
+	ACTIVE, BLOCKED;
     }
 
     public enum Gender {
-        FEMALE, MALE;
+	FEMALE, MALE;
     }
 
     @Id
@@ -40,69 +40,69 @@ public class User extends Model {
 
     @JsonIgnore
     public long getId() {
-        return id;
+	return id;
     }
 
     public void setId(long id) {
-        this.id = id;
+	this.id = id;
     }
 
     @JsonIgnore
     public String getAccessToken() {
-        return accessToken;
+	return accessToken;
     }
 
     public void setAccessToken(String accessToken) {
-        this.accessToken = accessToken;
+	this.accessToken = accessToken;
     }
 
     public String getLogin() {
-        return login;
+	return login;
     }
 
     public void setLogin(String login) {
-        this.login = login;
+	this.login = login;
     }
 
     @JsonIgnore
     public String getPassword() {
-        return password;
+	return password;
     }
 
     public void setPassword(String password) {
-        this.password = password;
+	this.password = password;
     }
 
     public String getName() {
-        return name;
+	return name;
     }
 
     public void setName(String name) {
-        this.name = name;
+	this.name = name;
     }
 
     public Status getStatus() {
-        return status;
+	return status;
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+	this.status = status;
     }
 
     public Gender getGender() {
-        return gender;
+	return gender;
     }
 
     public void setGender(Gender gender) {
-        this.gender = gender;
+	this.gender = gender;
     }
 
     @JsonIgnore
     public Calendar getModifiedAt() {
-        return modifiedAt;
+	return modifiedAt;
     }
 
     public void setModifiedAt(Calendar modifiedAt) {
-        this.modifiedAt = modifiedAt;
+	this.modifiedAt = modifiedAt;
     }
 }
