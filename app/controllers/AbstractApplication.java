@@ -8,7 +8,7 @@ import play.mvc.With;
 public class AbstractApplication extends Controller {
 
     protected static final class ControllerKey {
-        public static final String SESSION_AUTH = "Authorization";
+        public static final String SESSION_AUTH = "access_token";
     }
 
     public static final class FinderKey {
