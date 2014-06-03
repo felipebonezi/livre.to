@@ -56,8 +56,11 @@
 		        <thead>
 		            <tr>
 		                @header("title", "Título")
-		                @header("created", "Adicionado Em")
 		                @header("author.name", "Autor")
+		                @header("created", "Adicionado Em")
+		                @header("pricePolicy", "Política de Preço")
+		                @header("price", "Preço")
+		                @header("modifiedAt", "Modificado em")
 		            </tr>
 		        </thead>
 		        <tbody>
@@ -66,6 +69,13 @@
 		                <tr>
 		                    <td><a href="@routes.MaterialController.edit()">@material.title</a></td>
 		                    <td>
+		                        @if(material.author.getName() == null) {
+		                            <em>-</em>
+		                        } else {
+		                            @material.author.getName()
+		                        }
+		                    </td>
+		                    <td>
 		                        @if(material.created == null) {
 		                            <em>-</em>
 		                        } else {
@@ -73,10 +83,24 @@
 		                        }
 		                    </td>
 		                    <td>
-		                        @if(material.author.getName() == null) {
+		                        @if(material.pricePolicy == null) {
 		                            <em>-</em>
 		                        } else {
-		                            @material.author.getName()
+		                            @material.pricePolicy
+		                        }
+		                    </td>
+		                    <td>
+		                        @if(material.price == null) {
+		                            <em>-</em>
+		                        } else {
+		                            @material.price
+		                        }
+		                    </td>
+		                    <td>
+		                        @if(material.modifiedAt == null) {
+		                            <em>-</em>
+		                        } else {
+		                            @material.modifiedAt.format("dd MMM yyyy")
 		                        }
 		                    </td>
 		                </tr>
