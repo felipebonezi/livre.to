@@ -18,7 +18,7 @@ import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
-import views.html.material.creatematerial;
+import views.html.material.*;
 import controllers.AbstractApplication.ControllerKey;
 
 public class MaterialController extends Controller {
@@ -26,21 +26,19 @@ public class MaterialController extends Controller {
     public static Result create() {
 	return ok(creatematerial.render(""));
     }
-    
+
     public static Result edit() {
 	return ok(creatematerial.render(""));
     }
-    
-    public static Result list(int page, String sortBy, String order, String filter) {
+
+    public static Result list(int page, String sortBy, String order,
+	    String filter) {
 	FinderFactory factory = FinderFactory.getInstance();
-	    IFinder<Material> finder = factory.get(Material.class);
-	    
-        return ok(
-                listmaterial.render(
-                    finder.page(page, 10, sortBy, order, filter),
-                    sortBy, order, filter
-                )
-            );
+	IFinder<Material> finder = factory.get(Material.class);
+
+	return ok(listmaterial.render(
+		finder.page(page, 10, sortBy, order, filter), sortBy, order,
+		filter));
     }
 
     public static Result upload() {
@@ -69,6 +67,7 @@ public class MaterialController extends Controller {
 	material.setTitle(title[0]);
 	material.setPricePolicy(policy);
 	material.setPrice(price[0]);
+	
 	byte[] lob = null;
 	try {
 	    lob = IOUtils.toByteArray(new FileInputStream(materialFile
@@ -86,18 +85,21 @@ public class MaterialController extends Controller {
 	// os autores
 	Http.Session session = session();
 	String auth = session.get(ControllerKey.SESSION_AUTH);
+	
 	if (auth != null && !auth.isEmpty()) {
 	    FinderFactory factory = FinderFactory.getInstance();
 	    IFinder<User> finder = factory.get(User.class);
-	    User user = null;
-	    user = finder.selectUnique(
+	    User user = finder.selectUnique(
 		    new String[] { ControllerKey.SESSION_AUTH },
 		    new Object[] { auth });
-	    material.setAuthor(user);
-	    // TODO integrar e configurar o banco
-	    material.save();
 
-	    return ok("File uploaded");
+	    if (user != null) {
+		material.setAuthor(user);
+		material.save();
+		return ok("Arquivo enviado com sucesso!");
+	    } else {
+		return unauthorized("Usuário não está logado! Sessão expirada?");
+	    }
 	} else {
 	    return unauthorized("Usuário não está logado!");
 	}
