@@ -47,6 +47,11 @@ public class Material extends Model {
     @Constraints.Required
     public File materialFile;
 
+    /**
+     * Generic query helper for entity Computer with id Long
+     */
+    public static Finder<Long, Material> find = new Finder<Long, Material>(Long.class, Material.class);
+
     public User getAuthor() {
 	return author;
     }
