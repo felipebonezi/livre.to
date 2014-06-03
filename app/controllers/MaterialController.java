@@ -17,6 +17,11 @@ import controllers.AbstractApplication.ControllerKey;
 
 public class MaterialController extends Controller {
 
+    public static final boolean LOGIN_ENABLED = false; // FIXME Quando login
+						       // estiver ok, remover o
+						       // código que depende
+						       // disso
+
     public static Result create() {
 	return ok(creatematerial.render(""));
     }
@@ -53,13 +58,17 @@ public class MaterialController extends Controller {
 	// os autores
 	Http.Session session = session();
 	String auth = session.get(ControllerKey.SESSION_AUTH);
-	if (auth != null && !auth.isEmpty()) {
+	if (!LOGIN_ENABLED || (auth != null && !auth.isEmpty())) {
 	    FinderFactory factory = FinderFactory.getInstance();
 	    IFinder<User> finder = factory.get(User.class);
-	    User user = finder.selectUnique(
-		    new String[] { ControllerKey.SESSION_AUTH },
-		    new Object[] { auth });
-
+	    User user = null;
+	    if (LOGIN_ENABLED) {
+		user = finder.selectUnique(
+			new String[] { ControllerKey.SESSION_AUTH },
+			new Object[] { auth });
+	    } else {
+		user = finder.selectUnique(1l);
+	    }
 	    material.setAuthor(user);
 	    // TODO integrar e configurar o banco
 	    material.save();
