@@ -14,6 +14,11 @@ GET			/logout								controllers.AuthenticationController.logout()
 POST    	/login                              controllers.AuthenticationController.authorize()
 POST		/register                           controllers.UserController.register()
 
+# Users
+GET			/users								controllers.UserController.list(p:Int ?= 0, s ?= "id", o ?= "asc", f ?= "")
+GET			/users/create						controllers.UserController.create()
+GET			/users/edit							controllers.UserController.edit()
+
 ### AJAX ###
 OPTIONS		/login								controllers.AbstractApplication.options()
 OPTIONS		/register							controllers.AbstractApplication.options()

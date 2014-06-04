@@ -1,4 +1,4 @@
-@(currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(currentPage: com.avaje.ebean.Page[models.classes.User], currentSortBy: String, currentOrder: String, currentFilter: String)
 
 @****************************************
 * Helper generating navigation links    *
@@ -22,7 +22,7 @@
     }
     
     // Generate the link
-    routes.MaterialController.list(newPage, sortBy, order, currentFilter)
+    routes.UserController.list(newPage, sortBy, order, currentFilter)
     
 }
 
@@ -35,13 +35,13 @@
     </th>
 }
 
-@main("Listar Material") {
+@main("Listar Usuários") {
 	<div class="container">
 	
 	    <form action="@link(0, "name")" method="GET">
-	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título">
+	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Usuário">
 	        <input type="submit" id="searchsubmit" value="Filtrar" class="btn primary">
-	        <a class="btn btn-default" id="add" href="@routes.MaterialController.create()">Adicionar Material</a>
+	        <a class="btn btn-default" id="add" href="@routes.UserController.create()">Adicionar Usuário</a>
 	    </form>
 	
 		@if(currentPage.getTotalRowCount == 0) {
@@ -55,54 +55,54 @@
 		    <table class="table">
 		        <thead>
 		            <tr>
-		                @header("title", "Título")
-		                @header("author.name", "Autor")
-		                @header("created", "Adicionado Em")
-		                @header("pricePolicy", "Política de Preço")
-		                @header("price", "Preço")
-		                @header("modifiedAt", "Modificado em")
+		                @header("id", "Id")
+						@header("login", "Usuário")
+						@header("name", "Nome")
+						@header("status", "Status")
+						@header("gender", "Sexo")
+						@header("modifiedAt", "Modificado Em")
 		            </tr>
 		        </thead>
 		        <tbody>
 		
-		            @for(material <- currentPage.getList) {
+		            @for(user <- currentPage.getList) {
 		                <tr>
-		                    <td><a href="@routes.MaterialController.edit()">@material.title</a></td>
+		                    <td><a href="@routes.UserController.edit()">@user.getId()</a></td>
 		                    <td>
-		                        @if(material.author.getName() == null) {
-		                            <em>-</em>
-		                        } else {
-		                            @material.author.getName()
-		                        }
-		                    </td>
-		                    <td>
-		                        @if(material.created == null) {
-		                            <em>-</em>
-		                        } else {
-		                            @material.created.format("dd MMM yyyy")
-		                        }
-		                    </td>
-		                    <td>
-		                        @if(material.pricePolicy == null) {
-		                            <em>-</em>
-		                        } else {
-		                            @material.pricePolicy
-		                        }
-		                    </td>
-		                    <td>
-		                        @if(material.price == null) {
-		                            <em>-</em>
-		                        } else {
-		                            @material.price
-		                        }
-		                    </td>
-		                    <td>
-		                        @if(material.modifiedAt == null) {
-		                            <em>-</em>
-		                        } else {
-		                            @material.modifiedAt.format("dd MMM yyyy")
-		                        }
-		                    </td>
+								@if(user.getLogin() == null) {
+									<em>-</em>
+								} else {
+									@user.getLogin()
+								}
+							</td>
+							<td>
+								@if(user.getName() == null) {
+									<em>-</em>
+								} else {
+									@user.getName()
+								}
+							</td>
+							<td>
+								@if(user.getStatus() == null) {
+									<em>-</em>
+								} else {
+									@user.getStatus()
+								}
+							</td>
+							<td>
+								@if(user.getGender() == null) {
+									<em>-</em>
+								} else {
+									@user.getGender()
+								}
+							</td>
+							<td>
+								@if(user.getModifiedAt() == null) {
+									<em>-</em>
+								} else {
+									@user.getModifiedAt()
+								}
+							</td>
 		                </tr>
 		            }
 		

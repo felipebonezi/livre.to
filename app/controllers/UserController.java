@@ -1,11 +1,14 @@
 package controllers;
 
 import models.actions.AjaxAction;
+import models.classes.Material;
 import models.classes.User;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
 import play.mvc.Result;
 import play.mvc.With;
+import views.html.material.listmaterial;
+import views.html.user.listuser;
 
 import java.util.Map;
 
@@ -13,7 +16,28 @@ import java.util.Map;
  * Created by felipebonezi on 28/05/14.
  */
 public class UserController extends AbstractApplication {
+    public static Result list(int page, String sortBy, String order,
+	    String filter) {
+	FinderFactory factory = FinderFactory.getInstance();
+	IFinder<User> finder = factory.get(User.class);
 
+	return ok(listuser.render(
+		finder.page(page, 10, sortBy, order, filter), sortBy, order,
+		filter));
+    }
+    
+    public static Result edit()
+    {
+	// TODO
+	return ok("TODO");
+    }
+    
+    public static Result create()
+    {
+	// TODO
+	return ok("TODO");
+    }
+    
     @With(AjaxAction.class)
     public static Result register() {
         Map<String, String[]> form = request().body().asFormUrlEncoded();
