@@ -1,0 +1,41 @@
+@(id: Long, materialForm: Form[models.classes.Material])
+
+@import helper._
+
+@main("Editar material") {
+	<div class="container">
+		@helper.form(action = controllers.routes.MaterialController.upload(), 'enctype -> "multipart/form-data") {
+			<div class="form-group">
+				<label for="InputTitle">@materialForm("title")</label> 
+				<input type="text" class="form-control" name="materialTitle" id="InputTitle" placeholder="Digite o título do material" required="required" value=@materialForm("title")>
+			</div>
+			<div class="form-group">
+				<label for="InputTitle">Política de pagamento</label>
+				<div class="radio">
+					<label> <input type="radio" name="pricePolicyRadios" id="fixedValueRadio" value="fixedValue" checked> Valor fixo
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="pricePolicyRadios" id="minimumValueRadio" value="minimumValue"> Valor mínimo
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="pricePolicyRadios" id="forFreeRadio" value="free"> Gratuito
+					</label>
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="InputPrice">Valor</label>
+				<div class="input-group">
+					<span class="input-group-addon">R$</span>
+					<input type="text" class="form-control" name="materialPrice" id="InputPrice" placeholder="Valor do material" required="required">
+				</div>
+			</div>
+			<div class="form-group">
+				<label for="InputFile">Arquivo</label>
+				<input type="file" id="InputFile" name="materialFile" required="required">
+			</div>
+			<button type="submit" class="btn btn-default">Enviar</button>
+		}
+	</div>
+}
