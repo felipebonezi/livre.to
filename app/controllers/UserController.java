@@ -16,6 +16,7 @@ import java.util.Map;
  * Created by felipebonezi on 28/05/14.
  */
 public class UserController extends AbstractApplication {
+    
     public static Result list(int page, String sortBy, String order,
 	    String filter) {
 	FinderFactory factory = FinderFactory.getInstance();
@@ -32,6 +33,7 @@ public class UserController extends AbstractApplication {
 	return ok("TODO");
     }
     
+    // Create não é a msm coisa do register? (Gearlles)
     public static Result create()
     {
 	// TODO

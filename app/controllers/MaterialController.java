@@ -64,8 +64,18 @@ public class MaterialController extends Controller {
     }
 
     public static Result delete(long id) {
-	// TODO
-	return ok("TODO");
+	FinderFactory factory = FinderFactory.getInstance();
+	IFinder<Material> finder = factory.get(Material.class);
+	
+	Material material = finder.selectUnique(
+		    new String[] { "id" },		//FIXME como referenciar uma coluna sem ser hard-coded?
+		    new Object[] { id });
+	
+	if (material == null) {
+	    return badRequest(String.format("Material #%d não está cadastrado!", id));
+	} else {
+	    return ok(String.format("Material #%d removido com sucesso!", id));
+	}
     }
 
     public static Result list(int page, String sortBy, String order,
