@@ -63,7 +63,10 @@ public class AuthenticationController extends AbstractApplication {
     }
 
     public static Result login() {
-	return ok(login.render());
+	User user = getUser();
+	if(user != null)
+	    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!"));
+	return ok(login.render()); 
     }
 
     public static boolean isLoggedIn() {
