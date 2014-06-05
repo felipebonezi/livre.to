@@ -1,4 +1,4 @@
-@(user: models.classes.User, currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(user: models.classes.User, message: String, currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
 
 @****************************************
 * Helper generating navigation links    *
@@ -37,7 +37,11 @@
 
 @main("Listar Material", user)("")(true) {
 	<div class="container">
-	
+		@if(message != null && !message.isEmpty) {
+		<div class="alert alert-info">
+			@message
+		</div>
+		}
 	    <form action="@link(0, "name")" method="GET">
 	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título">
 	        <input type="submit" id="searchsubmit" value="Filtrar" class="btn primary">
