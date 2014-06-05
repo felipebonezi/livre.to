@@ -31,7 +31,7 @@ public class User extends Model {
     }
     
     public enum Group {
-	ADMINISTRATOR, AUTHOR, COSUMER
+	ADMINISTRATOR, AUTHOR, CONSUMER
     }
 
     @Id
