@@ -1,4 +1,4 @@
-@(title: String, user: models.classes.User)(content: Html)
+@(title: String, user: models.classes.User)(css: String)(showFooter: Boolean)(content: Html)
 
 <!DOCTYPE html>
 
@@ -9,6 +9,9 @@
 		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+		@if(!css.isEmpty()) {
+			<link rel="stylesheet" media="screen" href="@(routes.Assets.at("stylesheets/" + css))">
+		}
 	</head>
 	<body>
 		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -42,6 +45,14 @@
 		<div class="container theme-showcase" role="main">
 		@content
 		</div>
+
+		@if(showFooter) {
+	     	<div id="footer">
+		     	<div class="container">
+		        	<p>Footer</p>
+		      	</div>
+		    </div>
+	    }
 	</body>
 	<script src="@routes.Assets.at("javascripts/jquery-1.9.0.min.js")" type="text/javascript"></script>
 	<script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>		
