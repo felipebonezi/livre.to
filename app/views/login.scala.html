@@ -1,4 +1,4 @@
-@main("Login")("login.css") {
+@main("Login")("login.css")(false) {
 	<div class="container">
 		@helper.form(action = controllers.routes.AuthenticationController.authorize()) {
 			<h2 class="form-signin-heading">Realize o login</h2>
