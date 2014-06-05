@@ -56,7 +56,8 @@ public class User extends Model {
     private Date modifiedAt;
     
     public User() {
-	this.groups = new ArrayList<Group>(Arrays.asList(Group.AUTHOR, Group.COSUMER));
+//	FIXME achar um jeito de integrar com DB
+//	this.groups = new ArrayList<Group>(Arrays.asList(Group.AUTHOR, Group.COSUMER));
     }
 
     @JsonIgnore
