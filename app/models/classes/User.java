@@ -6,8 +6,11 @@ import play.db.ebean.Model;
 
 import javax.persistence.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import play.data.format.*;
 
@@ -26,6 +29,10 @@ public class User extends Model {
     public enum Gender {
 	FEMALE, MALE;
     }
+    
+    public enum Group {
+	ADMINISTRATOR, AUTHOR, COSUMER
+    }
 
     @Id
     private long id;
@@ -40,9 +47,16 @@ public class User extends Model {
 
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
-
+    
+    @Enumerated(value = EnumType.STRING)
+    private List<Group> groups;
+    
     @Formats.DateTime(pattern="yyyy-MM-dd")
     private Date modifiedAt;
+    
+    public User() {
+	this.groups = new ArrayList<Group>(Arrays.asList(Group.AUTHOR, Group.COSUMER));
+    }
 
     @JsonIgnore
     public long getId() {
@@ -110,5 +124,17 @@ public class User extends Model {
 
     public void setModifiedAt(Date modifiedAt) {
 	this.modifiedAt = modifiedAt;
+    }
+
+    public List<Group> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(List<Group> groups) {
+        this.groups = groups;
+    }
+    
+    public void addGroup(Group group) {
+	this.groups.add(group);
     }
 }

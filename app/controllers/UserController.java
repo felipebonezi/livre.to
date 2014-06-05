@@ -2,8 +2,10 @@ package controllers;
 
 import java.util.Map;
 
+import controllers.AbstractApplication.ControllerKey;
 import models.actions.AjaxAction;
 import models.classes.User;
+import models.classes.User.Group;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
 import play.mvc.Http;
@@ -32,9 +34,22 @@ public class UserController extends AbstractApplication {
 		sortBy, order, filter));
     }
 
+    // TODO tela de gerência de usuários só pode ser acessada por Administradores. Use esse método!
     private static boolean isAdmin() {
-	// TODO Verificação de se é admin (tela de gerência de usuário só pode ser vista por administradores)
-	return true;
+	String auth = AuthenticationController.getSessionAuth();
+	
+	if (auth != null && !auth.isEmpty()) {
+	    FinderFactory factory = FinderFactory.getInstance();
+	    IFinder<User> finder = factory.get(User.class);
+	    User user = finder.selectUnique(
+		    new String[] { ControllerKey.SESSION_AUTH },
+		    new Object[] { auth });
+
+	    if (user != null) {
+		return user.getGroups().contains(User.Group.ADMINISTRATOR);
+	    } 
+	}
+	return false;
     }
 
     private static boolean isLoggedIn() {
@@ -89,5 +104,5 @@ public class UserController extends AbstractApplication {
 
 	return unauthorized("Você não está autorizado a efetuar esta operação.");
     }
-
+    
 }

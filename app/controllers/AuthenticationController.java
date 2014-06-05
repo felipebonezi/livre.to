@@ -14,6 +14,8 @@ import play.mvc.With;
 import views.html.index;
 import views.html.login;
 
+import controllers.AbstractApplication.ControllerKey;
+
 /**
  * Created by felipebonezi on 27/05/14.
  */
@@ -81,5 +83,11 @@ public class AuthenticationController extends AbstractApplication {
 		new Object[] { auth });
 
 	return user;
+    }
+    
+    public static String getSessionAuth() {
+	Http.Session session = session();
+	String auth = session.get(ControllerKey.SESSION_AUTH);
+	return auth;
     }
 }
