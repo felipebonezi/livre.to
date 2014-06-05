@@ -1,7 +1,12 @@
-@(user: models.classes.User)
+@(user: models.classes.User, message: String)
 
 @main("Tela inicial", user)("index.css")(false) {
 	<div class="container">
+		@if(message != null && !message.isEmpty) {
+		<div class="alert alert-info">
+			@message
+		</div>
+		}
 		<div class="options">
 			<h2>Escolha uma opção</h2>
 			<a class="btn btn-lg btn-primary btn-block" href="login">Login</a> 

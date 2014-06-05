@@ -11,6 +11,7 @@ import models.utils.UserUtil;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.With;
+import views.html.index;
 import views.html.login;
 
 /**
@@ -41,7 +42,7 @@ public class AuthenticationController extends AbstractApplication {
 		    session.clear();
 		    session.put(ControllerKey.SESSION_AUTH, accessToken);
 
-		    return ok("Bem-vindo, " + user.getName() + "!");
+		    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!"));
 		}
 	    }
 	}
@@ -56,7 +57,7 @@ public class AuthenticationController extends AbstractApplication {
 	Http.Session session = session();
 	session.clear();
 
-	return ok("Logout efetuado com sucesso!");
+	return ok(index.render(AuthenticationController.getUser(), "Logout efetuado com sucesso!"));
     }
 
     public static Result login() {
