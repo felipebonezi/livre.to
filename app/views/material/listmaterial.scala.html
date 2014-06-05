@@ -42,8 +42,8 @@
 			@message
 		</div>
 		}
-	    <form action="@link(0, "name")" method="GET">
-	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título">
+	    <form action="@link(0, "name")" method="GET" class="form-inline">
+	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título" class="form-control">
 	        <input type="submit" id="searchsubmit" value="Filtrar" class="btn primary">
 	        <a class="btn btn-default" id="add" href="@routes.MaterialController.create()">Adicionar Material</a>
 	    </form>

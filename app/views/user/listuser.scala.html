@@ -38,8 +38,8 @@
 @main("Listar Usuários", user)("")(true) {
 	<div class="container">
 	
-	    <form action="@link(0, "name")" method="GET">
-	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Usuário">
+	    <form action="@link(0, "name")" method="GET" class="form-inline">
+	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Usuário" class="form-control">
 	        <input type="submit" id="searchsubmit" value="Filtrar" class="btn primary">
 	        <a class="btn btn-default" id="add" href="@routes.UserController.create()">Adicionar Usuário</a>
 	    </form>
