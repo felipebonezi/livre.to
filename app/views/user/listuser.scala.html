@@ -58,6 +58,7 @@
 		                @header("id", "Id")
 						@header("login", "Usuário")
 						@header("name", "Nome")
+						@header("groups", "Grupos")
 						@header("status", "Status")
 						@header("gender", "Sexo")
 						@header("modifiedAt", "Modificado Em")
@@ -80,6 +81,13 @@
 									<em>-</em>
 								} else {
 									@user.getName()
+								}
+							</td>
+							<td>
+								@if(user.getGroups() == null) {
+									<em>-</em>
+								} else {
+									@user.getGroups()
 								}
 							</td>
 							<td>

@@ -48,7 +48,8 @@ public class User extends Model {
     @Enumerated(value = EnumType.STRING)
     private Gender gender;
     
-    @Enumerated(value = EnumType.STRING)
+    @ElementCollection
+    @Enumerated(EnumType.STRING)
     private List<Group> groups;
     
     @Formats.DateTime(pattern="yyyy-MM-dd")
