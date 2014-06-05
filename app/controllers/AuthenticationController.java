@@ -59,6 +59,7 @@ public class AuthenticationController extends AbstractApplication {
 	User user = getUser();
 	if (user != null) {
 	    user.setAccessToken(null);
+	    user.update();
 	}
 	
 	return ok(index.render(AuthenticationController.getUser(), "Logout efetuado com sucesso!"));
