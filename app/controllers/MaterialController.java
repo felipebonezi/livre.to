@@ -76,9 +76,18 @@ public class MaterialController extends Controller {
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<Material> finder = factory.get(Material.class);
 
-	return ok(listmaterial.render(AuthenticationController.getUser(),
+	return ok(listmaterial.render(AuthenticationController.getUser(), null,
 		finder.page(page, 10, sortBy, order, filter), sortBy, order,
 		filter));
+    }
+    
+    public static Result list(String message) {
+	FinderFactory factory = FinderFactory.getInstance();
+	IFinder<Material> finder = factory.get(Material.class);
+
+	return ok(listmaterial.render(AuthenticationController.getUser(), message,
+		finder.page(0, 10, "id", "asc", ""), "id", "asc",
+		""));
     }
 
     public static Result upload() {
@@ -130,7 +139,7 @@ public class MaterialController extends Controller {
 	    if (user != null) {
 		material.setAuthor(user);
 		material.save();
-		return ok("Arquivo enviado com sucesso!");
+		return list("Material enviado com sucesso!");
 	    } else {
 		return unauthorized("Usuário não está logado! Sessão expirada?");
 	    }
