@@ -12,7 +12,7 @@ create table material (
   created                   timestamp,
   modified_at               timestamp,
   material_file             blob,
-  constraint ck_material_price_policy check (price_policy in ('F','M')),
+  constraint ck_material_price_policy check (price_policy in ('M','F')),
   constraint pk_material primary key (id))
 ;
 
