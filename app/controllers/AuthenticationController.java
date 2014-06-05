@@ -53,12 +53,14 @@ public class AuthenticationController extends AbstractApplication {
     }
 
     public static Result logout() {
-	User user = getUser();
-	user.setAccessToken(null);
-	
 	Http.Session session = session();
 	session.clear();
-
+	
+	User user = getUser();
+	if (user != null) {
+	    user.setAccessToken(null);
+	}
+	
 	return ok(index.render(AuthenticationController.getUser(), "Logout efetuado com sucesso!"));
     }
 
