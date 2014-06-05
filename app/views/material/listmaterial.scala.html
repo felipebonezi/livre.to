@@ -1,4 +1,4 @@
-@(currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(user: models.classes.User, currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
 
 @****************************************
 * Helper generating navigation links    *
@@ -35,7 +35,7 @@
     </th>
 }
 
-@main("Listar Material") {
+@main("Listar Material", user) {
 	<div class="container">
 	
 	    <form action="@link(0, "name")" method="GET">

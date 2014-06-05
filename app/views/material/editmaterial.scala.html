@@ -1,8 +1,8 @@
-@(id: Long, materialForm: Form[models.classes.Material])
+@(user: models.classes.User, id: Long, materialForm: Form[models.classes.Material])
 
 @import helper._
 
-@main("Editar material") {
+@main("Editar material", user) {
 	<div class="container">
 		@helper.form(action = controllers.routes.MaterialController.upload(), 'enctype -> "multipart/form-data") {
 			<div class="form-group">

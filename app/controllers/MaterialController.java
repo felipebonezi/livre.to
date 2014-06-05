@@ -1,9 +1,11 @@
 package controllers;
 
+import static play.data.Form.form;
+
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.Map;
 import java.util.Date;
+import java.util.Map;
 
 import models.classes.Material;
 import models.classes.Material.PricePolicy;
@@ -15,64 +17,55 @@ import org.apache.commons.io.IOUtils;
 
 import play.data.Form;
 import play.mvc.Controller;
-import play.mvc.Http;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
-import views.html.material.*;
 import views.html.unauthorized;
-import controllers.AbstractApplication.ControllerKey;
-import static play.data.Form.*;
+import views.html.material.creatematerial;
+import views.html.material.editmaterial;
+import views.html.material.listmaterial;
+import controllers.AbstractApplication.FinderKey;
 
 public class MaterialController extends Controller {
 
     public static Result GO_MAIN = redirect(routes.MaterialController.list(0,
 	    "name", "asc", ""));
 
-    private static boolean isLoggedIn() {
-	Http.Session session = session();
-	String auth = session.get(ControllerKey.SESSION_AUTH);
-
-	return (auth != null && !auth.isEmpty());
-    }
-
     public static Result create() {
-	if (!isLoggedIn())
+	if (!AuthenticationController.isLoggedIn())
 	    return unauthorized(unauthorized.render(""));
 
-	return ok(creatematerial.render(""));
+	return ok(creatematerial.render(AuthenticationController.getUser(), ""));
     }
 
     public static Result edit(long id) {
 	Form<Material> materialForm = form(Material.class).fill(
 		Material.find.byId(id));
-	
-	return ok(editmaterial.render(id, materialForm));
+
+	return ok(editmaterial.render(AuthenticationController.getUser(), id, materialForm));
     }
 
     public static Result update(Long id) {
 	Form<Material> materialForm = form(Material.class).bindFromRequest();
 	if (materialForm.hasErrors()) {
-	    return badRequest(editmaterial.render(id, materialForm));
+	    return badRequest(editmaterial.render(AuthenticationController.getUser(), id, materialForm));
 	}
-	
+
 	materialForm.get().update(id);
 	flash("success", "O material " + materialForm.get().getTitle()
 		+ " foi atualizado.");
-	
+
 	return GO_MAIN;
     }
 
     public static Result delete(long id) {
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<Material> finder = factory.get(Material.class);
-	
-	Material material = finder.selectUnique(
-		    new String[] { "id" },		//FIXME como referenciar uma coluna sem ser hard-coded?
-		    new Object[] { id });
-	
+	Material material = finder.selectUnique(new String[] { FinderKey.ID }, new Object[] { id });
+
 	if (material == null) {
-	    return badRequest(String.format("Material #%d não está cadastrado!", id));
+	    return badRequest(String.format(
+		    "Material #%d não está cadastrado!", id));
 	} else {
 	    return ok(String.format("Material #%d removido com sucesso!", id));
 	}
@@ -83,7 +76,7 @@ public class MaterialController extends Controller {
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<Material> finder = factory.get(Material.class);
 
-	return ok(listmaterial.render(
+	return ok(listmaterial.render(AuthenticationController.getUser(),
 		finder.page(page, 10, sortBy, order, filter), sortBy, order,
 		filter));
     }
@@ -91,10 +84,8 @@ public class MaterialController extends Controller {
     public static Result upload() {
 	// Vai pegar o autor da sessão, considerando que quem faz o upload são
 	// os autores
-	Http.Session session = session();
-	String auth = session.get(ControllerKey.SESSION_AUTH);
 
-	if (auth != null && !auth.isEmpty()) {
+	if (AuthenticationController.isLoggedIn()) {
 	    MultipartFormData body = request().body().asMultipartFormData();
 	    FilePart materialFile = body.getFile("materialFile");
 
@@ -134,11 +125,7 @@ public class MaterialController extends Controller {
 	    material.setCreated(now);
 	    material.setModifiedAt(now);
 
-	    FinderFactory factory = FinderFactory.getInstance();
-	    IFinder<User> finder = factory.get(User.class);
-	    User user = finder.selectUnique(
-		    new String[] { ControllerKey.SESSION_AUTH },
-		    new Object[] { auth });
+	    User user = AuthenticationController.getUser();
 
 	    if (user != null) {
 		material.setAuthor(user);
@@ -147,6 +134,7 @@ public class MaterialController extends Controller {
 	    } else {
 		return unauthorized("Usuário não está logado! Sessão expirada?");
 	    }
+
 	} else {
 	    return unauthorized(unauthorized.render(""));
 	}

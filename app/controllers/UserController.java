@@ -28,7 +28,7 @@ public class UserController extends AbstractApplication {
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<User> finder = factory.get(User.class);
 
-	return ok(listuser.render(finder.page(page, 10, sortBy, order, filter),
+	return ok(listuser.render(AuthenticationController.getUser(), finder.page(page, 10, sortBy, order, filter),
 		sortBy, order, filter));
     }
 

@@ -1,5 +1,8 @@
 package controllers;
 
+import java.util.Map;
+import java.util.UUID;
+
 import models.actions.AjaxAction;
 import models.classes.User;
 import models.finders.FinderFactory;
@@ -8,10 +11,7 @@ import models.utils.UserUtil;
 import play.mvc.Http;
 import play.mvc.Result;
 import play.mvc.With;
-import views.html.*;
-
-import java.util.Map;
-import java.util.UUID;
+import views.html.login;
 
 /**
  * Created by felipebonezi on 27/05/14.
@@ -20,51 +20,65 @@ public class AuthenticationController extends AbstractApplication {
 
     @With(AjaxAction.class)
     public static Result authorize() {
-        Map<String, String[]> form = request().body().asFormUrlEncoded();
-        if (form != null) {
-            String login = form.get(ParameterKey.LOGIN)[0];
-            String password = form.get(ParameterKey.PASSWORD)[0];
+	Map<String, String[]> form = request().body().asFormUrlEncoded();
+	if (form != null) {
+	    String login = form.get(ParameterKey.LOGIN)[0];
+	    String password = form.get(ParameterKey.PASSWORD)[0];
 
-            if (login != null && !login.isEmpty() &&
-                    password != null && !password.isEmpty()) {
-                FinderFactory factory = FinderFactory.getInstance();
-                IFinder<User> finder = factory.get(User.class);
-                User user = finder.selectUnique(new String[] { FinderKey.LOGIN, FinderKey.PASSWORD }, new Object[] { login, password });
+	    if (login != null && !login.isEmpty() && password != null
+		    && !password.isEmpty()) {
+		FinderFactory factory = FinderFactory.getInstance();
+		IFinder<User> finder = factory.get(User.class);
+		User user = finder.selectUnique(new String[] { FinderKey.LOGIN,
+			FinderKey.PASSWORD }, new Object[] { login, password });
 
-                if (user != null && UserUtil.isAvailable(user)) {
-                    String accessToken = UUID.randomUUID().toString();
-                    user.setAccessToken(accessToken);
-                    user.update();
+		if (user != null && UserUtil.isAvailable(user)) {
+		    String accessToken = UUID.randomUUID().toString();
+		    user.setAccessToken(accessToken);
+		    user.update();
 
-                    Http.Session session = session();
-                    session.clear();
-                    session.put(ControllerKey.SESSION_AUTH, accessToken);
+		    Http.Session session = session();
+		    session.clear();
+		    session.put(ControllerKey.SESSION_AUTH, accessToken);
 
-                    return ok("Bem-vindo, " + user.getName() + "!");
-                }
-            }
-        }
+		    return ok("Bem-vindo, " + user.getName() + "!");
+		}
+	    }
+	}
 
-        return unauthorized("Você não está autorizado a efetuar esta operação.");
+	return unauthorized("Você não está autorizado a efetuar esta operação.");
     }
 
     public static Result logout() {
-        Http.Session session = session();
-        String auth = session.get(ControllerKey.SESSION_AUTH);
+	User user = getUser();
+	user.setAccessToken(null);
+	
+	Http.Session session = session();
+	session.clear();
 
-        FinderFactory factory = FinderFactory.getInstance();
-        IFinder<User> finder = factory.get(User.class);
-        User user = finder.selectUnique(
-            new String[] { ControllerKey.SESSION_AUTH },
-            new Object[] { auth });
-
-        user.setAccessToken(null);        
-        session.clear();
-
-        return ok("Logout efetuado com sucesso!");
+	return ok("Logout efetuado com sucesso!");
     }
 
     public static Result login() {
-        return ok(login.render());
+	return ok(login.render());
+    }
+
+    public static boolean isLoggedIn() {
+	Http.Session session = session();
+	String auth = session.get(ControllerKey.SESSION_AUTH);
+
+	return (auth != null && !auth.isEmpty());
+    }
+
+    public static User getUser() {
+	Http.Session session = session();
+	String auth = session.get(ControllerKey.SESSION_AUTH);
+	FinderFactory factory = FinderFactory.getInstance();
+	IFinder<User> finder = factory.get(User.class);
+	User user = finder.selectUnique(
+		new String[] { ControllerKey.SESSION_AUTH },
+		new Object[] { auth });
+
+	return user;
     }
 }
