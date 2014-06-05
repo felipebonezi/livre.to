@@ -37,17 +37,17 @@
 
 @main("Listar Material", user)("")(true) {
 	<div class="container">
+		<h2>Materiais</h2>
 		@if(message != null && !message.isEmpty) {
-		<div class="alert alert-info">
+		<div class="alert alert-info alert-dismissable">
 			@message
 		</div>
 		}
 	    <form action="@link(0, "name")" method="GET" class="form-inline">
 	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título" class="form-control">
 	        <input type="submit" id="searchsubmit" value="Filtrar" class="btn primary">
-	        <a class="btn btn-default" id="add" href="@routes.MaterialController.create()">Adicionar Material</a>
+	        <a class="btn btn-default pull-right" id="add" href="@routes.MaterialController.create()">Adicionar Material</a>
 	    </form>
-	
 		@if(currentPage.getTotalRowCount == 0) {
 		    
 		    <div class="well">
