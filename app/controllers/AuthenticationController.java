@@ -5,6 +5,7 @@ import java.util.UUID;
 
 import models.actions.AjaxAction;
 import models.classes.User;
+import models.classes.User.Group;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
 import models.utils.UserUtil;
@@ -13,7 +14,6 @@ import play.mvc.Result;
 import play.mvc.With;
 import views.html.index;
 import views.html.login;
-
 import controllers.AbstractApplication.ControllerKey;
 
 /**
@@ -66,8 +66,9 @@ public class AuthenticationController extends AbstractApplication {
 
     public static Result login() {
 	User user = getUser();
-	if(user != null)
+	if(user != null) {
 	    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!"));
+	}
 	return ok(login.render()); 
     }
 
