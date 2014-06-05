@@ -1,4 +1,4 @@
-@(title: String)(content: Html)
+@(title: String)(css: String)(content: Html)
 
 <!DOCTYPE html>
 
@@ -9,6 +9,9 @@
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />
         <link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+        @if(!css.isEmpty()) {
+			<link rel="stylesheet" media="screen" href="@(routes.Assets.at("stylesheets/" + css))">
+		}
     </head>
     <body>
         @content

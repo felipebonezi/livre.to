@@ -2,7 +2,7 @@
 
 @import helper._
 
-@main("Editar material") {
+@main("Editar material")("") {
 	<div class="container">
 		@helper.form(action = controllers.routes.MaterialController.upload(), 'enctype -> "multipart/form-data") {
 			<div class="form-group">

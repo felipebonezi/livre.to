@@ -1,4 +1,6 @@
-@(message: String) @main("Adicionar material") {
+@(message: String) 
+
+@main("Adicionar material")("") {
 	<div class="container">
 		@helper.form(action = controllers.routes.MaterialController.upload(), 'enctype -> "multipart/form-data") {
 			<div class="form-group">
