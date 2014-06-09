@@ -46,16 +46,12 @@ public class MaterialController extends Controller {
     }
 
     public static Result update(Long id) {
-	Form<Material> materialForm = form(Material.class).bindFromRequest();
-	if (materialForm.hasErrors()) {
-	    return badRequest(editmaterial.render(AuthenticationController.getUser(), id, materialForm));
-	}
+		Form<Material> materialForm = form(Material.class).bindFromRequest();
+		if (materialForm.hasErrors())
+			return badRequest("Erro! " + materialForm.errorsAsJson().toString());
 
-	materialForm.get().update(id);
-	flash("success", "O material " + materialForm.get().getTitle()
-		+ " foi atualizado.");
-
-	return GO_MAIN;
+		materialForm.get().update(id);
+		return ok(String.format("Material #%d atualizado com sucesso!", id));
     }
 
     public static Result delete(long id) {
