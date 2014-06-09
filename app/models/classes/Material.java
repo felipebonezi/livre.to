@@ -20,7 +20,7 @@ import com.avaje.ebean.annotation.EnumMapping;
 public class Material extends Model {
     private static final long serialVersionUID = 1L;
 
-    @EnumMapping(nameValuePairs = "FREE=F, MINIMUM_VALUE=M, FIXED_VALUE=F")
+    @EnumMapping(nameValuePairs = "FREE=F, MINIMUM_VALUE=M, FIXED_VALUE=V")
     public enum PricePolicy {
 	FREE, MINIMUM_VALUE, FIXED_VALUE
     }
