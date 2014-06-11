@@ -21,7 +21,11 @@
       	 @for(material <- currentPage.getList) {
       	 	<div class="col-md-3 book-placeholder">
       	 		<a href="&material=@material.getId()">
-					<img src="http://placehold.it/200x280/336600&text=livre.to" />
+                    @if(material.getMaterialFile() == null) {
+                        <img src="http://placehold.it/200x280/336600&text=livre.to" />
+                    } else {
+					    <img src="@routes.MaterialController.renderImage(material.getId())" />
+                    }
 					<h5>@material.getTitle()</h5>
 				</a>
 				<p class="price-expression">

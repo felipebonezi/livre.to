@@ -171,4 +171,15 @@ public class MaterialController extends Controller {
 	    return unauthorized(unauthorized.render(""));
 	}
     }
+
+    public static Result renderImage(long id) {
+        FinderFactory factory = FinderFactory.getInstance();
+        IFinder<Material> finder = factory.get(Material.class);
+        Material material = finder.selectUnique(id);
+        if (material.getMaterialFile() == null)
+            return ok("http://placehold.it/200x280/336600&text=livre.to");
+        else
+            return ok(material.getMaterialFile()).as("image/jpg");
+    }
+
 }
