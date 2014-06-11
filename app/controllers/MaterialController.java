@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.Map;
 
+import com.avaje.ebean.Page;
 import models.classes.Material;
 import models.classes.Material.PricePolicy;
 import models.classes.User;
@@ -88,8 +89,18 @@ public class MaterialController extends Controller {
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<Material> finder = factory.get(Material.class);
 
+        Page<Material> pages = finder.getFinder()
+                .where()
+                .ilike("title", "%" + filter + "%")
+                .orderBy(sortBy + " " + order)
+                .fetch("author")
+                .where().eq("author_id", user.getId())
+                .findPagingList(10)
+                .setFetchAhead(false)
+                .getPage(page);
+
 	return ok(listmaterial.render(AuthenticationController.getUser(), null,
-		finder.page(page, 10, sortBy, order, filter), sortBy, order,
+		pages, sortBy, order,
 		filter));
     }
     

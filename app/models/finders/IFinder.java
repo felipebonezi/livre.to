@@ -5,6 +5,7 @@ import java.util.List;
 import models.classes.Material;
 
 import com.avaje.ebean.Page;
+import play.db.ebean.Model;
 
 /**
  * Interface utilizada por todos os Finder para acesso ao banco.
@@ -50,4 +51,6 @@ public interface IFinder<K> {
      * @param filter Filtro aplicado ao título
      */
     Page<K> page(int page, int pageSize, String sortBy, String order, String filter);
+
+    public Model.Finder<Long, K> getFinder();
 }
