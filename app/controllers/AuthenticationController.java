@@ -16,6 +16,7 @@ import play.mvc.With;
 import views.html.index;
 import views.html.login;
 import views.html.password;
+import views.html.unauthorized;
 import controllers.AbstractApplication.ControllerKey;
 
 /**
@@ -83,6 +84,10 @@ public class AuthenticationController extends AbstractApplication {
 	return ok(login.render()); 
     }
 
+    public static Result showPassword() {
+        return ok(password.render(""));
+    }
+
     public static Result recoveryPassword() {
         Map<String, String[]> form = request().body().asFormUrlEncoded();
         if (form != null) {
@@ -96,12 +101,11 @@ public class AuthenticationController extends AbstractApplication {
                 user.setPassword(newPassword);
                 user.update();
 
-                return ok(password.render(newPassword, "Anote sua nova senha, por favor."));
+                return ok(password.render(newPassword));
             }
-
         }
 
-        return ok(password.render("", ""));
+        return unauthorized(unauthorized.render("Não existe nenhum usuário com o e-mail informado!"));
     }
 
     public static boolean isLoggedIn() {

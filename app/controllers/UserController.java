@@ -1,11 +1,7 @@
 package controllers;
 
-import java.util.Map;
-
-import controllers.AbstractApplication.ControllerKey;
 import models.actions.AjaxAction;
 import models.classes.User;
-import models.classes.User.Group;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
 import play.mvc.Http;
@@ -13,6 +9,9 @@ import play.mvc.Result;
 import play.mvc.With;
 import views.html.unauthorized;
 import views.html.user.listuser;
+import views.html.register;
+
+import java.util.Map;
 
 /**
  * Created by felipebonezi on 28/05/14.
@@ -66,7 +65,7 @@ public class UserController extends AbstractApplication {
 
     public static Result create() {
 	// TODO
-	return ok("TODO");
+	return ok(register.render(""));
     }
 
     @With(AjaxAction.class)

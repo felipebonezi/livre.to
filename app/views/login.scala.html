@@ -6,5 +6,11 @@
 			<input type="password" name="password" class="form-control" placeholder="Senha" required>
 			<button class="btn btn-lg btn-primary btn-block" type="submit">Entrar</button>
 		}
+
+        <div>
+            @helper.form(action = controllers.routes.AuthenticationController.showPassword()) {
+                <button type="submit">Redefinir senha</button>
+            }
+        </div>
 	</div>
 }
