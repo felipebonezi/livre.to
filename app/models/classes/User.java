@@ -18,9 +18,11 @@ import play.data.format.*;
  * Created by felipebonezi on 27/05/14.
  */
 @Entity
+@SequenceGenerator(name = User.SEQUENCE_NAME, sequenceName = User.SEQUENCE_NAME, initialValue = 1, allocationSize = 1)
 public class User extends Model {
 
     private static final long serialVersionUID = 1L;
+    public static final String SEQUENCE_NAME = "user_id_seq";
 
     public enum Status {
 	ACTIVE, BLOCKED;
@@ -35,6 +37,7 @@ public class User extends Model {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
     private long id;
 
     private String accessToken;
@@ -54,6 +57,7 @@ public class User extends Model {
     private List<Group> groups;
     
     @Formats.DateTime(pattern="yyyy-MM-dd")
+    @Version
     private Date modifiedAt;
     
     public User() {

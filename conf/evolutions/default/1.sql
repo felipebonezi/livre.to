@@ -25,7 +25,7 @@ create table user (
   mail                      varchar(255),
   status                    varchar(7),
   gender                    varchar(6),
-  modified_at               timestamp,
+  modified_at               timestamp not null,
   constraint ck_user_status check (status in ('ACTIVE','BLOCKED')),
   constraint ck_user_gender check (gender in ('FEMALE','MALE')),
   constraint pk_user primary key (id))
@@ -33,7 +33,7 @@ create table user (
 
 create sequence material_seq;
 
-create sequence user_seq;
+create sequence user_id_seq;
 
 alter table material add constraint fk_material_author_1 foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_material_author_1 on material (author_id);
@@ -52,5 +52,5 @@ SET REFERENTIAL_INTEGRITY TRUE;
 
 drop sequence if exists material_seq;
 
-drop sequence if exists user_seq;
+drop sequence if exists user_id_seq;
 

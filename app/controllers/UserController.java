@@ -1,6 +1,7 @@
 package controllers;
 
 import models.actions.AjaxAction;
+import models.classes.Material;
 import models.classes.User;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
@@ -10,6 +11,7 @@ import play.mvc.With;
 import views.html.unauthorized;
 import views.html.user.listuser;
 import views.html.register;
+import views.html.index;
 
 import java.util.Map;
 
@@ -64,28 +66,33 @@ public class UserController extends AbstractApplication {
     }
 
     public static Result create() {
-	// TODO
-	return ok(register.render(""));
+	return ok(register.render());
     }
 
     @With(AjaxAction.class)
     public static Result register() {
+        String message = "Preencha todos os dados corretamente.";
 	Map<String, String[]> form = request().body().asFormUrlEncoded();
 	if (form != null) {
 	    String login = form.get(ParameterKey.LOGIN)[0];
 	    String password = form.get(ParameterKey.PASSWORD)[0];
 	    String name = form.get(ParameterKey.NAME)[0];
 	    String genderStr = form.get(ParameterKey.GENDER)[0];
+        String mail = form.get(ParameterKey.MAIL)[0];
 
 	    if (!login.isEmpty() && !password.isEmpty() && !name.isEmpty()
-		    && !genderStr.isEmpty()) {
+		    && !genderStr.isEmpty() && !mail.isEmpty()) {
 		FinderFactory factory = FinderFactory.getInstance();
 		IFinder<User> finder = factory.get(User.class);
 		boolean userAlreadyExists = finder.selectUnique(
 			new String[] { FinderKey.LOGIN },
 			new Object[] { login }) != null;
 
-		if (!userAlreadyExists) {
+        boolean mailAlreadyExists = finder.selectUnique(
+                new String[] { FinderKey.MAIL },
+                new Object[] { mail }) != null;
+
+		if (!userAlreadyExists && !mailAlreadyExists) {
 		    User.Gender gender = User.Gender.valueOf(genderStr);
 
 		    User user = new User();
@@ -94,14 +101,18 @@ public class UserController extends AbstractApplication {
 		    user.setName(name);
 		    user.setGender(gender);
 		    user.setStatus(User.Status.ACTIVE);
+            user.setMail(mail);
 		    user.save();
 
-		    return ok("O cadastro foi realizado com sucesso!");
-		}
+            IFinder<Material> materialFinder = factory.get(Material.class);
+		    return ok(index.render(AuthenticationController.getUser(), "Usuário foi criado com sucesso!", materialFinder.page(0, 8, "id", "asc", "")));
+		} else {
+            message = "Já existe um usuário cadastrado com os dados fornecidos.";
+        }
 	    }
 	}
 
-	return unauthorized("Você não está autorizado a efetuar esta operação.");
+	return unauthorized(unauthorized.render(message));
     }
     
 }

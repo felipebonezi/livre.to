@@ -1,15 +1,28 @@
-@(password: String)
-@main("Password", null)("login.css")(false) {
+@main("Registro", null)("login.css")(true) {
 	<div class="container">
-        @if(password == null) {
-            @helper.form(action = controllers.routes.AuthenticationController.recoveryPassword()) {
-                <h2 class="form-signin-heading">Digite o e-mail do seu usuário</h2>
-                <input type="text" name="mail" class="form-control" placeholder="E-mail" required autofocus>
-                <button class="btn btn-lg btn-primary btn-block" type="submit">Redefinir</button>
-            }
-        } else {
-            <h2 class="form-signin-heading">Sua nova senha é: @password</h2>
-            <p><a class="btn btn-primary btn-lg" role="button" href="@routes.AuthenticationController.login()">Ok :-)</a></p>
+        @helper.form(action = controllers.routes.UserController.register()) {
+            <h2 class="form-signin-heading">Preencha os campos abaixo:</h2>
+            <input type="text" name="name" class="form-control" placeholder="Nome completo" required autofocus>
+            <input type="email" name="mail" class="form-control" placeholder="E-mail" required>
+
+
+
+            <input type="text" name="login" class="form-control" placeholder="Login" required>
+            <input type="password" name="password" class="form-control" placeholder="Senha" required>
+
+        <div class="form-group">
+            <label>Gênero</label>
+            <div class="radio">
+                <div class="radio">
+                    <input type="radio" name="gender" id="fixedValueRadio" value="MALE" checked> Masculino
+                </div>
+                <div class="radio">
+                    <input type="radio" name="gender" id="minimumValueRadio" value="FEMALE"> Feminino
+                </div>
+            </div>
+        </div>
+
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Registrar</button>
         }
 	</div>
 }
