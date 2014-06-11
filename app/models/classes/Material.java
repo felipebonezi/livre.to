@@ -3,12 +3,7 @@ package models.classes;
 import java.io.File;
 import java.util.Date;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 
 import play.data.format.Formats;
 import play.data.validation.Constraints;
@@ -17,8 +12,10 @@ import play.db.ebean.Model;
 import com.avaje.ebean.annotation.EnumMapping;
 
 @Entity
+@SequenceGenerator(name = Material.SEQUENCE_NAME, sequenceName = Material.SEQUENCE_NAME, initialValue = 1, allocationSize = 1)
 public class Material extends Model {
     private static final long serialVersionUID = 1L;
+    public static final String SEQUENCE_NAME = "material_seq";
 
     @EnumMapping(nameValuePairs = "FREE=F, MINIMUM_VALUE=M, FIXED_VALUE=V")
     public enum PricePolicy {
@@ -26,6 +23,7 @@ public class Material extends Model {
     }
 
     @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
     public long id;
 
     @ManyToOne
