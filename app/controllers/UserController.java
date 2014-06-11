@@ -35,7 +35,7 @@ public class UserController extends AbstractApplication {
     }
 
     // TODO tela de gerência de usuários só pode ser acessada por Administradores. Use esse método!
-    private static boolean isAdmin() {
+    public static boolean isAdmin() {
 	String auth = AuthenticationController.getSessionAuth();
 	
 	if (auth != null && !auth.isEmpty()) {

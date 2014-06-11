@@ -63,15 +63,19 @@ public class MaterialController extends Controller {
     }
 
     public static Result delete(long id) {
+        User user = AuthenticationController.getUser();
+
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<Material> finder = factory.get(Material.class);
 	Material material = finder.selectUnique(new String[] { FinderKey.ID }, new Object[] { id });
 
 	if (material == null) {
-	    return badRequest(String.format(
-		    "Material #%d não está cadastrado!", id));
+        return badRequest(String.format(
+                "Material #%d não está cadastrado!", id));
+    } else if (UserUtil.isOwner(material, user) || UserController.isAdmin()) {
+        return ok(String.format("Material #%d removido com sucesso!", id));
 	} else {
-	    return ok(String.format("Material #%d removido com sucesso!", id));
+        return unauthorized(unauthorized.render(""));
 	}
     }
 
