@@ -2,10 +2,19 @@ package models.utils;
 
 import models.classes.User;
 
+import java.math.BigInteger;
+import java.security.SecureRandom;
+
 /**
  * Created by felipebonezi on 27/05/14.
  */
 public abstract class UserUtil {
+
+    private static final SecureRandom random = new SecureRandom();
+
+    public static String generateAlphaNumeric() {
+        return new BigInteger(130, random).toString(32);
+    }
 
     /**
      * Retorna se o usuário está apto para realizar determinada ação baseado em seu STATUS.

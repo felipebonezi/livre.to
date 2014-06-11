@@ -41,6 +41,7 @@ public class User extends Model {
     private String login;
     private String password;
     private String name;
+    private String mail;
 
     @Enumerated(value = EnumType.STRING)
     private Status status;
@@ -138,5 +139,13 @@ public class User extends Model {
     
     public void addGroup(Group group) {
 	this.groups.add(group);
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 }

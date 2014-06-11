@@ -82,6 +82,27 @@ public class AuthenticationController extends AbstractApplication {
 	return ok(login.render()); 
     }
 
+    public static Result recoveryPassword() {
+        Map<String, String[]> form = request().body().asFormUrlEncoded();
+        if (form != null) {
+            String mail = form.get(ParameterKey.MAIL)[0];
+
+            FinderFactory factory = FinderFactory.getInstance();
+            IFinder<User> finder = factory.get(User.class);
+            User user = finder.selectUnique(new String[] { FinderKey.MAIL }, new Object[] { mail });
+            if (user != null && UserUtil.isAvailable(user)) {
+                String newPassword = UserUtil.generateAlphaNumeric();
+                user.setPassword(newPassword);
+                user.update();
+
+                return ok(password.render(newPassword, "Anote sua nova senha, por favor."));
+            }
+
+        }
+
+        return ok(password.render());
+    }
+
     public static boolean isLoggedIn() {
 	Http.Session session = session();
 	String auth = session.get(ControllerKey.SESSION_AUTH);
