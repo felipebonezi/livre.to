@@ -112,4 +112,8 @@ public class Material extends Model {
     public void setModifiedAt(Date modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
+
+    public long getId() {
+        return id;
+    }
 }
