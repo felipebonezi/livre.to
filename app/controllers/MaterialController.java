@@ -49,7 +49,7 @@ public class MaterialController extends Controller {
 
             return ok(editmaterial.render(user, id, materialForm));
         } else {
-            return unauthorized(unauthorized.render(""));
+            return unauthorized(unauthorized.render("Você não tem permissão para realizar essa ação."));
         }
     }
 
@@ -75,12 +75,16 @@ public class MaterialController extends Controller {
     } else if (UserUtil.isOwner(material, user) || UserController.isAdmin()) {
         return ok(String.format("Material #%d removido com sucesso!", id));
 	} else {
-        return unauthorized(unauthorized.render(""));
+        return unauthorized(unauthorized.render("Você não tem permissão para realizar essa ação."));
 	}
     }
 
     public static Result list(int page, String sortBy, String order,
 	    String filter) {
+        User user = AuthenticationController.getUser();
+        if (user == null)
+            return unauthorized(unauthorized.render("TESTE"));
+
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<Material> finder = factory.get(Material.class);
 

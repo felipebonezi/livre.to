@@ -3,8 +3,13 @@
 	<div class="jumbotron">
       <div class="container">
         <h1>Erro!</h1>
-        <p>Você não tem permissão para visualizar a página desejada. Por favor, efetue login com uma conta válida e tente novamente.</p>
-        <p><a class="btn btn-primary btn-lg" role="button" href="@routes.AuthenticationController.login()">Login</a></p>
+          @if(message == null || message.isEmpty()) {
+            <p>Você não tem permissão para visualizar a página desejada. Por favor, efetue login com uma conta válida e tente novamente.</p>
+            <p><a class="btn btn-primary btn-lg" role="button" href="@routes.AuthenticationController.login()">Login</a></p>
+          } else {
+            <p>@message</p>
+            <p><a class="btn btn-primary btn-lg" role="button" href="@routes.Application.index()">Ok :-(</a></p>
+          }
       </div>
     </div>
 }
