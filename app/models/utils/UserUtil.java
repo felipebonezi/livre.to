@@ -35,7 +35,7 @@ public abstract class UserUtil {
     }
 
     public static boolean isOwner(Material material, User user) {
-        return material.getAuthor().getId() == user.getId();
+        return material != null && user != null && material.getAuthor().getId() == user.getId();
     }
 
 }

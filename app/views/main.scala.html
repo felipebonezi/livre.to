@@ -26,9 +26,12 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
-					<li><a href="@routes.UserController.list(0, "id", "asc", "")">Usuários</a></li>
-					<li><a href="@routes.MaterialController.list(0, "name", "asc","")">Materiais</a></li>
-					@if(user != null) {
+                    @if(user != null) {
+                        // TODO Verificar se é usuário admin!
+                        @if(user.getLogin().equals("admin")) {
+					        <li><a href="@routes.UserController.list(0, "id", "asc", "")">Usuários</a></li>
+                        }
+					    <li><a href="@routes.MaterialController.list(0, "name", "asc","")">Materiais</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">@user.getName() <b class="caret"></b></a>
 							<ul class="dropdown-menu">
