@@ -26,6 +26,7 @@ public class AuthenticationController extends AbstractApplication {
 
     @With(AjaxAction.class)
     public static Result authorize() {
+        String message = "Preencha todos os dados corretamente.";
 	Map<String, String[]> form = request().body().asFormUrlEncoded();
 	if (form != null) {
 	    String login = form.get(ParameterKey.LOGIN)[0];
@@ -50,11 +51,13 @@ public class AuthenticationController extends AbstractApplication {
 		    // FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
 		    IFinder<Material> materialFinder = factory.get(Material.class);
 		    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(0, 8, "id", "asc", "")));
-		}
+		} else {
+            message = "O login/senha informado estão incorretos...";
+        }
 	    }
 	}
 
-	return unauthorized("Você não está autorizado a efetuar esta operação.");
+	return unauthorized(unauthorized.render(message));
     }
 
     public static Result logout() {
