@@ -15,6 +15,7 @@ import play.mvc.Result;
 import play.mvc.With;
 import views.html.index;
 import views.html.login;
+import views.html.password;
 import controllers.AbstractApplication.ControllerKey;
 
 /**
@@ -100,7 +101,7 @@ public class AuthenticationController extends AbstractApplication {
 
         }
 
-        return ok(password.render());
+        return ok(password.render("", ""));
     }
 
     public static boolean isLoggedIn() {
