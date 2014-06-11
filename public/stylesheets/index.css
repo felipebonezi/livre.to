@@ -7,3 +7,15 @@ body {
   padding: 15px;
   margin: 0 auto;
 }
+
+.book-placeholder {
+	text-align: center;
+}
+
+.price-expression {
+	font-weight: bold;
+}
+
+#spotlight {
+	background-color: #d6d6d6;
+}

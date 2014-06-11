@@ -4,6 +4,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import models.actions.AjaxAction;
+import models.classes.Material;
 import models.classes.User;
 import models.classes.User.Group;
 import models.finders.FinderFactory;
@@ -43,8 +44,10 @@ public class AuthenticationController extends AbstractApplication {
 		    Http.Session session = session();
 		    session.clear();
 		    session.put(ControllerKey.SESSION_AUTH, accessToken);
-
-		    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!"));
+		    
+		    // FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
+		    IFinder<Material> materialFinder = factory.get(Material.class);
+		    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(0, 8, "id", "asc", "")));
 		}
 	    }
 	}
@@ -62,13 +65,19 @@ public class AuthenticationController extends AbstractApplication {
 	    user.update();
 	}
 	
-	return ok(index.render(AuthenticationController.getUser(), "Logout efetuado com sucesso!"));
+	//FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
+	FinderFactory factory = FinderFactory.getInstance();
+	IFinder<Material> materialFinder = factory.get(Material.class);
+	return ok(index.render(AuthenticationController.getUser(), "Logout efetuado com sucesso!", materialFinder.page(0, 8, "id", "asc", "")));
     }
 
     public static Result login() {
 	User user = getUser();
 	if(user != null) {
-	    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!"));
+	    //FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
+	    FinderFactory factory = FinderFactory.getInstance();
+	    IFinder<Material> materialFinder = factory.get(Material.class);
+	    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(0, 8, "id", "asc", "")));
 	}
 	return ok(login.render()); 
     }

@@ -1,6 +1,6 @@
-@(user: models.classes.User, message: String)
+@(user: models.classes.User, message: String, currentPage: com.avaje.ebean.Page[models.classes.Material])
 
-@main("Tela inicial", user)("index.css")(false) {
+@main("Home - livre.to", user)("index.css")(true) {
 	<div class="container">
 		@if(message != null && !message.isEmpty) {
 		<div class="alert alert-info alert-dismissable">
@@ -8,11 +8,33 @@
 			@message
 		</div>
 		}
-		<div class="options">
-			<h2>Escolha uma opção</h2>
-			<a class="btn btn-lg btn-primary btn-block @if(user != null) {disabled}" href="login">Login</a> 
-			<a class="btn btn-lg btn-primary btn-block" href="users">Usuários</a> 
-			<a class="btn btn-lg btn-primary btn-block" href="material">Material</a>
-		</div>
+		
+		<div id="spotlight" class="jumbotron">
+	        <h1>livre.to</h1>
+	        <p class="lead">Uma plataforma solidária para venda e compartilhamento de materiais didáticos produzidor por autores independentes.</p>
+	        <p><a class="btn btn-lg btn-success" href="@routes.UserController.register()" role="button">Junte-se à nós</a></p>
+      	</div>
+      	
+      	<div class="row">
+      	 @for(material <- currentPage.getList) {
+      	 	<div class="col-md-3 book-placeholder">
+      	 		<a href="&material=@material.getId()">
+					<img src="http://images.livrariasaraiva.com.br/imagem/imagem.dll?pro_id=2862084&L=310&qld=100" />
+					<h4>@material.getTitle()</h4>
+				</a>
+				<p class="price-expression">
+				@if(material.getPricePolicy().equals(models.classes.Material.PricePolicy.FREE)) {
+					Gratuito!			
+				} else{ 
+					@if(material.getPricePolicy().equals(models.classes.Material.PricePolicy.FIXED_VALUE)) {
+						Por R$ @material.getPrice()
+					} else {
+						A partir de R$ @material.getPrice()
+					}
+				}
+				</p>
+			</div>
+      	 }
+      	</div>
 	</div>
 }

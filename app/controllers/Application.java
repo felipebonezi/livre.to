@@ -1,16 +1,25 @@
 package controllers;
 
+import models.classes.Material;
+import models.finders.FinderFactory;
+import models.finders.IFinder;
 import play.mvc.*;
-import play.mvc.Result;
-
 import views.html.*;
 
 public class Application extends Controller {
     public static Result index() {
-	 return ok(index.render(AuthenticationController.getUser(), null));
+	// FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
+	FinderFactory factory = FinderFactory.getInstance();
+	IFinder<Material> finder = factory.get(Material.class);
+	return ok(index.render(AuthenticationController.getUser(), null,
+		finder.page(0, 8, "id", "asc", "")));
     }
-    
+
     public static Result index(String message) {
-	 return ok(index.render(AuthenticationController.getUser(), message));
-   }
+	// FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
+	FinderFactory factory = FinderFactory.getInstance();
+	IFinder<Material> finder = factory.get(Material.class);
+	return ok(index.render(AuthenticationController.getUser(), message,
+		finder.page(0, 8, "id", "asc", "")));
+    }
 }
