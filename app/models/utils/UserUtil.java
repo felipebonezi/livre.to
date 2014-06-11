@@ -1,5 +1,6 @@
 package models.utils;
 
+import models.classes.Material;
 import models.classes.User;
 
 import java.math.BigInteger;
@@ -31,6 +32,10 @@ public abstract class UserUtil {
             default:
                 return false;
         }
+    }
+
+    public static boolean isOwner(Material material, User user) {
+        return material.getAuthor().getId() == user.getId();
     }
 
 }

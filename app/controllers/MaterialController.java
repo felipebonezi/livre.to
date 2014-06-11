@@ -13,6 +13,7 @@ import models.classes.User;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
 
+import models.utils.UserUtil;
 import org.apache.commons.io.IOUtils;
 
 import play.data.Form;
@@ -39,10 +40,17 @@ public class MaterialController extends Controller {
     }
 
     public static Result edit(long id) {
-	Form<Material> materialForm = form(Material.class).fill(
-		Material.find.byId(id));
+        User user = AuthenticationController.getUser();
+        Material material = Material.find.byId(id);
 
-	return ok(editmaterial.render(AuthenticationController.getUser(), id, materialForm));
+        if (material != null && UserUtil.isOwner(material, user)) {
+            Form<Material> materialForm = form(Material.class).fill(
+                    material);
+
+            return ok(editmaterial.render(user, id, materialForm));
+        } else {
+            return unauthorized(unauthorized.render(""));
+        }
     }
 
     public static Result update(Long id) {
