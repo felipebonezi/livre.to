@@ -22,6 +22,7 @@ create table user (
   login                     varchar(255),
   password                  varchar(255),
   name                      varchar(255),
+  mail                      varchar(255),
   status                    varchar(7),
   gender                    varchar(6),
   modified_at               timestamp,
