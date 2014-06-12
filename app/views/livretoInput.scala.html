@@ -1,0 +1,22 @@
+@(elements: helper.FieldElements)
+
+@***************************************************
+* Generate input according twitter bootstrap rules *
+***************************************************@
+<div class="clearfix">
+    <label for="@elements.id">@elements.label</label>
+    @if(elements.hasErrors) {
+	    <div class="label label-danger">@elements.errors.mkString(", ")</div>
+    }
+
+    <div class="input">
+    	@if(elements.args.get('isPrice).map{ _ == true}.getOrElse(false)) {
+			<div class="input-group">
+				<span class="input-group-addon">R$</span>
+				@elements.input
+			</div>
+		} else {
+        	@elements.input
+        }
+    </div>
+</div>

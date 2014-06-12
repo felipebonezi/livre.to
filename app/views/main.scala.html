@@ -27,11 +27,11 @@
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
                     @if(user != null) {
-                        // TODO Verificar se é usuário admin!
+                        <!-- // TODO Verificar se é usuário admin! -->
                         @if(user.getLogin().equals("admin")) {
 					        <li><a href="@routes.UserController.list(0, "id", "asc", "")">Usuários</a></li>
                         }
-					    <li><a href="@routes.MaterialController.list(0, "name", "asc","")">Materiais</a></li>
+					    <li><a href="@routes.MaterialController.list(0, "title", "asc","")">Materiais</a></li>
 						<li class="dropdown">
 							<a href="#" class="dropdown-toggle" data-toggle="dropdown">@user.getName() <b class="caret"></b></a>
 							<ul class="dropdown-menu">
@@ -52,9 +52,7 @@
 
 		@if(showFooter) {
 	     	<div class="footer navbar-fixed-bottom">
-		     	<div class="container">
-		        	<p>@@ livre.to 2014</p>
-		      	</div>
+		        <a href="">@@ livre.to 2014</a>
 		    </div>
 	    }
 	</body>

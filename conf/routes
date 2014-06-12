@@ -27,9 +27,9 @@ OPTIONS		/login								controllers.AbstractApplication.options()
 OPTIONS		/register							controllers.AbstractApplication.options()
 
 # Material CRUD
-GET			/material							controllers.MaterialController.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+GET			/material							controllers.MaterialController.list(p:Int ?= 0, s ?= "title", o ?= "asc", f ?= "")
 GET   		/material/enviar					controllers.MaterialController.create()
 POST   		/material/upload					controllers.MaterialController.upload()
 GET     	/material/:id              			controllers.MaterialController.edit(id:Long)
 POST	    /material/:id             			controllers.MaterialController.update(id:Long)
-GET         /material/image                     controllers.MaterialController.renderImage(id:Long)
+GET         /thumbnail/:id                     controllers.MaterialController.renderImage(id:Long)

@@ -1,30 +1,45 @@
-@(user: models.classes.User, id: Long, materialForm: Form[models.classes.Material])
-
+@(user: models.classes.User, message: String, id: Long, materialForm: Form[models.classes.Material])
 @import helper._
+@implicitFieldConstructor = @{ FieldConstructor(livretoInput.render) } 
 
 @main("Editar material", user)("")(true) {
-	<div class="container">
-		@helper.form(action = controllers.routes.MaterialController.update(id), 'enctype -> "multipart/form-data") {
-			@inputText(materialForm("title"), '_label -> "Título", 'class -> "form-control")
-			<!-- TODO / FIXME Ajustar pra ficarem sem ser inline -->
-			@inputRadioGroup(
-				materialForm("pricePolicy"),
-				options = options("FIXED_VALUE" -> "Valor fixo", "MINIMUM_VALUE" -> "Valor mínimo", "FREE" -> "Gratuito"),
-				'_label -> "Política de Pagamento",
-				'_error -> materialForm("pricePolicy").error.map(_.withMessage("Selecione uma política de pagamento")))
-			<div class="form-group">
-				<label for="InputPrice">Valor</label>
-				<div class="input-group">
-					<span class="input-group-addon">R$</span>
-					@inputText(materialForm("price"), 'class -> "form-control", 'id -> "InputPrice", '_label -> null)
-				</div>
-			</div>
-			<div class="form-group">
-				<label for="InputFile">Arquivo</label>
-				<!-- TODO -->
-				<input type="file" id="InputFile" name="materialFile" required="required">
-			</div>
-			<button type="submit" class="btn btn-default">Enviar</button>
-		}
+	@if(message != null && !message.isEmpty) {
+	<div class="alert alert-info alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		@message
 	</div>
+	}
+	@helper.form(action = controllers.routes.MaterialController.update(id), 
+		'enctype -> "multipart/form-data") {
+
+		@inputText(
+			materialForm("title"), 
+			'_label -> "Título", 
+			'class -> "form-control")
+		
+		@inputRadioGroup(
+			materialForm("pricePolicy"),
+			options = options("FIXED_VALUE" -> "Valor fixo", 
+								"MINIMUM_VALUE" -> "Valor mínimo", 
+								"FREE" -> "Gratuito"),
+			'_label -> "Política de Pagamento",
+			'_error -> materialForm("pricePolicy").error.map(_.withMessage("Selecione uma política de pagamento")))
+
+		@inputText(materialForm("price"), 
+			'_label -> "Valor", 
+			'id -> "InputPrice",
+			'class -> "form-control",
+			'isPrice -> true)
+
+		<div class="form-group">
+			<label for="InputFile">Arquivo</label>
+			<div class="thumbnail">
+				<img class="img-thumbnail" src="@routes.MaterialController.renderImage(materialForm("id").value.toLong)" />
+			</div>
+			<input type="file" id="InputFile" name="materialFile" required="required">
+		</div>
+		
+		<button type="submit" class="btn btn-default">Enviar</button>
+
+	}
 }

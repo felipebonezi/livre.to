@@ -1,9 +1,16 @@
 package models.classes;
 
-import java.io.File;
 import java.util.Date;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 import play.data.format.Formats;
 import play.data.validation.Constraints;
@@ -48,6 +55,10 @@ public class Material extends Model {
     @Constraints.Required
     @Lob
     public byte[] materialFile;
+    
+    @Constraints.Required
+    @Lob
+    public byte[] materialThumbnail;
 
     /**
      * Generic query helper for entity Computer with id Long
@@ -113,5 +124,13 @@ public class Material extends Model {
 
     public long getId() {
         return id;
+    }
+
+    public byte[] getMaterialThumbnail() {
+        return materialThumbnail;
+    }
+
+    public void setMaterialThumbnail(byte[] materialThumbnail) {
+        this.materialThumbnail = materialThumbnail;
     }
 }

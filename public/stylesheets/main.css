@@ -4,6 +4,14 @@ body {
   background-color: #eee;
 }
 
+.clearfix {
+  margin-bottom: 20px;
+}
+
+.thumbnail {
+  width: 200px;
+}
+
 .theme-dropdown .dropdown-menu {
   position: static;
   display: block;
@@ -15,9 +23,16 @@ body {
 }
 
 .footer {
-	padding-top: 19px;
+	padding:10px;
 	color: #999;
-	background-color: #333;
+	background-color: #000;
+  opacity: 0.4;
+}
+
+.footer a {
+  text-decoration: none;
+  color: white;
+  font-size: 12px;
 }
 
 .main-content {

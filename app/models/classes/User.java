@@ -1,18 +1,22 @@
 package models.classes;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import play.db.ebean.Model;
-
-import javax.persistence.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import play.data.format.*;
+import javax.persistence.ElementCollection;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Version;
+
+import play.data.format.Formats;
+import play.db.ebean.Model;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 /**
  * Created by felipebonezi on 27/05/14.
