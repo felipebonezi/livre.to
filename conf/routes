@@ -15,7 +15,6 @@ POST    	/login                              controllers.AuthenticationControlle
 GET         /showPassword                       controllers.AuthenticationController.showPassword()
 POST	    /recovery            				controllers.AuthenticationController.recoveryPassword()
 
-
 # Users
 GET			/users								controllers.UserController.list(p:Int ?= 0, s ?= "id", o ?= "asc", f ?= "")
 GET			/users/create						controllers.UserController.create()
@@ -30,6 +29,7 @@ OPTIONS		/register							controllers.AbstractApplication.options()
 GET			/material							controllers.MaterialController.list(p:Int ?= 0, s ?= "title", o ?= "asc", f ?= "")
 GET   		/material/enviar					controllers.MaterialController.create()
 POST   		/material/upload					controllers.MaterialController.upload()
+GET			/material/delete/:id             	controllers.MaterialController.delete(id:Long)
 GET     	/material/:id              			controllers.MaterialController.edit(id:Long)
 POST	    /material/:id             			controllers.MaterialController.update(id:Long)
-GET         /thumbnail/:id                     controllers.MaterialController.renderImage(id:Long)
+GET         /thumbnail/:id                     	controllers.MaterialController.renderImage(id:Long)

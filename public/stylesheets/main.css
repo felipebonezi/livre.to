@@ -38,3 +38,13 @@ body {
 .main-content {
 	margin-bottom: 19px;
 }
+
+.btn-delete {
+  margin-right: 20px;
+}
+
+.edit-menu {
+  display:block;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}

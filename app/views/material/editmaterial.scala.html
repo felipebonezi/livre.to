@@ -9,8 +9,15 @@
 		@message
 	</div>
 	}
+
 	@helper.form(action = controllers.routes.MaterialController.update(id), 
 		'enctype -> "multipart/form-data") {
+
+		<div class="edit-menu clearfix">
+			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
+			<button type="submit" class="btn btn-success pull-right">Salvar</button>
+			<a class="btn btn-danger pull-right btn-delete" href="@controllers.routes.MaterialController.delete(id)">Excluir</a>
+		</div>
 
 		@inputText(
 			materialForm("title"), 
@@ -39,7 +46,11 @@
 			<input type="file" id="InputFile" name="materialFile" required="required">
 		</div>
 		
-		<button type="submit" class="btn btn-default">Enviar</button>
+		<div class="edit-menu clearfix">
+			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
+			<button type="submit" class="btn btn-success pull-right">Salvar</button>
+			<a class="btn btn-danger pull-right btn-delete" href="@controllers.routes.MaterialController.delete(id)">Excluir</a>
+		</div>
 
 	}
 }
