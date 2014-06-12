@@ -16,16 +16,17 @@ import utils.ImageUtils;
 import utils.ZeroPagesException;
 
 public class MaterialUtil {
-    private static final String MIMETYPE_PDF = "application/pdf";
+	private static final String MIMETYPE_PDF = "application/pdf";
 
-    public static Material generateFromForm(MultipartFormData body)
-	    throws FileNotFoundException, ZeroPagesException,
-	    IllegalArgumentException {
+	public static Material generateFromForm(MultipartFormData body)
+		throws FileNotFoundException, ZeroPagesException,
+		IllegalArgumentException {
 	
 	FilePart materialFile = body.getFile("materialFile");
 	Map<String, String[]> formContent = body.asFormUrlEncoded();
 	String[] price = formContent.get("price");
 	String[] title = formContent.get("title");
+	String[] description = formContent.get("description");
 	String[] pricePolicy = formContent.get("pricePolicy");
 
 	PricePolicy policy = PricePolicy.valueOf(pricePolicy[0]);
@@ -34,16 +35,19 @@ public class MaterialUtil {
 	material.setTitle(title[0]);
 	material.setPricePolicy(policy);
 	material.setPrice(price[0]);
+	material.setDescription(description[0]);
 
 	byte[] thumbnail = null;
 	byte[] lob = null;
-	try {
-	    lob = IOUtils.toByteArray(new FileInputStream(materialFile.getFile()));
-	    if (materialFile.getContentType().equals(MIMETYPE_PDF)) {
-		thumbnail = ImageUtils.generateThumbnail(lob);
-	    }
-	} catch (IOException e) {
-	    e.printStackTrace();
+	if(materialFile != null) {
+		try {
+			lob = IOUtils.toByteArray(new FileInputStream(materialFile.getFile()));
+			if (materialFile.getContentType().equals(MIMETYPE_PDF)) {
+			thumbnail = ImageUtils.generateThumbnail(lob);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	material.setMaterialFile(lob);
@@ -51,5 +55,5 @@ public class MaterialUtil {
 	material.setModifiedAt(new Date());
 
 	return material;
-    }
+	}
 }

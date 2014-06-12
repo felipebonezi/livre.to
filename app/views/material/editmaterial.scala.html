@@ -18,12 +18,19 @@
 			<button type="submit" class="btn btn-success pull-right">Salvar</button>
 			<a class="btn btn-danger pull-right btn-delete" href="@controllers.routes.MaterialController.delete(id)">Excluir</a>
 		</div>
-
+		
 		@inputText(
 			materialForm("title"), 
 			'_label -> "Título", 
 			'class -> "form-control")
-		
+
+		<div class="clearfix">
+			<label for="description">Descrição</label>
+			<div class="input">
+				<textarea name="description" class="form-control" rows="3">@materialForm("description").value</textarea>
+			</div>
+		</div>
+
 		@inputRadioGroup(
 			materialForm("pricePolicy"),
 			options = options("FIXED_VALUE" -> "Valor fixo", 
@@ -43,7 +50,7 @@
 			<div class="thumbnail">
 				<img class="img-thumbnail" src="@routes.MaterialController.renderImage(materialForm("id").value.toLong)" />
 			</div>
-			<input type="file" id="InputFile" name="materialFile" required="required">
+			<input type="file" id="InputFile" name="materialFile">
 		</div>
 		
 		<div class="edit-menu clearfix">

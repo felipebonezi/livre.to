@@ -122,7 +122,7 @@ public class MaterialController extends Controller {
 	IFinder<Material> finder = factory.get(Material.class);
 
 	return ok(listmaterial.render(AuthenticationController.getUser(),
-		message, finder.page(0, 10, "id", "asc", ""), "id", "asc", ""));
+		message, finder.page(0, 10, "title", "asc", ""), "id", "asc", ""));
 	}
 
 	public static Result upload() {

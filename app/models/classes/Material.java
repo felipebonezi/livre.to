@@ -45,6 +45,8 @@ public class Material extends Model {
 
     public String price;
 
+    public String description;
+
     @Constraints.Required
     @Formats.DateTime(pattern="yyyy-MM-dd")
     public Date created;

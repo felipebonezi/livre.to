@@ -9,6 +9,7 @@ create table material (
   title                     varchar(255),
   price_policy              varchar(1),
   price                     varchar(255),
+  description               varchar(255),
   created                   timestamp,
   modified_at               timestamp,
   material_file             blob,
