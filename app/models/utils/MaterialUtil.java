@@ -16,12 +16,11 @@ import utils.ImageUtils;
 import utils.ZeroPagesException;
 
 public class MaterialUtil {
-	private static final String MIMETYPE_PDF = "application/pdf";
+    
+    public static Material generateFromForm(MultipartFormData body)
+	    throws FileNotFoundException, ZeroPagesException,
+	    IllegalArgumentException {
 
-	public static Material generateFromForm(MultipartFormData body)
-		throws FileNotFoundException, ZeroPagesException,
-		IllegalArgumentException {
-	
 	FilePart materialFile = body.getFile("materialFile");
 	Map<String, String[]> formContent = body.asFormUrlEncoded();
 	String[] price = formContent.get("price");
@@ -39,21 +38,20 @@ public class MaterialUtil {
 
 	byte[] thumbnail = null;
 	byte[] lob = null;
-	if(materialFile != null) {
-		try {
-			lob = IOUtils.toByteArray(new FileInputStream(materialFile.getFile()));
-			if (materialFile.getContentType().equals(MIMETYPE_PDF)) {
-			thumbnail = ImageUtils.generateThumbnail(lob);
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	if (materialFile != null) {
+	    try {
+		lob = IOUtils.toByteArray(new FileInputStream(materialFile.getFile()));
+		thumbnail = ImageUtils.generateThumbnail(
+			materialFile.getContentType(), lob);
+	    } catch (IOException e) {
+		e.printStackTrace();
+	    }
 	}
-	
+
 	material.setMaterialFile(lob);
 	material.setMaterialThumbnail(thumbnail);
 	material.setModifiedAt(new Date());
 
 	return material;
-	}
+    }
 }

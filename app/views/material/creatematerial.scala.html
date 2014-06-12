@@ -11,12 +11,24 @@
 	}
 	@helper.form(action = controllers.routes.MaterialController.upload(), 'enctype -> "multipart/form-data") {
 		
+		<div class="edit-menu clearfix">
+			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
+			<button type="submit" class="btn btn-success pull-right">Salvar</button>
+		</div>
+		
 		@inputText(
 			materialForm("title"), 
 			'_label -> "Título", 
 			'class -> "form-control",
 			'_showErrors -> true)
-
+			
+		<div class="clearfix">
+			<label for="description">Descrição</label>
+			<div class="input">
+				<textarea name="description" class="form-control" rows="3">@materialForm("description").value</textarea>
+			</div>
+		</div>
+		
 		@inputRadioGroup(
 			materialForm("pricePolicy"),
 			options = options("FIXED_VALUE" -> "Valor fixo", 
@@ -38,6 +50,9 @@
 			'_label -> "Arquivo",
 			'_showErrors -> true)
 
-		<button type="submit" class="btn btn-default">Enviar</button>
+		<div class="edit-menu clearfix">
+			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
+			<button type="submit" class="btn btn-success pull-right">Salvar</button>
+		</div>
 	}
 }
