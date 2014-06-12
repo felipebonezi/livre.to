@@ -135,4 +135,12 @@ public class Material extends Model {
     public void setMaterialThumbnail(byte[] materialThumbnail) {
         this.materialThumbnail = materialThumbnail;
     }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
