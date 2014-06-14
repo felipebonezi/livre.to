@@ -20,10 +20,12 @@ GET			/users								controllers.UserController.list(p:Int ?= 0, s ?= "id", o ?= 
 GET			/users/create						controllers.UserController.create()
 GET			/users/edit							controllers.UserController.edit()
 POST		/users/register                     controllers.UserController.register()
+POST		/users/editor						controllers.UserController.editor()
 
 ### AJAX ###
 OPTIONS		/login								controllers.AbstractApplication.options()
 OPTIONS		/register							controllers.AbstractApplication.options()
+OPTIONS		/editor								controllers.AbstractApplication.options()
 
 # Material CRUD
 GET			/material							controllers.MaterialController.list(p:Int ?= 0, s ?= "title", o ?= "asc", f ?= "")

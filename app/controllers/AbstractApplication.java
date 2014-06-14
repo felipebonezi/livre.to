@@ -21,6 +21,9 @@ public class AbstractApplication extends Controller {
     public static final class ParameterKey {
         public static final String LOGIN = "login";
         public static final String PASSWORD = "password";
+		public static final String PASSWORDOLD = "passwordold";
+		public static final String PASSWORDNEW = "passwordnew";
+		public static final String PASSWORDNEW2 = "passwordnew2";
         public static final String NAME = "name";
         public static final String GENDER = "gender";
         public static final String MAIL = "mail";
