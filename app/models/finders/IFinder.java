@@ -52,5 +52,10 @@ public interface IFinder<K> {
      */
     Page<K> page(int page, int pageSize, String sortBy, String order, String filter);
 
+    /**
+     * Retorna uma página padrão da entidade
+     */
+    Page<K> page();
+
     public Model.Finder<Long, K> getFinder();
 }

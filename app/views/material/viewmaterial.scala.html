@@ -1,0 +1,63 @@
+@(user: models.classes.User, message: String, id: Long, materialForm: Form[models.classes.Material])
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(livretoInput.render) } 
+
+@main("Editar material", user)("")(true) {
+	@if(message != null && !message.isEmpty) {
+	<div class="alert alert-info alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+		@message
+	</div>
+	}
+
+	@helper.form(action = controllers.routes.MaterialController.update(id), 
+		'enctype -> "multipart/form-data") {
+
+		<div class="edit-menu clearfix">
+			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
+			<button type="submit" class="btn btn-success pull-right">Salvar</button>
+			<a class="btn btn-danger pull-right btn-delete" href="@controllers.routes.MaterialController.delete(id)">Excluir</a>
+		</div>
+		
+		@inputText(
+			materialForm("title"), 
+			'_label -> "Título", 
+			'class -> "form-control")
+
+		<div class="clearfix">
+			<label for="description">Descrição</label>
+			<div class="input">
+				<textarea name="description" class="form-control" rows="3">@materialForm("description").value</textarea>
+			</div>
+		</div>
+
+		@inputRadioGroup(
+			materialForm("pricePolicy"),
+			options = options("FIXED_VALUE" -> "Valor fixo", 
+								"MINIMUM_VALUE" -> "Valor mínimo", 
+								"FREE" -> "Gratuito"),
+			'_label -> "Política de Pagamento",
+			'_error -> materialForm("pricePolicy").error.map(_.withMessage("Selecione uma política de pagamento")))
+
+		@inputText(materialForm("price"), 
+			'_label -> "Valor", 
+			'id -> "InputPrice",
+			'class -> "form-control",
+			'isPrice -> true)
+
+		<div class="form-group">
+			<label for="InputFile">Arquivo</label>
+			<div class="thumbnail">
+				<img class="img-thumbnail" src="@routes.MaterialController.renderImage(materialForm("id").value.toLong)" />
+			</div>
+			<input type="file" id="InputFile" name="materialFile">
+		</div>
+		
+		<div class="edit-menu clearfix">
+			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
+			<button type="submit" class="btn btn-success pull-right">Salvar</button>
+			<a class="btn btn-danger pull-right btn-delete" href="@controllers.routes.MaterialController.delete(id)">Excluir</a>
+		</div>
+
+	}
+}
