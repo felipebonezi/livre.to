@@ -63,8 +63,14 @@ public class UserController extends AbstractApplication {
 		return (auth != null && !auth.isEmpty());
 	}
 
-	public static Result edit() {
-		return ok(editor.render(AuthenticationController.getUser()));
+	public static Result edit(long userId) {
+	    	FinderFactory factory = FinderFactory.getInstance();
+		IFinder<User> finder = factory.get(User.class);
+
+		User userToEdit = finder.selectUnique(
+				new String[] { FinderKey.ID },
+				new Object[] { userId });
+		return ok(editor.render(AuthenticationController.getUser(), userToEdit));
 	}
 
 	@With(AjaxAction.class)
