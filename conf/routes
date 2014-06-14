@@ -35,3 +35,4 @@ GET			/material/delete/:id             	controllers.MaterialController.delete(id
 GET     	/material/:id              			controllers.MaterialController.edit(id:Long)
 POST	    /material/:id             			controllers.MaterialController.update(id:Long)
 GET         /thumbnail/:id                     	controllers.MaterialController.renderImage(id:Long)
+GET         /material/detalhe/:id               controllers.MaterialController.detalhe(id:Long)

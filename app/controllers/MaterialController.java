@@ -29,6 +29,7 @@ import views.html.unauthorized;
 import views.html.material.creatematerial;
 import views.html.material.editmaterial;
 import views.html.material.listmaterial;
+import views.html.material.detalhesmaterial;
 
 import com.avaje.ebean.Page;
 
@@ -156,5 +157,18 @@ public class MaterialController extends Controller {
 	else
 		return ok(material.getMaterialThumbnail()).as("image/png");
 	}
+
+    public static Result detalhe(Long id) {
+        FinderFactory factory = FinderFactory.getInstance();
+        IFinder<Material> finder = factory.get(Material.class);
+        Material material = finder.selectUnique(id);
+        User user = AuthenticationController.getUser();
+
+        if (user != null && material != null) {
+            return ok(detalhesmaterial.render(user, material));
+        }
+
+        return unauthorized(unauthorized.render("Você não tem permissão para realizar essa ação."));
+    }
 
 }
