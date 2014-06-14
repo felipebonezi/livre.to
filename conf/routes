@@ -18,7 +18,7 @@ POST		/recovery							controllers.AuthenticationController.recoveryPassword()
 # Users
 GET			/users								controllers.UserController.list(p:Int ?= 0, s ?= "id", o ?= "asc", f ?= "")
 GET			/users/create						controllers.UserController.create()
-GET			/users/edit							controllers.UserController.edit()
+GET			/users/edit							controllers.UserController.edit(userId:Long)
 POST		/users/register						controllers.UserController.register()
 POST		/users/editor						controllers.UserController.editor()
 

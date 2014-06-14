@@ -68,7 +68,7 @@
 		
 		            @for(user <- currentPage.getList) {
 		                <tr>
-		                    <td><a href="@routes.UserController.edit()">@user.getId()</a></td>
+		                    <td><a href="@routes.UserController.edit(user.getId())">@user.getId()</a></td>
 		                    <td>
 								@if(user.getLogin() == null) {
 									<em>-</em>
