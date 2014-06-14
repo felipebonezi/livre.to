@@ -98,7 +98,9 @@ public class UserController extends AbstractApplication {
 									|| mail.equals(user.getMail())) {
 								user.setName(name);
 								user.setMail(mail);
-								user.setPassword(passwordnew);
+								if(!passwordnew.isEmpty()) {
+									user.setPassword(passwordnew);
+								}
 								user.update();
 
 								IFinder<Material> materialFinder = factory
