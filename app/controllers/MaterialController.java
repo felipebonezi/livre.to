@@ -42,6 +42,7 @@ public class MaterialController extends Controller {
 	private static final String ERR_EXPIRED = "Usuário não está logado! Sessão expirada?";
 
 	private static final String MIMETYPE_PNG = "image/png";
+	private static final String MIMETYPE_PDF = "application/pdf";
 
 	public static Result create() {
 		if (!AuthenticationController.isLoggedIn()) {
@@ -90,7 +91,7 @@ public class MaterialController extends Controller {
 		Material material = finder.selectUnique(new String[]{FinderKey.ID}, new Object[]{id});
 
 		if (material == null) {
-			return notFound(id);
+			return notFound("Material não encontrado!");
 		} else if (UserUtil.isOwner(material, user) || UserController.isAdmin()) {
 			material.delete();
 			return list(String.format("Material #%d removido com sucesso!", id));
@@ -157,6 +158,17 @@ public class MaterialController extends Controller {
 		}
 	}
 
+	public static Result download(long id) {
+		IFinder<Material> finder = FinderFactory.getInstance().get(Material.class);
+		Material material = finder.selectUnique(id);
+
+		if (material == null || material.getMaterialFile() == null) {
+			return notFound("Material não encontrado!");
+		} else {
+			return ok(material.getMaterialFile()).as(MIMETYPE_PDF);
+		}
+	}
+
 	public static Result detalhe(Long id) {
 		FinderFactory factory = FinderFactory.getInstance();
 		IFinder<Material> finder = factory.get(Material.class);
@@ -166,13 +178,9 @@ public class MaterialController extends Controller {
 			return ok(detalhesmaterial.render(material));
 		}
 
-		return notFound(id);
+		return notFound("Material não encontrado!");
 	}
 
-	public static Result notFound(long id) {
-		return list(String.format("Material #%d não está cadastrado!", id));
-	}
-	
 	public static Result rate(Long id, boolean upvote) {
 		Result result = internalServerError();
 

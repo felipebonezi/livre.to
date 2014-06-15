@@ -61,7 +61,7 @@
 		<div style="margin-top: 40px;">
 			<p>
 				@if(material.getPricePolicy().name().equals("FREE")) {
-					<a class="btn btn-success btn-lg" role="button" href="@routes.Application.index()">Baixar</a>
+					<a class="btn btn-success btn-lg" role="button" href="@routes.MaterialController.download(material.getId())">Baixar</a>
 				} else {
 					<a class="btn btn-primary btn-lg" role="button" href="@routes.Application.index()">Comprar</a>
 				}
