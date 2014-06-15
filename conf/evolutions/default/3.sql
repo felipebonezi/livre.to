@@ -4,6 +4,6 @@
 
 
 # --- !Downs
-
-delete from user;
 delete from material;
+delete from user;
+
