@@ -33,26 +33,28 @@
 			<dt>Política de Preço:</dt>
 				<dd>@if(material.getPricePolicy().name().equals("MINIMUM_VALUE")) { Valor Mínimo }</dd>
 			<dt>Avaliação:</dt>
-				@if(material.getScore() > 0) {
-					<span style="color:#62c462;display:inline;">
-				} else {
-					@if(material.getScore() < 0) {
-						<span style="color:#bd362f;display:inline;">
+				@if(material.getScore() != null) {
+					@if(material.getScore() > 0) {
+						<span style="color:#62c462;display:inline;">
 					} else {
-						<span style="color:#2f96b4;display:inline;">
+						@if(material.getScore() < 0) {
+							<span style="color:#bd362f;display:inline;">
+						} else {
+							<span style="color:#2f96b4;display:inline;">
+						}
 					}
-				}
-				@material.getScore()</span>
-				<form method="post" action="@routes.MaterialController.rate(material.getId(), true)">
-	                <button id="upvote-button" class="btn">
-					  <span class="glyphicon glyphicon-arrow-up"></span>
+					@material.getScore()</span>
+					<form method="post" action="@routes.MaterialController.rate(material.getId(), true)">
+		                <button id="upvote-button" class="btn">
+						  <span class="glyphicon glyphicon-arrow-up"></span>
+						</button>
+					</form>
+					<form method="post" action="@routes.MaterialController.rate(material.getId(), false)">
+					<button id="downvote-button" class="btn">
+					  <span class="glyphicon glyphicon-arrow-down"></span>
 					</button>
-				</form>
-				<form method="post" action="@routes.MaterialController.rate(material.getId(), false)">
-				<button id="downvote-button" class="btn">
-				  <span class="glyphicon glyphicon-arrow-down"></span>
-				</button>
-				</form>
+					</form>
+				}
 			</div>
 		</dl>
 		

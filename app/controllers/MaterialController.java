@@ -38,8 +38,6 @@ import controllers.AbstractApplication.FinderKey;
 
 public class MaterialController extends Controller {
 
-	private static final String IMG_PLACEHOLDER = "http://placehold.it/200x280/336600&text=livre.to";
-
 	private static final String ERR_UNAUTHORIZED = "Você não tem permissão para realizar essa ação.";
 	private static final String ERR_EXPIRED = "Usuário não está logado! Sessão expirada?";
 
@@ -152,8 +150,8 @@ public class MaterialController extends Controller {
 		IFinder<Material> finder = FinderFactory.getInstance().get(Material.class);
 		Material material = finder.selectUnique(id);
 
-		if (material.getMaterialThumbnail() == null) {
-			return ok(IMG_PLACEHOLDER);
+		if (material == null || material.getMaterialThumbnail() == null) {
+			return ok(Application.class.getResourceAsStream("/public/images/placeholder.png")).as(MIMETYPE_PNG);
 		} else {
 			return ok(material.getMaterialThumbnail()).as(MIMETYPE_PNG);
 		}
