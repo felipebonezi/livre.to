@@ -1,4 +1,4 @@
-@(title: String, user: models.classes.User)(css: String)(showFooter: Boolean)(content: Html)
+@(title: String)(css: String)(showFooter: Boolean)(content: Html)
 
 <!DOCTYPE html>
 <html>
@@ -26,16 +26,16 @@
 				</div>
 				<div class="navbar-collapse collapse">
 					<ul class="nav navbar-nav navbar-right">
-                    @if(user != null) {
+                    @if(controllers.AuthenticationController.getUser() != null) {
                         <!-- // TODO Verificar se é usuário admin! -->
-                        @if(user.getLogin().equals("admin")) {
+                        @if(controllers.AuthenticationController.getUser().getLogin().equals("admin")) {
 					        <li><a href="@routes.UserController.list(0, "id", "asc", "")">Usuários</a></li>
                         }
 					    <li><a href="@routes.MaterialController.list(0, "title", "asc","")">Materiais</a></li>
 						<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">@user.getName() <b class="caret"></b></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">@controllers.AuthenticationController.getUser().getName() <b class="caret"></b></a>
 							<ul class="dropdown-menu">
-								<li><a href="@routes.UserController.edit(user.getId())">Editar Perfil</a></li>
+								<li><a href="@routes.UserController.edit(controllers.AuthenticationController.getUser().getId())">Editar Perfil</a></li>
 								<li><a href="@routes.AuthenticationController.logout()">Sair</a></li>
 							</ul>
 						</li>
@@ -52,7 +52,7 @@
 		</div>
 
 		@if(showFooter) {
-	     	<div class="footer navbar-fixed-bottom">
+	     	<div class="footer navbar-bottom">
 		        <a href="">@@ livre.to 2014</a>
 		    </div>
 	    }

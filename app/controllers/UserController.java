@@ -32,9 +32,8 @@ public class UserController extends AbstractApplication {
 		FinderFactory factory = FinderFactory.getInstance();
 		IFinder<User> finder = factory.get(User.class);
 
-		return ok(listuser.render(AuthenticationController.getUser(),
-				finder.page(page, 10, sortBy, order, filter), sortBy, order,
-				filter));
+		return ok(listuser.render(finder.page(page, 10, sortBy, order, filter), 
+									sortBy, order, filter));
 	}
 
 	// TODO tela de gerência de usuários só pode ser acessada por
@@ -70,7 +69,7 @@ public class UserController extends AbstractApplication {
 		User userToEdit = finder.selectUnique(
 				new String[] { FinderKey.ID },
 				new Object[] { userId });
-		return ok(editor.render(AuthenticationController.getUser(), userToEdit));
+		return ok(editor.render(userToEdit));
 	}
 
 	@With(AjaxAction.class)
@@ -111,9 +110,7 @@ public class UserController extends AbstractApplication {
 
 								IFinder<Material> materialFinder = factory
 										.get(Material.class);
-								return ok(index.render(AuthenticationController
-										.getUser(),
-										"Usuário editado com sucesso!",
+								return ok(index.render("Usuário editado com sucesso!",
 										materialFinder.page(0, 8, "id", "asc",
 												"")));
 							} else {
@@ -174,8 +171,7 @@ public class UserController extends AbstractApplication {
 
 					IFinder<Material> materialFinder = factory
 							.get(Material.class);
-					return ok(index.render(AuthenticationController.getUser(),
-							"Usuário foi criado com sucesso!",
+					return ok(index.render("Usuário foi criado com sucesso!",
 							materialFinder.page(0, 8, "id", "asc", "")));
 				} else {
 					message = "Já existe um usuário cadastrado com os dados fornecidos.";

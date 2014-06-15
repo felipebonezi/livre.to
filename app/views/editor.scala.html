@@ -1,6 +1,6 @@
-@(sessionUser: models.classes.User, userToEdit: models.classes.User)
+@(userToEdit: models.classes.User)
 
-@main("Editar Perfil", sessionUser)("login.css")(true) {
+@main("Editar Perfil")("login.css")(true) {
 	<div class="container">
         @helper.form(action = controllers.routes.UserController.editor()) {
             <h2 class="form-signin-heading">Configurações da Conta:</h2>

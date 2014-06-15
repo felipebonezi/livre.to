@@ -1,23 +1,23 @@
-@(user: models.classes.User, message: String, id: Long, materialForm: Form[models.classes.Material])
+@(message: String, id: Long, materialForm: Form[models.classes.Material])
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(livretoInput.render) } 
 
-@main("Editar material", user)("")(true) {
+@main("Editar material")("")(true) {
+	<h2>Editar Material <small>(cód.: @id)</small></h2>
+
 	@if(message != null && !message.isEmpty) {
-	<div class="alert alert-info alert-dismissable">
-		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
-		@message
-	</div>
+		<div class="alert alert-danger alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			@message
+		</div>
 	}
+
+	<div class="alert alert-danger">
+		<strong>Atenção!</strong> A opção de cobrança pelo material está desabilitada durante a fase de testes do <em>livreto</em>. Todos devem ser publicados como gratuitos.
+	</div>
 
 	@helper.form(action = controllers.routes.MaterialController.update(id), 
 		'enctype -> "multipart/form-data") {
-
-		<div class="edit-menu clearfix">
-			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
-			<button type="submit" class="btn btn-success pull-right">Salvar</button>
-			<a class="btn btn-danger pull-right btn-delete" href="@controllers.routes.MaterialController.delete(id)">Excluir</a>
-		</div>
 		
 		@inputText(
 			materialForm("title"), 
@@ -31,16 +31,24 @@
 			</div>
 		</div>
 
-		@inputRadioGroup(
-			materialForm("pricePolicy"),
-			options = options("FIXED_VALUE" -> "Valor fixo", 
-								"MINIMUM_VALUE" -> "Valor mínimo", 
-								"FREE" -> "Gratuito"),
-			'_label -> "Política de Pagamento",
-			'_error -> materialForm("pricePolicy").error.map(_.withMessage("Selecione uma política de pagamento")))
+		<div class="clearfix radio-selection">
+			<label for="pricePolicy">Política de Pagamento</label>
+			<div class="input">
+				<input disabled="disabled" type="radio" id="pricePolicy_FIXED_VALUE" name="pricePolicy" value="FIXED_VALUE"	>
+				<label for="pricePolicy_FIXED_VALUE">Valor fixo</label>
+			</div>
+			<div class="input">
+				<input disabled="disabled" type="radio" id="pricePolicy_MINIMUM_VALUE" name="pricePolicy" value="MINIMUM_VALUE"	>
+				<label for="pricePolicy_MINIMUM_VALUE">Valor mínimo</label>
+			</div>
+			<div class="input">
+				<input type="radio" id="pricePolicy_FREE" name="pricePolicy" value="FREE" checked>
+				<label for="pricePolicy_FREE">Gratuito</label>
+			</div>
+		</div>
 
 		@inputText(materialForm("price"), 
-			'_label -> "Valor", 
+			'_label -> "Valor Sugerido", 
 			'id -> "InputPrice",
 			'class -> "form-control",
 			'isPrice -> true)

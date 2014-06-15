@@ -1,4 +1,4 @@
-@(user: models.classes.User, message: String, currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(message: String, currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
 
 @****************************************
 * Helper generating navigation links    *
@@ -35,7 +35,7 @@
     </th>
 }
 
-@main("Listar Material", user)("")(true) {
+@main("Listar Material")("")(true) {
 	<div class="container">
 		<h2>Materiais</h2>
 		@if(message != null && !message.isEmpty) {
