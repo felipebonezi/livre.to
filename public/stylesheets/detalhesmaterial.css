@@ -1,0 +1,15 @@
+#score-value {
+	display:inline;
+}
+
+.score-positive {
+	color:#62c462;
+}
+
+.score-negative {
+	color:#bd362f;
+}
+
+.score-neutral {
+	color:#2f96b4;
+}

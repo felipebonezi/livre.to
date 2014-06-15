@@ -12,7 +12,8 @@
 		</div>
 	}
 
-	<div class="alert alert-danger">
+	<div class="alert alert-danger alert-dismissable">
+		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
 		<strong>Atenção!</strong> A opção de cobrança pelo material está desabilitada durante a fase de testes do <em>livreto</em>. Todos devem ser publicados como gratuitos.
 	</div>
 
@@ -55,7 +56,7 @@
 
 		<div class="form-group">
 			<label for="InputFile">Arquivo</label>
-			<div class="clearfix thumbnail">
+			<div class="clearfix thumbnail img-preview">
 				<img class="" src="@routes.MaterialController.renderImage(materialForm("id").value.toLong)" />
 			</div>
 			<input type="file" id="InputFile" name="materialFile">

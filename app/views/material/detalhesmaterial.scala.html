@@ -1,15 +1,28 @@
 @(material: models.classes.Material)
-@main("Detalhes")("")(false) {
+@main("Detalhes")("detalhesmaterial.css")(true) {
 	<h2>@material.getTitle()</h2>
-	<div style="float: left; margin-right: 20px;">
-		<img width="200" src="@routes.MaterialController.renderImage(material.getId())" />
+	<div id="alert-area"></div>
+	<div class="clearfix">
+		<p>
+			@if(material.getPricePolicy().name().equals("FREE")) {
+				<a class="btn btn-success" role="button" href="@routes.MaterialController.download(material.getId())">Baixar</a>
+			} else {
+				<a class="btn btn-primary" role="button" href="@routes.Application.index()">Comprar</a>
+			}
+			@if(controllers.AuthenticationController.getUser() != null && material.getAuthor().getId() == controllers.AuthenticationController.getUser().getId()) {
+				<a class="btn btn-default" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>
+			}
+		</p>
 	</div>
-	<div>
+	<div class="thumbnail" style="float: left; margin-right: 20px; max-width: 400px">
+		<img width="100%" src="@routes.MaterialController.renderImage(material.getId())" />
+	</div>
+		<div style="float: left;">
 		<dl>
 			<dt>Descrição:</dt>
 				<dd>
 					@if(material.getDescription() != null && !material.getDescription().isEmpty()) {
-						material.getDescription();
+						@material.getDescription();
 					} else {
 						<em>Não disponível</em>
 					}
@@ -35,40 +48,69 @@
 			<dt>Avaliação:</dt>
 				@if(material.getScore() != null) {
 					@if(material.getScore() > 0) {
-						<span style="color:#62c462;display:inline;">
+						<span id="score-value" class="score-positive">
 					} else {
 						@if(material.getScore() < 0) {
-							<span style="color:#bd362f;display:inline;">
+							<span id="score-value" class="score-negative">
 						} else {
-							<span style="color:#2f96b4;display:inline;">
+							<span id="score-value" class="score-neutral">
 						}
 					}
 					@material.getScore()</span>
-					<form method="post" action="@routes.MaterialController.rate(material.getId(), true)" style="display:inline;">
-		                <button id="upvote-button" class="btn">
-						  <span class="glyphicon glyphicon-arrow-up"></span>
-						</button>
-					</form>
-					<form method="post" action="@routes.MaterialController.rate(material.getId(), false)" style="display:inline;">
-					<button id="downvote-button" class="btn">
-					  <span class="glyphicon glyphicon-arrow-down"></span>
+	                <button id="upvote-button" class="btn">
+						<span class="glyphicon glyphicon-arrow-up"></span>
 					</button>
-					</form>
+					<button id="downvote-button" class="btn">
+						<span class="glyphicon glyphicon-arrow-down"></span>
+					</button>
+				} else {
+					<dd><em>Não disponível</em></dd>
 				}
 			</div>
 		</dl>
-		
-		<div style="margin-top: 40px;">
-			<p>
-				@if(material.getPricePolicy().name().equals("FREE")) {
-					<a class="btn btn-success btn-lg" role="button" href="@routes.MaterialController.download(material.getId())">Baixar</a>
-				} else {
-					<a class="btn btn-primary btn-lg" role="button" href="@routes.Application.index()">Comprar</a>
-				}
-				@if(controllers.AuthenticationController.getUser() != null && material.getAuthor().getId() == controllers.AuthenticationController.getUser().getId()) {
-				<a class="btn btn-default btn-lg" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>
-				}
-			</p>
-		</div>
 	</div>
+	
+	<script>
+		$(document).ready(function() {
+			var rateEvent = function(event){
+				var upvote = $(this).attr('id') == 'upvote-button';
+				var url = '@routes.MaterialController.rate(material.getId(), true)';
+				
+				if (!upvote) {
+					url = '@routes.MaterialController.rate(material.getId(), false)';
+				}
+				
+				$.ajax
+			    ({ 
+			        url: url,
+			        data: '',
+			        type: 'post',
+			        success: function(result)
+			        {
+			        	var scoreElement = $('#score-value');
+			        	var oldScore = parseInt(scoreElement.text());
+			        	var newScore = upvote ? oldScore + 1 : oldScore - 1;
+			        	var scoreClass = 'score-neutral';
+			        	scoreElement.text(newScore);
+						if (newScore < 0) {
+							scoreClass = 'score-negative';
+						} else if (newScore > 0) {
+							scoreClass = 'score-positive';
+						}
+			        	scoreElement.attr("class", scoreClass);
+			        },
+			        error: function(XMLHttpRequest, textStatus, errorThrown) {
+			        	function newAlert (type, message) {
+						    $("#alert-area").append($("<div class='alert alert-message alert-" + type + " fade in' data-alert><p> " + message + " </p></div>"));
+						    $(".alert-message").delay(2000).fadeOut("slow", function () { $(this).remove(); });
+						}
+						newAlert('danger', 'Um erro aconteceu e não foi possível realizar a operação.');
+			        }
+			    });
+			};
+			
+			$('#upvote-button').click(rateEvent);
+			$('#downvote-button').click(rateEvent);
+		});
+	</script>
 }

@@ -18,24 +18,27 @@
 		</div>
 		
 		<div class="row">
-		@for(material <- currentPage.getList) {
+		@for(index <- 0 until currentPage.getList.size){
 			<div class="clearfix col-md-3 book-placeholder">
-				<a href="@routes.MaterialController.detalhe(material.getId())">
-					<img class="img-thumbnail" src="@routes.MaterialController.renderImage(material.getId())" />
-					<h5>@material.getTitle()</h5>
+				<a href="@routes.MaterialController.detalhe(currentPage.getList.get(index).getId())">
+					<div class="img-thumb ratio" style="background-image:url(@routes.MaterialController.renderImage(currentPage.getList.get(index).getId()))"></div>
+					<h5>@currentPage.getList.get(index).getTitle()</h5>
 				</a>
 				<p class="price-expression">
-				@if(material.getPricePolicy().equals(models.classes.Material.PricePolicy.FREE)) {
+				@if(currentPage.getList.get(index).getPricePolicy().equals(models.classes.Material.PricePolicy.FREE)) {
 					Gratuito!			
 				} else{ 
-					@if(material.getPricePolicy().equals(models.classes.Material.PricePolicy.FIXED_VALUE)) {
-						Por R$ @material.getPrice()
+					@if(currentPage.getList.get(index).getPricePolicy().equals(models.classes.Material.PricePolicy.FIXED_VALUE)) {
+						Por R$ @currentPage.getList.get(index).getPrice()
 					} else {
-						A partir de R$ @material.getPrice()
+						A partir de R$ @currentPage.getList.get(index).getPrice()
 					}
 				}
 				</p>
 			</div>
+			@if(index % 4 == 3) {
+			</div><div class="row">
+			}
 		}
 		</div>
 	</div>
