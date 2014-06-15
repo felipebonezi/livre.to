@@ -1,17 +1,11 @@
 package models.classes;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import play.data.format.Formats;
 import play.db.ebean.Model;
@@ -63,10 +57,20 @@ public class User extends Model {
     @Formats.DateTime(pattern="yyyy-MM-dd")
     @Version
     private Date modifiedAt;
-    
+
+    @ManyToMany
+    @JoinTable(name = "user_has_material",
+            joinColumns = @JoinColumn(name = "user_id", table = "user_has_material"),
+    inverseJoinColumns = @JoinColumn(name = "material_id"))
+    private List<Material> materials;
+
+    public List<Material> getMaterials() {
+        return materials;
+    }
+
     public User() {
 //	FIXME achar um jeito de integrar com DB
-//	this.groups = new ArrayList<Group>(Arrays.asList(Group.AUTHOR, Group.COSUMER));
+	this.groups = new ArrayList<Group>(Arrays.asList(Group.AUTHOR, Group.CONSUMER));
     }
 
     @JsonIgnore

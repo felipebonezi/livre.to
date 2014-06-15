@@ -1,4 +1,4 @@
-@(message: String, currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String)
+@(message: String, currentPage: com.avaje.ebean.Page[models.classes.Material], currentSortBy: String, currentOrder: String, currentFilter: String, currentCompradosPage: java.util.List[models.classes.Material])
 
 @****************************************
 * Helper generating navigation links    *
@@ -43,11 +43,22 @@
 			@message
 		</div>
 		}
-	    <form action="@link(0, "name")" method="GET" class="form-inline">
-	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título" class="form-control">
-	        <input type="submit" id="searchsubmit" value="Filtrar" class="btn primary">
-	        <a class="btn btn-default pull-right" id="add" href="@routes.MaterialController.create()">Adicionar Material</a>
-	    </form>
+
+        <form action="@link(0, "name")" method="GET" class="form-inline">
+        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título" class="form-control">
+        <input type="submit" id="searchsubmit" value="Filtrar" class="btn primary">
+        <a class="btn btn-default pull-right" id="add" href="@routes.MaterialController.create()">Adicionar Material</a>
+        </form>
+
+        <div class="tabbable" style="margin-top: 20px;"> <!-- Only required for left/right tabs -->
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab1" data-toggle="tab">Publicados</a></li>
+                <li><a href="#tab2" data-toggle="tab">Comprados</a></li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab1">
+
+
 		@if(currentPage.getTotalRowCount == 0) {
 		    
 		    <div class="well">
@@ -97,7 +108,7 @@
 		                        @if(material.price == null) {
 		                            <em>-</em>
 		                        } else {
-		                            @material.price
+                                    R$@material.price
 		                        }
 		                    </td>
 		                    <td>
@@ -140,6 +151,94 @@
 		    </div>
 		    
 		}
+                </div>
+                <div class="tab-pane" id="tab2">
+                    @if(currentCompradosPage.size == 0) {
+
+                    <div class="well">
+                        <em>Nada para exibir</em>
+                    </div>
+
+                    } else {
+
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            @header("title", "Título")
+                            @header("author.name", "Autor")
+                            @header("created", "Adicionado Em")
+                            @header("pricePolicy", "Política de Preço")
+                            @header("price", "Preço")
+                            @header("modifiedAt", "Modificado em")
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        @for(material <- currentCompradosPage) {
+                        <tr>
+                            <td><a href="@routes.MaterialController.detalhe(material.id)">@material.title</a></td>
+                            <td>
+                                @if(material.author.getName() == null) {
+                                <em>-</em>
+                                } else {
+                                @material.author.getName()
+                                }
+                            </td>
+                            <td>
+                                @if(material.created == null) {
+                                <em>-</em>
+                                } else {
+                                @material.created.format("dd MMM yyyy")
+                                }
+                            </td>
+                            <td>
+                                @if(material.pricePolicy == null) {
+                                <em>-</em>
+                                } else {
+                                @material.pricePolicy
+                                }
+                            </td>
+                            <td>
+                                @if(material.price == null) {
+                                <em>-</em>
+                                } else {
+                                R$@material.price
+                                }
+                            </td>
+                            <td>
+                                @if(material.modifiedAt == null) {
+                                <em>-</em>
+                                } else {
+                                @material.modifiedAt.format("dd MMM yyyy")
+                                }
+                            </td>
+                        </tr>
+                        }
+
+                        </tbody>
+                    </table>
+
+                    <div id="pagination">
+                        <ul class="pagination">
+
+                            <li class="prev disabled">
+                                <a>&larr; Anterior</a>
+                            </li>
+
+                            <li class="current">
+                                <a>Exibindo um total de @currentCompradosPage.size()</a>
+                            </li>
+
+                            <li class="next disabled">
+                                <a>Próxima &rarr;</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 }
           

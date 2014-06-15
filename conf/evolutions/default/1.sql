@@ -34,6 +34,12 @@ create table user (
   constraint pk_user primary key (id))
 ;
 
+
+create table user_has_material (
+  user_id                        bigint not null,
+  material_id                    bigint not null,
+  constraint pk_user_has_material primary key (user_id, material_id))
+;
 create sequence material_seq;
 
 create sequence user_id_seq;
@@ -43,11 +49,17 @@ create index ix_material_author_1 on material (author_id);
 
 
 
+alter table user_has_material add constraint fk_user_has_material_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
+
+alter table user_has_material add constraint fk_user_has_material_material_02 foreign key (material_id) references material (id) on delete restrict on update restrict;
+
 # --- !Downs
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
 drop table if exists material;
+
+drop table if exists user_has_material;
 
 drop table if exists user;
 

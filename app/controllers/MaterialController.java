@@ -2,6 +2,8 @@ package controllers;
 
 import static play.data.Form.form;
 
+import com.avaje.ebean.Ebean;
+import com.avaje.ebean.RawSql;
 import org.apache.commons.io.IOUtils;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -114,7 +116,17 @@ public class MaterialController extends Controller {
 			.eq("author_id", user.getId()).findPagingList(10)
 			.setFetchAhead(false).getPage(page);
 
-		return ok(listmaterial.render(null, pages, sortBy, order, filter));
+//        IFinder<User> finderU = factory.get(User.class);
+//        Page<User> pagesC = finderU.getFinder().where()
+//                .ilike("title", "%" + filter + "%")
+//                .orderBy(sortBy + " " + order)
+//                .fetch("materials").where().eq("user_id", user.getId())
+//                .findPagingList(10)
+//                .setFetchAhead(false).getPage(page);
+
+
+
+		return ok(listmaterial.render(null, pages, sortBy, order, filter, user.getMaterials()));
 	}
 
 	public static Result list(String message) {
@@ -122,7 +134,7 @@ public class MaterialController extends Controller {
 		FinderFactory factory = FinderFactory.getInstance();
 		IFinder<Material> finder = factory.get(Material.class);
 
-		return ok(listmaterial.render(message, finder.page(), "id", "asc", ""));
+		return ok(listmaterial.render(message, finder.page(), "id", "asc", "", user.getMaterials()));
 	}
 
 	public static Result upload() {
