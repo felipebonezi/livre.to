@@ -10,18 +10,18 @@
 		}
 		
 		<div id="spotlight" class="jumbotron">
-	        <h1>livre.to</h1>
-	        <p class="lead">Uma plataforma solidária para venda e compartilhamento de materiais didáticos produzidos por autores independentes.</p>
-            @if(controllers.AuthenticationController.getUser() == null) {
-	            <p><a class="btn btn-lg btn-success" href="@routes.UserController.create()" role="button">Junte-se à nós</a></p>
-            }
-      	</div>
-      	
-      	<div class="row">
-      	 @for(material <- currentPage.getList) {
-      	 	<div class="col-md-3 book-placeholder">
-      	 		<a href="@routes.MaterialController.detalhe(material.getId())">
-					    <img src="@routes.MaterialController.renderImage(material.getId())" />
+			<h1>livre.to</h1>
+			<p class="lead">Uma plataforma solidária para venda e compartilhamento de materiais didáticos produzidos por autores independentes.</p>
+			@if(controllers.AuthenticationController.getUser() == null) {
+				<p><a class="btn btn-lg btn-success" href="@routes.UserController.create()" role="button">Junte-se à nós</a></p>
+			}
+		</div>
+		
+		<div class="row">
+		@for(material <- currentPage.getList) {
+			<div class="col-md-3 book-placeholder">
+				<a href="@routes.MaterialController.detalhe(material.getId())">
+					<img class="img-thumbnail" src="@routes.MaterialController.renderImage(material.getId())" />
 					<h5>@material.getTitle()</h5>
 				</a>
 				<p class="price-expression">
@@ -36,7 +36,7 @@
 				}
 				</p>
 			</div>
-      	 }
-      	</div>
+		}
+		</div>
 	</div>
 }
