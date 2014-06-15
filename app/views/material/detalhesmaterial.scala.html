@@ -57,12 +57,14 @@
 						}
 					}
 					@material.getScore()</span>
+					@if(controllers.AuthenticationController.getUser() != null) {
 	                <button id="upvote-button" class="btn">
 						<span class="glyphicon glyphicon-arrow-up"></span>
 					</button>
 					<button id="downvote-button" class="btn">
 						<span class="glyphicon glyphicon-arrow-down"></span>
 					</button>
+					}
 				} else {
 					<dd><em>Não disponível</em></dd>
 				}
