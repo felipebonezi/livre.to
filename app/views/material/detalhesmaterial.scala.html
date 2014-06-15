@@ -28,7 +28,7 @@
 						@if(material.getPricePolicy().name().equals("FREE")) {
 							<a class="btn btn-success btn-lg" role="button" href="@routes.MaterialController.download(material.getId())">Baixar</a>
 						} else {
-							<a class="btn btn-success btn-lg" role="button" href="@routes.Application.index()">Comprar</a>
+							<a class="btn btn-success btn-lg" role="button" href="@routes.Application.index("")">Comprar</a>
 						}
 						@if(controllers.AuthenticationController.getUser() != null && material.getAuthor().getId() == controllers.AuthenticationController.getUser().getId()) {
 							<a class="btn btn-default btn-lg" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>

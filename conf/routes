@@ -6,7 +6,7 @@
 GET			/assets/*file						controllers.Assets.at(path="/public", file)
 
 # Home page
-GET			/									controllers.Application.index()
+GET			/									controllers.Application.index(msg ?= "", p:Int ?= 0, f ?= "", cat ?= "")
 
 # Login
 GET			/login								controllers.AuthenticationController.login()
