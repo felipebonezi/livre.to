@@ -82,7 +82,7 @@
 		
 		            @for(material <- currentPage.getList) {
 		                <tr>
-		                    <td><a href="@routes.MaterialController.edit(material.id)">@material.title</a></td>
+		                    <td><a href="@routes.MaterialController.detalhe(material.id)">@material.title</a></td>
 		                    <td>
 		                        @if(material.author.getName() == null) {
 		                            <em>-</em>

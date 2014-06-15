@@ -183,14 +183,19 @@ public class MaterialController extends Controller {
 		if (material == null || material.getMaterialFile() == null || !material.getPricePolicy().equals(Material.PricePolicy.FREE)) {
 			return notFound("Material não encontrado!");
 		} else {
-            User user = AuthenticationController.getUser();
+			User user = AuthenticationController.getUser();
 
-            String s = "INSERT INTO user_has_material (user_id,material_id) values (:uId,:mId)";
-            SqlUpdate update = Ebean.createSqlUpdate(s);
-            update.setParameter("uId", user.getId());
-            update.setParameter("mId", material.getId());
+			// FIXME Ficou bem feio usando os getId diretamente, ao invés do setParameter
+			// feito era antes, mas não funcionava de jeito nenhum...
+			String s = "INSERT INTO user_has_material (user_id,material_id) " +
+						"SELECT * FROM (SELECT " + user.getId() + ", " + material.getId() + ") AS tmp " + 
+						"WHERE NOT EXISTS ("+
+							"SELECT user_id FROM user_has_material WHERE (user_id,material_id) = (" + user.getId() + ", " + material.getId() + ") "+
+						") LIMIT 1;";
 
-            Ebean.execute(update);
+			SqlUpdate update = Ebean.createSqlUpdate(s);
+
+			Ebean.execute(update);
 
 			response().setContentType("application/x-download");  
 			response().setHeader("Content-disposition","attachment; filename=" + material.getTitle().replaceAll("\\W+", "")+ ".pdf"); 
