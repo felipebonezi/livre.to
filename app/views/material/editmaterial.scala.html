@@ -1,4 +1,4 @@
-@(message: String, id: Long, materialForm: Form[models.classes.Material])
+@(message: String, id: Long, materialForm: Form[models.classes.Material], categories: java.util.List[models.classes.Category])
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(livretoInput.render) } 
 
@@ -40,6 +40,18 @@
 				<textarea name="description" class="form-control" rows="3">@materialForm("description").value</textarea>
 			</div>
 		</div>
+
+		<div class="clearfix">
+			<label for="description">Categoria</label>
+			<div class="input">
+				<select class="form-control">
+					<option value="">Nenhuma</option>
+					@for(category <- categories) {
+					<option value="@category.getId()">@category.getName()</option>
+					}
+				</select>
+			</div>
+		</div>		
 
 		<div class="clearfix radio-selection">
 			<label for="pricePolicy">Política de Pagamento</label>

@@ -29,6 +29,7 @@ create table material (
   material_file             blob,
   material_thumbnail        blob,
   score                     integer default 0,
+  category_id               bigint,
   constraint ck_material_price_policy check (price_policy in ('M','V','F')),
   constraint pk_material primary key (id))
 ;
@@ -72,6 +73,8 @@ alter table comment add constraint fk_comment_author_1 foreign key (author_id) r
 create index ix_comment_author_1 on comment (author_id);
 alter table material add constraint fk_material_author_2 foreign key (author_id) references user (id) on delete restrict on update restrict;
 create index ix_material_author_2 on material (author_id);
+alter table material add constraint fk_material_category_3 foreign key (category_id) references category (id) on delete restrict on update restrict;
+create index ix_material_category_3 on material (category_id);
 
 
 

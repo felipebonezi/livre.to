@@ -72,6 +72,8 @@ public class Material extends Model {
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "materials")
 	private List<User> users;
 
+	@ManyToOne(cascade = CascadeType.ALL, optional = true)
+	private Category category;
 
 	@ManyToMany
 	@JoinTable(name = "material_comment",
@@ -182,5 +184,13 @@ public class Material extends Model {
 
 	public List<User> getUsers() {
 		return this.users;
+	}
+
+	public void setCategory(Category category) {
+		this.category = category;
+	}
+
+	public Category getCategory() {
+		return category;
 	}
 }

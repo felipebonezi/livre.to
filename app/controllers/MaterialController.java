@@ -21,6 +21,7 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 
 import models.classes.Material;
+import models.classes.Category;
 import models.classes.Comment;
 import models.classes.Material.PricePolicy;
 import models.classes.User;
@@ -54,8 +55,9 @@ public class MaterialController extends Controller {
 			return unauthorized(unauthorized.render(""));
 		}
 
+		IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
 		Form<Material> materialForm = form(Material.class);
-		return ok(creatematerial.render("", materialForm));
+		return ok(creatematerial.render("", materialForm, categoryFinder.selectAll()));
 	}
 
 	public static Result edit(long id) {
@@ -64,7 +66,8 @@ public class MaterialController extends Controller {
 
 		if (material != null && UserUtil.isOwner(material, user)) {
 			Form<Material> materialForm = form(Material.class).fill(material);
-			return ok(editmaterial.render("", id, materialForm));
+			IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
+			return ok(editmaterial.render("", id, materialForm, categoryFinder.selectAll()));
 		} else {
 			return unauthorized(unauthorized.render(ERR_UNAUTHORIZED));
 		}
@@ -90,7 +93,8 @@ public class MaterialController extends Controller {
 		} catch (FormatNotSupportedException e) {
 			Material material = Material.find.byId(id);
 			Form<Material> materialForm = form(Material.class).fill(material);
-			return ok(editmaterial.render(e.getMessage(), id, materialForm));
+			IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
+			return ok(editmaterial.render(e.getMessage(), id, materialForm, categoryFinder.selectAll()));
 		}
 	}
 
@@ -195,7 +199,8 @@ public class MaterialController extends Controller {
 			return internalServerError();
 		} catch (FormatNotSupportedException e) {
 			Form<Material> materialForm = form(Material.class);
-			return ok(creatematerial.render(e.getMessage(), materialForm));
+			IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
+			return ok(creatematerial.render(e.getMessage(), materialForm, categoryFinder.selectAll()));
 		}
 	}
 
