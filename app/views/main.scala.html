@@ -32,6 +32,7 @@
                     @if(controllers.AuthenticationController.getUser() != null) {
                         <!-- // TODO Verificar se é usuário admin! -->
                         @if(controllers.AuthenticationController.getUser().getLogin().equals("admin")) {
+                        	<li><a href="@routes.CategoryController.list(0, "name", "asc", "")">Categorias</a></li>
 					        <li><a href="@routes.UserController.list(0, "id", "asc", "")">Usuários</a></li>
                         }
 					    <li><a href="@routes.MaterialController.list(0, "title", "asc","")">Materiais</a></li>

@@ -1,0 +1,35 @@
+@(message: String, categoryForm: Form[models.classes.Category])
+@import helper._
+@implicitFieldConstructor = @{ FieldConstructor(livretoInput.render) } 
+
+@main("Cadastrar Categoria")("")(true) {
+</div>
+	<div class="container-flow">
+		<div id="spotlight" class="spotlight">
+			<div class="container">
+				<h2>Editar Categoria</h2>
+			</div>
+		</div>
+	</div>
+	
+<div class="container">
+	@if(message != null && !message.isEmpty) {
+		<div class="alert alert-danger alert-dismissable">
+			<button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+			@message
+		</div>
+	}
+
+	@helper.form(action = controllers.routes.CategoryController.update(categoryForm("id").value.toLong), 'enctype -> "multipart/form-data") {
+		<div class="form-group">
+			<label for="name">Nome:</label>
+			<input id="name" type="text" name="name" class="form-control" value='@categoryForm("name").value' required>
+		</div>
+
+		<div class="edit-menu clearfix form-container">
+			<button type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-default" href="@controllers.routes.CategoryController.list()">Cancelar</a>
+			<a class="btn btn-danger btn-delete pull-left" href="@controllers.routes.CategoryController.delete(categoryForm("id").value.toLong)">Excluir</a>
+		</div>
+	}
+}

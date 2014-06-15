@@ -3,6 +3,12 @@
 
 # --- !Ups
 
+create table category (
+  id                        bigint not null,
+  name                      varchar(255),
+  constraint pk_category primary key (id))
+;
+
 create table comment (
   id                        bigint not null,
   author_id                 bigint,
@@ -54,6 +60,8 @@ create table user_has_material (
   material_id                    bigint not null,
   constraint pk_user_has_material primary key (user_id, material_id))
 ;
+create sequence category_seq;
+
 create sequence comment_seq;
 
 create sequence material_seq;
@@ -79,6 +87,8 @@ alter table user_has_material add constraint fk_user_has_material_material_02 fo
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
+drop table if exists category;
+
 drop table if exists comment;
 
 drop table if exists material;
@@ -90,6 +100,8 @@ drop table if exists material_comment;
 drop table if exists user;
 
 SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists category_seq;
 
 drop sequence if exists comment_seq;
 

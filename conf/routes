@@ -40,3 +40,11 @@ POST		/material/comment/:id				controllers.MaterialController.comment(id:Long)
 POST		/material/rate/:id/:upvote			controllers.MaterialController.rate(id:Long, upvote:Boolean)
 GET			/thumbnail/:id						controllers.MaterialController.renderImage(id:Long)
 GET			/download/:id						controllers.MaterialController.download(id:Long)
+
+# Category CRUD
+GET			/categoria							controllers.CategoryController.list(p:Int ?= 0, s ?= "name", o ?= "asc", f ?= "")
+GET			/categoria/enviar					controllers.CategoryController.create()
+POST		/categoria/save						controllers.CategoryController.save()
+GET			/categoria/edit/:id					controllers.CategoryController.edit(id:Long)
+POST		/categoria/save/:id					controllers.CategoryController.update(id:Long)
+GET			/categoria/delete/:id				controllers.CategoryController.delete(id:Long)
