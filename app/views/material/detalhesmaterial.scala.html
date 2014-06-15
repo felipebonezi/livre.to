@@ -32,10 +32,24 @@
 				</dd>
 			<dt>Política de Preço:</dt>
 				<dd>@if(material.getPricePolicy().name().equals("MINIMUM_VALUE")) { Valor Mínimo }</dd>
+			<dt>Avaliação:</dt>
+				@if(material.getScore() > 0) {
+					<span style="color:#62c462;display:inline;">
+				} else {
+					@if(material.getScore() < 0) {
+						<span style="color:#bd362f;display:inline;">
+					} else {
+						<span style="color:#2f96b4;display:inline;">
+					}
+				}
+				@material.getScore()</span>
+			</div>
 		</dl>
-	</div>
-
-	<div style="margin-top: 40px;">
+		
+		<div style="margin-top: 40px;">
 			<p><a class="btn btn-primary btn-lg" role="button" href="@routes.Application.index()">Comprar</a></p>
+		</div>
 	</div>
+	
+
 }

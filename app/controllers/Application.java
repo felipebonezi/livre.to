@@ -12,6 +12,7 @@ public class Application extends Controller {
     }
 
     public static Result index(String message) {
+
 		IFinder<Material> finder = FinderFactory.getInstance().get(Material.class);
 		
 		return ok(index.render(message, finder.page()));
