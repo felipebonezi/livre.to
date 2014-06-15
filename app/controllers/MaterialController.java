@@ -115,7 +115,7 @@ public class MaterialController extends Controller {
 				SqlUpdate update = Ebean.createSqlUpdate(s);
 				Ebean.execute(update);
 
-				return detalhe(id);
+				return redirect("/material/" + material.getId());
 			}
 		}
 		return unauthorized(ERR_EXPIRED);
