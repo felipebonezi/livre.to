@@ -1,18 +1,42 @@
 @(userToEdit: models.classes.User)
 
-@main("Editar Perfil")("login.css")(true) {
-	<div class="container">
-        @helper.form(action = controllers.routes.UserController.editor()) {
-            <h2 class="form-signin-heading">Configurações da Conta:</h2>
-            <input type="text" name="name" class="form-control" value=@userToEdit.getName() required autofocus>
-            <input type="email" name="mail" class="form-control" value=@userToEdit.getMail() required>
-            
-            <label><BR>Redefinir senha:</label>
-            <input type="password" name="passwordold" class="form-control" placeholder="Senha Atual">
-            <input type="password" name="passwordnew" class="form-control" placeholder="Nova Senha">
-            <input type="password" name="passwordnew2" class="form-control" placeholder="Repita Nova Senha">
-
-            <button class="btn btn-lg btn-primary btn-block" type="submit">Salvar alterações</button>
-        }
+@main("Editar Perfil")("")(true) {
+</div>
+	<div class="container-flow">
+		<div id="spotlight" class="spotlight">
+			<div class="container">
+				<h2>Meus Perfil</h2>
+			</div>
+		</div>
+	</div>
+	
+<div class="container">
+	<div class="form-container">
+		@helper.form(action = controllers.routes.UserController.editor()) {
+		<div class="form-group">
+			<label for="name">Nome:</label>
+			<input type="text" name="name" class="form-control" value=@userToEdit.getName() required autofocus>
+		</div>
+		<div class="form-group">
+			<label for="email">Email:</label>
+			<input type="email" name="mail" class="form-control" value=@userToEdit.getMail() required>
+		</div>
+		<div class="form-group">
+			<label for="passwordold">Senha Atual:</label>
+			<input type="password" name="passwordold" class="form-control" placeholder="Senha Atual">
+		</div>
+		<div class="form-group">
+			<label for="passwordnew">Nova Senha:</label>
+			<input type="password" name="passwordnew" class="form-control" placeholder="Nova Senha">
+		</div>
+		<div class="form-group">
+			<label for="passwordnew2">Confirmação da Nova Senha:</label>
+			<input type="password" name="passwordnew2" class="form-control" placeholder="Repita Nova Senha">
+		</div>
+		
+		<button class="btn btn-primary" type="submit">Salvar Alterações</button>
+		<a href="@routes.Application.index()" class="btn btn-default">Cancelar</button>
+		
+		}
 	</div>
 }

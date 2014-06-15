@@ -3,7 +3,16 @@
 @implicitFieldConstructor = @{ FieldConstructor(livretoInput.render) } 
 
 @main("Editar material")("")(true) {
-	<h2>Editar Material <small>(cód.: @id)</small></h2>
+</div>
+	<div class="container-flow">
+		<div id="spotlight" class="spotlight">
+			<div class="container">
+				<h2>Editar Material <small>(cód.: @id)</small></h2>
+			</div>
+		</div>
+	</div>
+<div class="container">
+	
 
 	@if(message != null && !message.isEmpty) {
 		<div class="alert alert-danger alert-dismissable">

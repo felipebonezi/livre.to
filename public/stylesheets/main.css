@@ -138,6 +138,10 @@ dd {
   color: white;
 }
 
+.spotlight .btn {
+  margin-right: 15px;
+}
+
 .navbar {
   background-image: linear-gradient(to bottom,#E6E6E6 0,#D8D8D8 100%);
   border-bottom: 0px;
@@ -159,4 +163,19 @@ dd {
 .navbar-brand {
   font-weight: 600;
   font-style: italic;
+}
+
+.spotlight small {
+  color: #ddd;
+  margin-left:10px;
+}
+
+.form-container {
+  margin-bottom: 100px;
+}
+
+.form-container .btn {
+  float:right;
+  margin-top:10px;
+  margin-left: 20px;
 }
