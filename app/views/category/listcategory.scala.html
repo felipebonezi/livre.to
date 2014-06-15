@@ -1,0 +1,123 @@
+@(message: String, currentPage: com.avaje.ebean.Page[models.classes.Category], currentSortBy: String, currentOrder: String, currentFilter: String)
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage:Int, newSortBy:String) = @{
+	
+	var sortBy = currentSortBy
+	var order = currentOrder
+	
+	if(newSortBy != null) {
+		sortBy = newSortBy
+		if(currentSortBy == newSortBy) {
+			if(currentOrder == "asc") {
+				order = "desc"
+			} else {
+				order = "asc"
+			}
+		} else {
+			order = "asc"
+		}
+	}
+	
+	// Generate the link
+	routes.CategoryController.list(newPage, sortBy, order, currentFilter)
+	
+}
+
+@**********************************
+* Helper generating table headers *
+***********************************@
+@header(key:String, title:String) = {
+	<th class="@key.replace(".","_") header @if(currentSortBy == key) @{if(currentOrder == "asc") "headerSortDown" else "headerSortUp"}">
+		<a href="@link(0, key)">@title</a>
+	</th>
+}
+
+@main("Listar Categorias")("")(true) {
+</div>
+	<div class="container-flow">
+		<div id="spotlight" class="spotlight">
+			<div class="container">
+				<h2>Categorias</h2>
+			</div>
+		</div>
+	</div>
+	
+<div class="container">
+		@if(message != null && !message.isEmpty) {
+		<div class="alert alert-info alert-dismissable">
+			@message
+		</div>
+		}
+
+		<form action="@link(0, "name")" method="GET" class="form-inline">
+		<input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título" class="form-control">
+		<input type="submit" id="searchsubmit" value="Filtrar" class="btn primary">
+		<a class="btn btn-default pull-right" id="add" href="@routes.CategoryController.create()">Adicionar Categorias</a>
+		</form>
+
+		@if(currentPage.getTotalRowCount == 0) {
+			
+			<div class="well">
+				<em>Nada para exibir</em>
+			</div>
+			
+		} else {
+			
+			<table class="table">
+				<thead>
+					<tr>
+						@header("name", "Nome")
+					</tr>
+				</thead>
+				<tbody>
+		
+					@for(categoria <- currentPage.getList) {
+						<tr>
+							<td>
+								<a href="@routes.CategoryController.edit(categoria.getId())">
+								@if(categoria.getName() == null) {
+									<em>-</em>
+								} else {
+									@categoria.getName()
+								}
+								</a>
+							</td>
+						</tr>
+					}
+		
+				</tbody>
+			</table>
+		
+			<div id="pagination">
+				<ul class="pagination">
+					@if(currentPage.hasPrev) {
+						<li class="prev">
+							<a href="@link(currentPage.getPageIndex - 1, null)">&larr; Anterior</a>
+						</li>
+					} else {
+						<li class="prev disabled">
+							<a>&larr; Anterior</a>
+						</li>
+					}
+					<li class="current">
+						<a>Exibindo de @currentPage.getDisplayXtoYofZ(" a "," de um total de ")</a>
+					</li>
+					@if(currentPage.hasNext) {
+						<li class="next">
+							<a href="@link(currentPage.getPageIndex + 1, null)">Próxima &rarr;</a>
+						</li>
+					} else {
+						<li class="next disabled">
+							<a>Próxima &rarr;</a>
+						</li>
+					}
+				</ul>
+			</div>
+			
+		}
+		</div>
+}
+		  

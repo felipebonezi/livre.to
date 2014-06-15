@@ -81,7 +81,7 @@ public class MaterialController extends Controller {
 					material.setAuthor(user);
 					material.update(id);
 					
-					return list(String.format("Material #%d atualizado com sucesso!", id));
+					return list(String.format("Material \"%s\" atualizado com sucesso!", material.getTitle()));
 				}
 			}
 			return unauthorized(ERR_EXPIRED);
@@ -133,7 +133,7 @@ public class MaterialController extends Controller {
 			return notFound("Material não encontrado!");
 		} else if (UserUtil.isOwner(material, user) || UserController.isAdmin()) {
 			material.delete();
-			return list(String.format("Material #%d removido com sucesso!", id));
+			return list(String.format("Material \"%s\" removido com sucesso!", material.getTitle()));
 		} else {
 			return unauthorized(unauthorized.render(ERR_UNAUTHORIZED));
 		}
