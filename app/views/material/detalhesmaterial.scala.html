@@ -1,7 +1,7 @@
 @(material: models.classes.Material)
 @main("Detalhes")("detalhesmaterial.css")(true) {
 	<h2>@material.getTitle()</h2>
-		
+	<div id="alert-area"></div>
 	<div class="clearfix">
 		<p>
 			@if(material.getPricePolicy().name().equals("FREE")) {
@@ -98,6 +98,13 @@
 							scoreClass = 'score-positive';
 						}
 			        	scoreElement.attr("class", scoreClass);
+			        },
+			        error: function(XMLHttpRequest, textStatus, errorThrown) {
+			        	function newAlert (type, message) {
+						    $("#alert-area").append($("<div class='alert alert-message alert-" + type + " fade in' data-alert><p> " + message + " </p></div>"));
+						    $(".alert-message").delay(2000).fadeOut("slow", function () { $(this).remove(); });
+						}
+						newAlert('danger', 'Um erro aconteceu e não foi possível realizar a operação.');
 			        }
 			    });
 			};
