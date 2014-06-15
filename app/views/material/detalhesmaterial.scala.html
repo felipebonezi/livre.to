@@ -1,5 +1,5 @@
 @(material: models.classes.Material)
-@main("Detalhes")("")(false) {
+@main("Detalhes")("detalhesmaterial.css")(false) {
 	<h2>@material.getTitle()</h2>
 	<div style="float: left; margin-right: 20px;">
 		<img width="200" src="@routes.MaterialController.renderImage(material.getId())" />
@@ -35,25 +35,21 @@
 			<dt>Avaliação:</dt>
 				@if(material.getScore() != null) {
 					@if(material.getScore() > 0) {
-						<span style="color:#62c462;display:inline;">
+						<span id="score-value" class="score-positive">
 					} else {
 						@if(material.getScore() < 0) {
-							<span style="color:#bd362f;display:inline;">
+							<span id="score-value" class="score-negative">
 						} else {
-							<span style="color:#2f96b4;display:inline;">
+							<span id="score-value" class="score-neutral">
 						}
 					}
 					@material.getScore()</span>
-					<form method="post" action="@routes.MaterialController.rate(material.getId(), true)" style="display:inline;">
 		                <button id="upvote-button" class="btn">
 						  <span class="glyphicon glyphicon-arrow-up"></span>
 						</button>
-					</form>
-					<form method="post" action="@routes.MaterialController.rate(material.getId(), false)" style="display:inline;">
 					<button id="downvote-button" class="btn">
 					  <span class="glyphicon glyphicon-arrow-down"></span>
 					</button>
-					</form>
 				}
 			</div>
 		</dl>
@@ -67,4 +63,41 @@
 			</p>
 		</div>
 	</div>
+	
+	<script>
+		$(document).ready(function() {
+			var rateEvent = function(event){
+				var upvote = $(this).attr('id') == 'upvote-button';
+				var url = '@routes.MaterialController.rate(material.getId(), true)';
+				
+				if (!upvote) {
+					url = '@routes.MaterialController.rate(material.getId(), false)';
+				}
+				
+				$.ajax
+			    ({ 
+			        url: url,
+			        data: '',
+			        type: 'post',
+			        success: function(result)
+			        {
+			        	var scoreElement = $('#score-value');
+			        	var oldScore = parseInt(scoreElement.text());
+			        	var newScore = upvote ? oldScore + 1 : oldScore - 1;
+			        	var scoreClass = 'score-neutral';
+			        	scoreElement.text(newScore);
+						if (newScore < 0) {
+							scoreClass = 'score-negative';
+						} else if (newScore > 0) {
+							scoreClass = 'score-positive';
+						}
+			        	scoreElement.attr("class", scoreClass);
+			        }
+			    });
+			};
+			
+			$('#upvote-button').click(rateEvent);
+			$('#downvote-button').click(rateEvent);
+		});
+	</script>
 }
