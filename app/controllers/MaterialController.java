@@ -29,7 +29,6 @@ import utils.ZeroPagesException;
 import views.html.unauthorized;
 import views.html.material.creatematerial;
 import views.html.material.editmaterial;
-import views.html.material.viewmaterial;
 import views.html.material.listmaterial;
 import views.html.material.detalhesmaterial;
 
@@ -64,17 +63,6 @@ public class MaterialController extends Controller {
 			return ok(editmaterial.render("", id, materialForm));
 		} else {
 			return unauthorized(unauthorized.render(ERR_UNAUTHORIZED));
-		}
-	}
-
-	public static Result view(long id) {
-		Material material = Material.find.byId(id);
-
-		if (material != null) {
-			Form<Material> materialForm = form(Material.class).fill(material);
-			return ok(viewmaterial.render("", id, materialForm));
-		} else {
-			return notFound(id);
 		}
 	}
 

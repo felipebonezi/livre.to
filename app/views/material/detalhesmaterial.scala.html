@@ -1,42 +1,57 @@
 @(material: models.classes.Material)
 @main("Detalhes")("")(false) {
-	<div class="jumbotron">
-      <div class="container">
-        <h2>@material.getTitle()</h2>
-           <div style="float: left; margin-right: 20px;">
-          @if(material.getMaterialFile() == null) {
-          <img src="http://placehold.it/200x280/336600&text=livre.to" />
-          } else {
-          <img src="@routes.MaterialController.renderImage(material.getId())" />
-          }
-
-        </div>
-          <div>
-              <p>@material.getDescription()</p>
-              <p><b>Valor:</b> R$@material.getPrice()</p>
-              <p><b>Autor:</b> @material.getAuthor().getName()</p>
-              <p><b>Categoria:</b> @if(material.getPricePolicy().name().equals("MINIMUM_VALUE")) { Valor Mínimo }</p>
-              <p>
-              	<b>Avaliação:</b> 
-              		@if(material.getScore() > 0) {
-              			<span style="color:#62c462;display:inline;">
-              		} else {
-              			@if(material.getScore() < 0) {
-              				<span style="color:#bd362f;display:inline;">
-              			} else {
-              				<span style="color:#2f96b4;display:inline;">
-              			}
-              		}
-              		@material.getScore()</span>
-              		(<span class="glyphicon glyphicon-arrow-up"></span> / 
+	<h2>@material.getTitle()</h2>
+	<div style="float: left; margin-right: 20px;">
+		<img width="200" src="@routes.MaterialController.renderImage(material.getId())" />
+	</div>
+	<div>
+		<dl>
+			<dt>Descrição:</dt>
+				<dd>
+					@if(material.getDescription() != null && !material.getDescription().isEmpty()) {
+						material.getDescription();
+					} else {
+						<em>Não disponível</em>
+					}
+				</dd>
+			<dt>Valor:</dt>
+				<dd>
+					@if(material.getPrice() != null && !material.getPrice().isEmpty()) {
+						R$@material.getPrice()
+					} else {
+						<em>Não disponível</em>
+					}
+				</dd>
+			<dt>Autor:</dt>
+				<dd>
+					@if(material.getAuthor().getName() != null && !material.getAuthor().getName().isEmpty()) {
+						@material.getAuthor().getName()
+					} else {
+						<em>Não disponível</em>
+					}
+				</dd>
+			<dt>Política de Preço:</dt>
+				<dd>@if(material.getPricePolicy().name().equals("MINIMUM_VALUE")) { Valor Mínimo }</dd>
+			<dt>Avaliação:</dt>
+				@if(material.getScore() > 0) {
+					<span style="color:#62c462;display:inline;">
+				} else {
+					@if(material.getScore() < 0) {
+						<span style="color:#bd362f;display:inline;">
+					} else {
+						<span style="color:#2f96b4;display:inline;">
+					}
+				}
+				@material.getScore()</span>
+				(<span class="glyphicon glyphicon-arrow-up"></span> / 
               		<span class="glyphicon glyphicon-arrow-down"></span>)
-			  </p>
-          </div>
+			</div>
+		</dl>
+		
+		<div style="margin-top: 40px;">
+			<p><a class="btn btn-primary btn-lg" role="button" href="@routes.Application.index()">Comprar</a></p>
+		</div>
+	</div>
+	
 
-          <div style="margin-top: 40px;">
-              <p><a class="btn btn-primary btn-lg" role="button" href="@routes.Application.index()">Comprar</a></p>
-          </div>
-      </div>
-
-    </div>
 }

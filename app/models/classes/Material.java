@@ -62,7 +62,7 @@ public class Material extends Model {
     @Lob
     public byte[] materialThumbnail;
     
-    public int score;
+    public Integer score;
 
     /**
      * Generic query helper for entity Computer with id Long
@@ -146,11 +146,11 @@ public class Material extends Model {
         this.description = description;
     }
 
-    public int getScore() {
+    public Integer getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(Integer score) {
         this.score = score;
     }
 
