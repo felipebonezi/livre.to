@@ -18,6 +18,7 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
 
 import models.classes.Material;
+import models.classes.Comment;
 import models.classes.Material.PricePolicy;
 import models.classes.User;
 import models.finders.FinderFactory;
@@ -88,6 +89,36 @@ public class MaterialController extends Controller {
 			Form<Material> materialForm = form(Material.class).fill(material);
 			return ok(editmaterial.render(e.getMessage(), id, materialForm));
 		}
+	}
+
+	public static Result comment(Long id) {
+		if (AuthenticationController.isLoggedIn()) {
+			User user = AuthenticationController.getUser();
+			IFinder<Material> finder = FinderFactory.getInstance().get(Material.class);
+			Material material = finder.selectUnique(new String[]{FinderKey.ID}, new Object[]{id});
+
+			if (material != null) {				
+				MultipartFormData body = request().body().asMultipartFormData();
+				Map<String, String[]> formContent = body.asFormUrlEncoded();
+				String content = formContent.get("content")[0];
+				Comment comment = new Comment();
+				comment.setAuthor(user);
+				comment.setCreated(new Date());
+				comment.setContent(content);
+				comment.save();
+
+				String s = "INSERT INTO material_comment (material_id,comment_id) " +
+						"SELECT * FROM (SELECT " + material.getId() + ", " + comment.getId() + ") AS tmp " + 
+						"WHERE NOT EXISTS ("+
+							"SELECT material_id FROM material_comment WHERE (material_id,comment_id) = (" + material.getId() + ", " + comment.getId() + ") "+
+						") LIMIT 1;";
+				SqlUpdate update = Ebean.createSqlUpdate(s);
+				Ebean.execute(update);
+
+				return detalhe(id);
+			}
+		}
+		return unauthorized(ERR_EXPIRED);
 	}
 
 	public static Result delete(long id) {
