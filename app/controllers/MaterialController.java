@@ -3,6 +3,7 @@ package controllers;
 import static play.data.Form.form;
 
 import org.apache.commons.io.IOUtils;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -24,6 +25,7 @@ import models.finders.FinderFactory;
 import models.finders.IFinder;
 import models.utils.MaterialUtil;
 import models.utils.UserUtil;
+import utils.FormatNotSupportedException;
 import utils.ImageUtils;
 import utils.ZeroPagesException;
 import views.html.unauthorized;
@@ -82,6 +84,10 @@ public class MaterialController extends Controller {
 			return unauthorized(ERR_EXPIRED);
 		} catch (FileNotFoundException | IllegalArgumentException | ZeroPagesException e) {
 			return internalServerError();
+		} catch (FormatNotSupportedException e) {
+			Material material = Material.find.byId(id);
+			Form<Material> materialForm = form(Material.class).fill(material);
+			return ok(editmaterial.render(e.getMessage(), id, materialForm));
 		}
 	}
 
@@ -144,6 +150,9 @@ public class MaterialController extends Controller {
 			return unauthorized(ERR_EXPIRED);
 		} catch (FileNotFoundException | IllegalArgumentException | ZeroPagesException e) {
 			return internalServerError();
+		} catch (FormatNotSupportedException e) {
+			Form<Material> materialForm = form(Material.class);
+			return ok(creatematerial.render(e.getMessage(), materialForm));
 		}
 	}
 
