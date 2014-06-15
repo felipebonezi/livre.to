@@ -44,12 +44,12 @@
 						}
 					}
 					@material.getScore()</span>
-					<form method="post" action="@routes.MaterialController.rate(material.getId(), true)">
+					<form method="post" action="@routes.MaterialController.rate(material.getId(), true)" style="display:inline;">
 		                <button id="upvote-button" class="btn">
 						  <span class="glyphicon glyphicon-arrow-up"></span>
 						</button>
 					</form>
-					<form method="post" action="@routes.MaterialController.rate(material.getId(), false)">
+					<form method="post" action="@routes.MaterialController.rate(material.getId(), false)" style="display:inline;">
 					<button id="downvote-button" class="btn">
 					  <span class="glyphicon glyphicon-arrow-down"></span>
 					</button>
