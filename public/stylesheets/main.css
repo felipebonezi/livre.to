@@ -37,7 +37,7 @@ body {
 }
 
 .btn-delete {
-  margin-right: 20px;
+  margin-left: 0px !important;
 }
 
 .edit-menu {
@@ -178,4 +178,10 @@ dd {
   float:right;
   margin-top:10px;
   margin-left: 20px;
+}
+
+.login-container {
+  max-width: 350px;
+  margin-left:auto;
+  margin-right:auto;
 }

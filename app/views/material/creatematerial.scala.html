@@ -3,7 +3,16 @@
 @implicitFieldConstructor = @{ FieldConstructor(livretoInput.render) } 
 
 @main("Adicionar material")("")(true) {
-	<h2>Adicionar Material</h2>
+</div>
+    <div class="container-flow">
+        <div id="spotlight" class="spotlight">
+            <div class="container">
+                <h2>Cadastrar Material</h2>
+            </div>
+        </div>
+    </div>
+    
+<div class="container">
 
 	@if(message != null && !message.isEmpty) {
 		<div class="alert alert-danger alert-dismissable">
@@ -60,9 +69,9 @@
 			'_label -> "Arquivo",
 			'_showErrors -> true)
 
-		<div class="edit-menu clearfix">
-			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
-			<button type="submit" class="btn btn-success pull-right">Salvar</button>
+		<div class="edit-menu clearfix form-container">
+			<button type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-default" href="@controllers.routes.MaterialController.list()">Cancelar</a>
 		</div>
 	}
 }

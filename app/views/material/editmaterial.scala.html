@@ -71,10 +71,10 @@
 			<input type="file" id="InputFile" name="materialFile">
 		</div>
 		
-		<div class="edit-menu clearfix">
-			<a class="btn btn-info pull-left" href="@controllers.routes.MaterialController.list()">Cancelar</a>
-			<button type="submit" class="btn btn-success pull-right">Salvar</button>
-			<a class="btn btn-danger pull-right btn-delete" href="@controllers.routes.MaterialController.delete(id)">Excluir</a>
+		<div class="edit-menu clearfix form-container">
+			<button type="submit" class="btn btn-primary">Salvar</button>
+			<a class="btn btn-default" href="@controllers.routes.MaterialController.list()">Cancelar</a>
+			<a class="btn btn-danger btn-delete pull-left" href="@controllers.routes.MaterialController.delete(id)">Excluir</a>
 		</div>
 
 	}
