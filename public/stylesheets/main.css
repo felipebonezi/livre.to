@@ -7,10 +7,6 @@ body {
   margin-bottom: 20px;
 }
 
-.thumbnail {
-  width: 200px;
-}
-
 .theme-dropdown .dropdown-menu {
   position: static;
   display: block;
