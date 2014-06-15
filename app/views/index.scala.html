@@ -19,7 +19,7 @@
 		
 		<div class="row">
 		@for(material <- currentPage.getList) {
-			<div class="col-md-3 book-placeholder">
+			<div class="clearfix col-md-3 book-placeholder">
 				<a href="@routes.MaterialController.detalhe(material.getId())">
 					<img class="img-thumbnail" src="@routes.MaterialController.renderImage(material.getId())" />
 					<h5>@material.getTitle()</h5>
