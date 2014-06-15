@@ -36,8 +36,16 @@
 }
 
 @main("Listar Material")("")(true) {
-	<div class="container">
-		<h2>Materiais</h2>
+</div>
+    <div class="container-flow">
+        <div id="spotlight" class="spotlight">
+            <div class="container">
+                <h2>Meus Materiais</h2>
+            </div>
+        </div>
+    </div>
+    
+<div class="container">
 		@if(message != null && !message.isEmpty) {
 		<div class="alert alert-info alert-dismissable">
 			@message
@@ -239,6 +247,5 @@
                 </div>
             </div>
         </div>
-    </div>
 }
           

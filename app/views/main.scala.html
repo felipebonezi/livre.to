@@ -8,6 +8,7 @@
 		<link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/bootstrap.min.css")" />
 		<link rel="stylesheet" media="screen" href="@routes.Assets.at("stylesheets/main.css")">
+		<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,400,300,600' rel='stylesheet' type='text/css'>
 		@if(!css.isEmpty()) {
 			<link rel="stylesheet" media="screen" href="@(routes.Assets.at("stylesheets/" + css))">
 		}
@@ -15,7 +16,7 @@
 		<script src="@routes.Assets.at("javascripts/bootstrap.min.js")" type="text/javascript"></script>	
 	</head>
 	<body>
-		<div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+		<div class="navbar navbar-default navbar-fixed-top" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

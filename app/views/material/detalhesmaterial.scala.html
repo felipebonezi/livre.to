@@ -1,19 +1,29 @@
 @(material: models.classes.Material)
 @main("Detalhes")("detalhesmaterial.css")(true) {
-	<h2>@material.getTitle()</h2>
-	<div id="alert-area"></div>
-	<div class="clearfix">
-		<p>
-			@if(material.getPricePolicy().name().equals("FREE")) {
-				<a class="btn btn-success" role="button" href="@routes.MaterialController.download(material.getId())">Baixar</a>
-			} else {
-				<a class="btn btn-primary" role="button" href="@routes.Application.index()">Comprar</a>
-			}
-			@if(controllers.AuthenticationController.getUser() != null && material.getAuthor().getId() == controllers.AuthenticationController.getUser().getId()) {
-				<a class="btn btn-default" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>
-			}
-		</p>
+</div>
+	<div class="container-flow">
+		<div id="spotlight" class="spotlight">
+			<div class="container">
+				<h2>@material.getTitle()</h2>
+				<div id="alert-area"></div>
+				<div class="clearfix">
+					<p>
+						@if(material.getPricePolicy().name().equals("FREE")) {
+							<a class="btn btn-success" role="button" href="@routes.MaterialController.download(material.getId())">Baixar</a>
+						} else {
+							<a class="btn btn-primary" role="button" href="@routes.Application.index()">Comprar</a>
+						}
+						@if(controllers.AuthenticationController.getUser() != null && material.getAuthor().getId() == controllers.AuthenticationController.getUser().getId()) {
+							<a class="btn btn-default" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>
+						}
+					</p>
+				</div>
+			</div>
+		</div>
 	</div>
+<div class="container">
+
+
 	<div class="thumbnail" style="float: left; margin-right: 20px; max-width: 400px">
 		<img width="100%" src="@routes.MaterialController.renderImage(material.getId())" />
 	</div>
