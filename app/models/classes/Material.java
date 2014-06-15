@@ -154,5 +154,12 @@ public class Material extends Model {
         this.score = score;
     }
 
+    public void upvote() {
+	this.score++;
+    }
+    
+    public void downvote() {
+	this.score--;
+    }
 
 }

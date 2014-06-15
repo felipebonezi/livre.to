@@ -175,4 +175,26 @@ public class MaterialController extends Controller {
 	public static Result notFound(long id) {
 		return list(String.format("Material #%d não está cadastrado!", id));
 	}
+	
+    public static Result rate(long id, boolean upvote) {
+	Result result = internalServerError();
+
+	FinderFactory factory = FinderFactory.getInstance();
+	IFinder<Material> finder = factory.get(Material.class);
+	Material material = finder.selectUnique(id);
+
+	if (material != null) {
+	    if (upvote) {
+		material.upvote();
+	    } else {
+		material.downvote();
+	    }
+	    material.update();
+	    result = ok();
+	} else {
+	    result = notFound("Material não encontrado!");
+	}
+
+	return result;
+    }
 }

@@ -43,8 +43,16 @@
 					}
 				}
 				@material.getScore()</span>
-				(<span class="glyphicon glyphicon-arrow-up"></span> / 
-              		<span class="glyphicon glyphicon-arrow-down"></span>)
+				<form method="post" action="@routes.MaterialController.rate(material.getId(), true)">
+	                <button id="upvote-button" class="btn">
+					  <span class="glyphicon glyphicon-arrow-up"></span>
+					</button>
+				</form>
+				<form method="post" action="@routes.MaterialController.rate(material.getId(), false)">
+				<button id="downvote-button" class="btn">
+				  <span class="glyphicon glyphicon-arrow-down"></span>
+				</button>
+				</form>
 			</div>
 		</dl>
 		
@@ -52,6 +60,4 @@
 			<p><a class="btn btn-primary btn-lg" role="button" href="@routes.Application.index()">Comprar</a></p>
 		</div>
 	</div>
-	
-
 }
