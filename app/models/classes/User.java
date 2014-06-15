@@ -23,7 +23,7 @@ public class User extends Model {
     public static final String SEQUENCE_NAME = "user_id_seq";
 
     public enum Status {
-	ACTIVE, BLOCKED;
+	ACTIVE, REMOVED;
     }
 
     public enum Gender {

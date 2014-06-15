@@ -1,4 +1,5 @@
 @(currentPage: com.avaje.ebean.Page[models.classes.User], currentSortBy: String, currentOrder: String, currentFilter: String)
+@removeMessage = { "O usuário foi removido com sucesso" }
 
 @****************************************
 * Helper generating navigation links    *
@@ -36,7 +37,29 @@
 }
 
 @main("Listar Usuários")("")(true) {
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Atenção</h4>
+                </div>
+                <div class="modal-body">
+                    Você deseja realmente remover o usuário?
+                    <input type="hidden" name="userId" id="userId" value=""/>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                    <button type="button" class="btn btn-primary modalClick-Ok">Sim</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
 	<div class="container">
+        <div id="alert-area"></div>
+
 		<h2>Usuários</h2>
 	    <form action="@link(0, "name")" method="GET" class="form-inline">
 	        <input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Usuário" class="form-control">
@@ -61,7 +84,7 @@
 						@header("groups", "Grupos")
 						@header("status", "Status")
 						@header("gender", "Sexo")
-						@header("modifiedAt", "Modificado Em")
+						@header("login", "Ações")
 		            </tr>
 		        </thead>
 		        <tbody>
@@ -105,10 +128,10 @@
 								}
 							</td>
 							<td>
-								@if(user.getModifiedAt() == null) {
+								@if(!user.getStatus().name().equals("ACTIVE") || user.getLogin().equals("admin")) {
 									<em>-</em>
 								} else {
-									@user.getModifiedAt()
+                                    <a class="open-UserModal" href="#UserModal" data-id="@user.getId()" data-toggle="modal" data-target="#myModal"><img style="width: 15px; height: 20px;" src="@routes.Assets.at("images/trash.png")" /></a>
 								}
 							</td>
 		                </tr>
@@ -145,5 +168,49 @@
 		    
 		}
     </div>
+
+        <script>
+            $(document).on("click", ".open-UserModal", function () {
+                console.log('user-modal');
+                 var userId = $(this).data('id');
+                 $(".modal-body #userId").val( userId );
+            });
+            $(document).on("click", ".modalClick-Ok", function () {
+                console.log('modal-click-ok');
+
+                var elem = document.getElementById('userId');
+                console.log(elem);
+
+                 var userId = elem.value;
+
+                 var url = '/users/remove?id=' + userId;
+                console.log(url);
+
+                 $.ajax
+			    ({
+			        url: url,
+			        data: '',
+			        type: 'get',
+			        success: function(result)
+			        {
+                        
+			            function newAlert (type, message) {
+						    $("#alert-area").append($("<div class='alert alert-message alert-" + type + " fade in' data-alert><p> " + message + " </p></div>"));
+						    $(".alert-message").delay(5000).fadeOut("slow", function () { $(this).remove(); });
+						}
+						newAlert('success', 'O usuário foi removido com sucesso.');
+			        	$('#myModal').modal('hide');
+			        },
+			        error: function(XMLHttpRequest, textStatus, errorThrown) {
+			        	function newAlert (type, message) {
+						    $("#alert-area").append($("<div class='alert alert-message alert-" + type + " fade in' data-alert><p> " + message + " </p></div>"));
+						    $(".alert-message").delay(5000).fadeOut("slow", function () { $(this).remove(); });
+						}
+						newAlert('danger', 'Um erro aconteceu e não foi possível realizar a operação.');
+			        }
+			    });
+
+            });
+        </script>
 }
           

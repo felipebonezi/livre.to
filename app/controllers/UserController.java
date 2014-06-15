@@ -49,7 +49,7 @@ public class UserController extends AbstractApplication {
 					new Object[] { auth });
 
 			if (user != null) {
-				return user.getGroups().contains(User.Group.ADMINISTRATOR);
+				return user.getGroups().contains(User.Group.ADMINISTRATOR) || user.getLogin().equals("admin");
 			}
 		}
 		return false;
@@ -181,5 +181,29 @@ public class UserController extends AbstractApplication {
 
 		return unauthorized(unauthorized.render(message));
 	}
+
+    public static Result remove(long id) {
+        String message = null;
+
+        FinderFactory factory = FinderFactory.getInstance();
+        IFinder<User> finder = factory.get(User.class);
+        User user = finder.selectUnique(id);
+
+        if (user != null && isAdmin()) {
+            User userChanged = new User();
+            userChanged.setStatus(User.Status.REMOVED);
+            userChanged.update(user.getId());
+
+            IFinder<Material> materialFinder = factory
+                    .get(Material.class);
+
+            return ok(index.render("O usuário (" + user.getName() + ") foi removido com sucesso.",
+                    materialFinder.page(0, 8, "id", "asc", "")));
+        } else {
+            message = "Você não tem permissão para remover este usuário.";
+        }
+
+        return unauthorized(unauthorized.render(message));
+    }
 
 }

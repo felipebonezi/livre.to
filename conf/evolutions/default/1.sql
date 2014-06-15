@@ -29,7 +29,7 @@ create table user (
   status                    varchar(7),
   gender                    varchar(6),
   modified_at               timestamp not null,
-  constraint ck_user_status check (status in ('ACTIVE','BLOCKED')),
+  constraint ck_user_status check (status in ('ACTIVE','REMOVED')),
   constraint ck_user_gender check (gender in ('FEMALE','MALE')),
   constraint pk_user primary key (id))
 ;

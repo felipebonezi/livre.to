@@ -28,7 +28,7 @@ public abstract class UserUtil {
             case ACTIVE:
                 return true;
 
-            case BLOCKED:
+            case REMOVED:
             default:
                 return false;
         }

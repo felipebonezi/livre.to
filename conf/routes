@@ -21,6 +21,7 @@ GET			/users/create						controllers.UserController.create()
 GET			/users/edit							controllers.UserController.edit(userId:Long)
 POST		/users/register						controllers.UserController.register()
 POST		/users/editor						controllers.UserController.editor()
+GET		    /users/remove						controllers.UserController.remove(id:Long)
 
 ### AJAX ###
 OPTIONS		/login								controllers.AbstractApplication.options()
