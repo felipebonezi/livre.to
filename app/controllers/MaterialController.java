@@ -161,13 +161,12 @@ public class MaterialController extends Controller {
         FinderFactory factory = FinderFactory.getInstance();
         IFinder<Material> finder = factory.get(Material.class);
         Material material = finder.selectUnique(id);
-        User user = AuthenticationController.getUser();
 
-        if (user != null && material != null) {
+        if (material != null) {
             return ok(detalhesmaterial.render(material));
         }
 
-        return unauthorized(unauthorized.render("Você não tem permissão para realizar essa ação."));
+        return notFound(id);
     }
 
 	public static Result notFound(long id) {
