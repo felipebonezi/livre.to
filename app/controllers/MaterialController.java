@@ -3,15 +3,18 @@ package controllers;
 import static play.data.Form.form;
 
 import com.avaje.ebean.*;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.io.IOUtils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Date;
-import java.util.Map;
+import java.sql.Timestamp;
+import java.util.*;
 
+import org.apache.http.auth.AUTH;
 import play.data.Form;
+import play.libs.Json;
 import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
@@ -267,4 +270,75 @@ public class MaterialController extends Controller {
 
 		return result;
 	}
+
+    public static Result estatistica(long id) {
+        FinderFactory factory = FinderFactory.getInstance();
+        IFinder<Material> finder = factory.get(Material.class);
+        Material material = finder.selectUnique(id);
+
+        User user = AuthenticationController.getUser();
+        if (material != null && UserUtil.isOwner(material, user)) {
+            List<ObjectNode> valores = new ArrayList<ObjectNode>();
+            ObjectNode jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+            jsonValor = Json.newObject();
+            jsonValor.put("valor", 0);
+            valores.add(jsonValor);
+
+            String sql = "SELECT * FROM user_has_material WHERE material_id = :mId ORDER BY when ASC";
+            List<SqlRow> rows = Ebean.createSqlQuery(sql).setParameter("mId", material.getId()).findList();
+
+            Timestamp last = null;
+            for (SqlRow row : rows) {
+                Timestamp timestamp = row.getTimestamp("when");
+                Calendar c = Calendar.getInstance();
+                c.setTimeInMillis(timestamp.getTime());
+
+                int month = c.get(Calendar.MONTH);
+                ObjectNode node = valores.get(month);
+                double valor = node.get("valor").asDouble();
+                valor += Double.parseDouble(material.getPrice());
+                node.put("valor", valor);
+            }
+
+            ObjectNode jsonResponse = Json.newObject();
+            jsonResponse.put("valores", Json.toJson(valores));
+
+            return ok(jsonResponse);
+        }
+
+        return badRequest();
+    }
+
 }

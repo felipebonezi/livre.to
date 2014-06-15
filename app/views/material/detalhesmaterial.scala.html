@@ -1,6 +1,24 @@
 @(material: models.classes.Material)
 @main("Detalhes")("detalhesmaterial.css")(true) {
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">livre.to</h4>
+            </div>
+            <div class="modal-body">
+                <div id="container" style="min-width: 540px; height: 400px; margin: 0 auto"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            </div>
+        </div>
+    </div>
 </div>
+</div>
+
 	<div class="container-flow">
 		<div id="spotlight" class="spotlight">
 			<div class="container">
@@ -14,6 +32,8 @@
 						}
 						@if(controllers.AuthenticationController.getUser() != null && material.getAuthor().getId() == controllers.AuthenticationController.getUser().getId()) {
 							<a class="btn btn-default btn-lg" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>
+                            <a class="btn btn-default btn-lg" role="button" href="#modalEstatistica" class="open-MaterialModal" data-id="@material.getId()" data-toggle="modal" data-target="#myModal">Estatística</a>
+
 						}
 				</div>
 			</div>
@@ -146,9 +166,70 @@
 			        }
 			    });
 			};
+
+            var url1 = '@routes.MaterialController.estatistica(material.getId())';
+
+            $.ajax
+            ({
+                url: url1,
+                data: '',
+                type: 'get',
+                success: function(result)
+                {
+                    var valoresJ = result.valores;
+                    console.log(valoresJ);
+
+                    var valores = new Array();
+                    for (var v in valoresJ) {
+                        valores[valores.length] = valoresJ[v].valor;
+                    }
+
+                    $('#container').highcharts({
+                        chart: {
+                            type: 'line'
+                        },
+                        title: {
+                            text: "@material.getTitle()"
+                        },
+                        subtitle: {
+                            text: "Valores arrecadados - 2014"
+                        },
+                        xAxis: {
+                            categories: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez']
+                        },
+                        yAxis: {
+                            title: {
+                                text: 'Valores (R$)'
+                            }
+                        },
+                        plotOptions: {
+                            line: {
+                                dataLabels: {
+                                    enabled: true
+                                },
+                                enableMouseTracking: false
+                            }
+                        },
+                        series: [{
+                            name: '@material.getTitle()',
+                            data: valores
+                        }]
+                    });
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    function newAlert (type, message) {
+                        $("#alert-area").append($("<div class='alert alert-message alert-" + type + " fade in' data-alert><p> " + message + " </p></div>"));
+                        $(".alert-message").delay(2000).fadeOut("slow", function () { $(this).remove(); });
+                    }
+                    newAlert('danger', 'Um erro aconteceu e não foi possível realizar a operação.');
+                }
+            });
 			
 			$('#upvote-button').click(rateEvent);
 			$('#downvote-button').click(rateEvent);
 		});
 	</script>
+    <script src="http://code.highcharts.com/highcharts.js"></script>
+    <script src="http://code.highcharts.com/modules/exporting.js"></script>
+    </div>
 }
