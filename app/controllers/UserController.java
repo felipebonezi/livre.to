@@ -3,6 +3,7 @@ package controllers;
 import models.actions.AjaxAction;
 import models.classes.Material;
 import models.classes.User;
+import models.classes.Category;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
 import play.mvc.Http;
@@ -110,9 +111,10 @@ public class UserController extends AbstractApplication {
 
 								IFinder<Material> materialFinder = factory
 										.get(Material.class);
+								IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
 								return ok(index.render("Usuário editado com sucesso!",
 										materialFinder.page(0, 8, "id", "asc",
-												"")));
+												""), "", null, categoryFinder.selectAll()));
 							} else {
 								message = "Já existe um usuário cadastrado com os dados fornecidos.";
 							}
@@ -171,8 +173,9 @@ public class UserController extends AbstractApplication {
 
 					IFinder<Material> materialFinder = factory
 							.get(Material.class);
+					IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
 					return ok(index.render("Usuário foi criado com sucesso!",
-							materialFinder.page(0, 8, "id", "asc", "")));
+							materialFinder.page(0, 8, "id", "asc", ""), "", null, categoryFinder.selectAll()));
 				} else {
 					message = "Já existe um usuário cadastrado com os dados fornecidos.";
 				}
@@ -196,9 +199,9 @@ public class UserController extends AbstractApplication {
 
             IFinder<Material> materialFinder = factory
                     .get(Material.class);
-
+			IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
             return ok(index.render("O usuário (" + user.getName() + ") foi removido com sucesso.",
-                    materialFinder.page(0, 8, "id", "asc", "")));
+                    materialFinder.page(0, 8, "id", "asc", ""), "", null, categoryFinder.selectAll()));
         } else {
             message = "Você não tem permissão para remover este usuário.";
         }

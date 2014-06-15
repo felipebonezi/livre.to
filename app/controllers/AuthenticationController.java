@@ -6,6 +6,7 @@ import java.util.UUID;
 import models.actions.AjaxAction;
 import models.classes.Material;
 import models.classes.User;
+import models.classes.Category;
 import models.classes.User.Group;
 import models.finders.FinderFactory;
 import models.finders.IFinder;
@@ -49,7 +50,8 @@ public class AuthenticationController extends AbstractApplication {
 					
 					// FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
 					IFinder<Material> materialFinder = FinderFactory.getInstance().get(Material.class);
-					return ok(index.render("Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page()));
+					IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
+					return ok(index.render("Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(), "", null, categoryFinder.selectAll()));
 				} else {
 					message = "O login/senha informado estão incorretos...";
 				}
@@ -72,7 +74,8 @@ public class AuthenticationController extends AbstractApplication {
 		//FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
 		FinderFactory factory = FinderFactory.getInstance();
 		IFinder<Material> materialFinder = factory.get(Material.class);
-		return ok(index.render("Logout efetuado com sucesso!", materialFinder.page(0, 8, "id", "asc", "")));
+		IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
+		return ok(index.render("Logout efetuado com sucesso!", materialFinder.page(0, 8, "id", "asc", ""), "", null, categoryFinder.selectAll()));
 	}
 
 	public static Result login() {
@@ -81,7 +84,8 @@ public class AuthenticationController extends AbstractApplication {
 			//FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
 			FinderFactory factory = FinderFactory.getInstance();
 			IFinder<Material> materialFinder = factory.get(Material.class);
-			return ok(index.render("Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(0, 8, "id", "asc", "")));
+			IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
+			return ok(index.render("Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(0, 8, "id", "asc", ""), "", null, categoryFinder.selectAll()));
 		}
 		return ok(login.render()); 
 	}

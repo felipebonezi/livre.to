@@ -1,4 +1,30 @@
-@(message: String, currentPage: com.avaje.ebean.Page[models.classes.Material])
+@(message: String, currentPage: com.avaje.ebean.Page[models.classes.Material], currentFilter: String, currentCategory: models.classes.Category, categories: java.util.List[models.classes.Category])
+
+@****************************************
+* Helper generating navigation links    *
+****************************************@
+@link(newPage:Int, newSortBy:String) = @{
+	
+	var sortBy = "title"
+	var order = "asc"
+	var currentSortBy = "title"
+	var currentOrder = "asc"
+	
+	if(newSortBy != null) {
+		sortBy = newSortBy
+		if(currentSortBy == newSortBy) {
+			if(currentOrder == "asc") {
+				order = "desc"
+			} else {
+				order = "asc"
+			}
+		} else {
+			order = "asc"
+		}
+	}
+	
+	routes.Application.index("", newPage, currentFilter, if(currentCategory != null) { String.valueOf(currentCategory.getId()) } else { "" } )
+}
 
 @main("Home - livre.to")("index.css")(true) {
 	</div>
@@ -20,6 +46,20 @@
 			@message
 		</div>
 		}
+		<div class="search">
+			<form action="@link(0, "name")" method="GET" class="form-inline">
+				<div class="form-group">
+					<input type="search" id="searchbox" name="f" value="@currentFilter" placeholder="Título" class="form-control">
+				</div>
+				<select id="category" name="cat" class="form-control">
+					<option value="none" @if(currentCategory == null) { selected }>Nenhuma Categoria</option>
+					@for(category <- categories) {
+					<option value="@category.getId()" @if(currentCategory != null && category.getId() == currentCategory.getId()) { selected }>@category.getName()</option>
+					}
+				</select>
+				<button type="submit" class="btn btn-default">Filtrar</button>
+			</form>
+		</div>
 		<div class="row">
 		@for(index <- 0 until currentPage.getList.size){
 			<div class="clearfix col-md-3 book-placeholder">
@@ -43,5 +83,31 @@
 			</div><div class="row">
 			}
 		}
+		</div>
+
+		<div id="pagination">
+			<ul class="pagination">
+				@if(currentPage.hasPrev) {
+					<li class="prev">
+						<a href="@link(currentPage.getPageIndex - 1, null)">&larr; Anterior</a>
+					</li>
+				} else {
+					<li class="prev disabled">
+						<a>&larr; Anterior</a>
+					</li>
+				}
+				<li class="current">
+					<a>Exibindo de @currentPage.getDisplayXtoYofZ(" a "," de um total de ")</a>
+				</li>
+				@if(currentPage.hasNext) {
+					<li class="next">
+						<a href="@link(currentPage.getPageIndex + 1, null)">Próxima &rarr;</a>
+					</li>
+				} else {
+					<li class="next disabled">
+						<a>Próxima &rarr;</a>
+					</li>
+				}
+			</ul>
 		</div>
 }
