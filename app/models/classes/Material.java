@@ -61,6 +61,8 @@ public class Material extends Model {
     @Constraints.Required
     @Lob
     public byte[] materialThumbnail;
+    
+    public int score;
 
     /**
      * Generic query helper for entity Computer with id Long
@@ -143,4 +145,14 @@ public class Material extends Model {
     public void setDescription(String description) {
         this.description = description;
     }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+
 }

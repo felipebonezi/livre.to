@@ -16,6 +16,19 @@
               <p><b>Valor:</b> R$@material.getPrice()</p>
               <p><b>Autor:</b> @material.getAuthor().getName()</p>
               <p><b>Categoria:</b> @if(material.getPricePolicy().name().equals("MINIMUM_VALUE")) { Valor Mínimo }</p>
+              <p>
+              	<b>Avaliação:</b> 
+              		@if(material.getScore() > 0) {
+              			<span style="color:#62c462;display:inline;">
+              		} else {
+              			@if(material.getScore() < 0) {
+              				<span style="color:#bd362f;display:inline;">
+              			} else {
+              				<span style="color:#2f96b4;display:inline;">
+              			}
+              		}
+              		@material.getScore()</span>
+			  </p>
           </div>
 
           <div style="margin-top: 40px;">

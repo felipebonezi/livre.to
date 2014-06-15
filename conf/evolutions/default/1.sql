@@ -14,7 +14,8 @@ create table material (
   modified_at               timestamp,
   material_file             blob,
   material_thumbnail        blob,
-  constraint ck_material_price_policy check (price_policy in ('M','V','F')),
+  score                     integer,
+  constraint ck_material_price_policy check (price_policy in ('F','V','M')),
   constraint pk_material primary key (id))
 ;
 

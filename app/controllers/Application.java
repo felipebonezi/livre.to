@@ -12,7 +12,7 @@ public class Application extends Controller {
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<Material> finder = factory.get(Material.class);
 	return ok(index.render(AuthenticationController.getUser(), null,
-		finder.page(0, 8, "id", "asc", "")));
+		finder.page(0, 8, "score", "desc", "")));
     }
 
     public static Result index(String message) {
@@ -20,6 +20,6 @@ public class Application extends Controller {
 	FinderFactory factory = FinderFactory.getInstance();
 	IFinder<Material> finder = factory.get(Material.class);
 	return ok(index.render(AuthenticationController.getUser(), message,
-		finder.page(0, 8, "id", "asc", "")));
+		finder.page(0, 8, "score", "desc", "")));
     }
 }
