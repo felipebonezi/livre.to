@@ -1,6 +1,6 @@
 @(user: models.classes.User, message: String, currentPage: com.avaje.ebean.Page[models.classes.Material])
 
-@main("Home - livre.to", user)("index.css")(true) {
+@main("Home - livre.to")("index.css")(true) {
 	<div class="container">
 		@if(message != null && !message.isEmpty) {
 		<div class="alert alert-info alert-dismissable">
