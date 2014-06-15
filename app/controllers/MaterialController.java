@@ -157,41 +157,41 @@ public class MaterialController extends Controller {
 		}
 	}
 
-    public static Result detalhe(Long id) {
-        FinderFactory factory = FinderFactory.getInstance();
-        IFinder<Material> finder = factory.get(Material.class);
-        Material material = finder.selectUnique(id);
+	public static Result detalhe(Long id) {
+		FinderFactory factory = FinderFactory.getInstance();
+		IFinder<Material> finder = factory.get(Material.class);
+		Material material = finder.selectUnique(id);
 
-        if (material != null) {
-            return ok(detalhesmaterial.render(material));
-        }
+		if (material != null) {
+			return ok(detalhesmaterial.render(material));
+		}
 
-        return notFound(id);
-    }
+		return notFound(id);
+	}
 
 	public static Result notFound(long id) {
 		return list(String.format("Material #%d não está cadastrado!", id));
 	}
 	
-    public static Result rate(Long id, boolean upvote) {
-	Result result = internalServerError();
+	public static Result rate(Long id, boolean upvote) {
+		Result result = internalServerError();
 
-	FinderFactory factory = FinderFactory.getInstance();
-	IFinder<Material> finder = factory.get(Material.class);
-	Material material = finder.selectUnique(id);
+		FinderFactory factory = FinderFactory.getInstance();
+		IFinder<Material> finder = factory.get(Material.class);
+		Material material = finder.selectUnique(id);
 
-	if (material != null) {
-	    if (upvote) {
-		material.upvote();
-	    } else {
-		material.downvote();
-	    }
-	    material.update();
-	    result = ok();
-	} else {
-	    result = notFound("Material não encontrado!");
+		if (material != null) {
+			if (upvote) {
+				material.upvote();
+			} else {
+				material.downvote();
+			}
+			material.update();
+			result = ok();
+		} else {
+			result = notFound("Material não encontrado!");
+		}
+
+		return result;
 	}
-
-	return result;
-    }
 }
