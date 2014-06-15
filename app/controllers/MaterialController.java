@@ -2,8 +2,7 @@ package controllers;
 
 import static play.data.Form.form;
 
-import com.avaje.ebean.Ebean;
-import com.avaje.ebean.RawSql;
+import com.avaje.ebean.*;
 import org.apache.commons.io.IOUtils;
 
 import java.io.FileInputStream;
@@ -17,8 +16,6 @@ import play.mvc.Controller;
 import play.mvc.Http.MultipartFormData;
 import play.mvc.Http.MultipartFormData.FilePart;
 import play.mvc.Result;
-
-import com.avaje.ebean.Page;
 
 import models.classes.Material;
 import models.classes.Material.PricePolicy;
@@ -186,6 +183,15 @@ public class MaterialController extends Controller {
 		if (material == null || material.getMaterialFile() == null || !material.getPricePolicy().equals(Material.PricePolicy.FREE)) {
 			return notFound("Material não encontrado!");
 		} else {
+            User user = AuthenticationController.getUser();
+
+            String s = "INSERT INTO user_has_material (user_id,material_id) values (:uId,:mId)";
+            SqlUpdate update = Ebean.createSqlUpdate(s);
+            update.setParameter("uId", user.getId());
+            update.setParameter("mId", material.getId());
+
+            Ebean.execute(update);
+
 			response().setContentType("application/x-download");  
 			response().setHeader("Content-disposition","attachment; filename=" + material.getTitle().replaceAll("\\W+", "")+ ".pdf"); 
 			return ok(material.getMaterialFile()).as(MIMETYPE_PDF);
