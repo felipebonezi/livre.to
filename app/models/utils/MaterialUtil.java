@@ -11,6 +11,10 @@ import java.util.Map;
 import models.classes.Material;
 import models.classes.Material.PricePolicy;
 
+import models.classes.Category;
+import models.finders.FinderFactory;
+import models.finders.IFinder;
+
 import org.apache.commons.io.IOUtils;
 
 import play.mvc.Http.MultipartFormData;
@@ -18,6 +22,7 @@ import play.mvc.Http.MultipartFormData.FilePart;
 import utils.FormatNotSupportedException;
 import utils.ImageUtils;
 import utils.ZeroPagesException;
+import controllers.AbstractApplication.FinderKey;
 
 public class MaterialUtil {
 
@@ -33,6 +38,7 @@ public class MaterialUtil {
 		String[] title = formContent.get("title");
 		String[] description = formContent.get("description");
 		String[] pricePolicy = formContent.get("pricePolicy");
+		String[] categoryId = formContent.get("category");
 
 		PricePolicy policy = PricePolicy.valueOf(pricePolicy[0]);
 
@@ -41,6 +47,12 @@ public class MaterialUtil {
 		material.setPricePolicy(policy);
 		material.setPrice(price[0]);
 		material.setDescription(description[0]);
+
+		if(categoryId != null && !categoryId[0].equals("none")) {
+			IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
+			Category category = categoryFinder.selectUnique(new String[]{FinderKey.ID}, new Object[]{categoryId[0]});
+			material.setCategory(category);			
+		}
 
 		byte[] thumbnail = null;
 		byte[] lob = null;

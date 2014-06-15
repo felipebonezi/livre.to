@@ -1,4 +1,4 @@
-@(message: String, id: Long, materialForm: Form[models.classes.Material], categories: java.util.List[models.classes.Category])
+@(message: String, id: Long, materialForm: Form[models.classes.Material], categories: java.util.List[models.classes.Category], selectedCategory: models.classes.Category)
 @import helper._
 @implicitFieldConstructor = @{ FieldConstructor(livretoInput.render) } 
 
@@ -42,12 +42,12 @@
 		</div>
 
 		<div class="clearfix">
-			<label for="description">Categoria</label>
+			<label for="category">Categoria</label>
 			<div class="input">
-				<select class="form-control">
-					<option value="">Nenhuma</option>
+				<select id="category" name="category" class="form-control">
+					<option value="none" @if(selectedCategory == null) { selected }>Nenhuma</option>
 					@for(category <- categories) {
-					<option value="@category.getId()">@category.getName()</option>
+					<option value="@category.getId()" @if(selectedCategory != null && category.getId() == selectedCategory.getId()) { selected }>@category.getName()</option>
 					}
 				</select>
 			</div>

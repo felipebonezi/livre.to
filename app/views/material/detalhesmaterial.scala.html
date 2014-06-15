@@ -55,6 +55,14 @@
 						<em>Não disponível</em>
 					}
 				</dd>
+			<dt>Categoria:</dt>
+				<dd>
+					@if(material.getCategory() != null && !material.getCategory().getName().isEmpty()) {
+						@material.getCategory().getName()
+					} else {
+						<em>Nenhuma</em>
+					}
+				</dd>
 			<dt>Valor:</dt>
 				<dd>
 					@if(material.getPrice() != null && !material.getPrice().isEmpty()) {

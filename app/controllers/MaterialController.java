@@ -67,7 +67,7 @@ public class MaterialController extends Controller {
 		if (material != null && UserUtil.isOwner(material, user)) {
 			Form<Material> materialForm = form(Material.class).fill(material);
 			IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
-			return ok(editmaterial.render("", id, materialForm, categoryFinder.selectAll()));
+			return ok(editmaterial.render("", id, materialForm, categoryFinder.selectAll(), material.getCategory()));
 		} else {
 			return unauthorized(unauthorized.render(ERR_UNAUTHORIZED));
 		}
@@ -83,6 +83,7 @@ public class MaterialController extends Controller {
 					Material material = MaterialUtil.generateFromForm(body);
 					material.setAuthor(user);
 					material.update(id);
+					Ebean.update(material, new HashSet<String>(Arrays.asList("category")));
 					
 					return list(String.format("Material \"%s\" atualizado com sucesso!", material.getTitle()));
 				}
@@ -94,7 +95,7 @@ public class MaterialController extends Controller {
 			Material material = Material.find.byId(id);
 			Form<Material> materialForm = form(Material.class).fill(material);
 			IFinder<Category> categoryFinder = FinderFactory.getInstance().get(Category.class);
-			return ok(editmaterial.render(e.getMessage(), id, materialForm, categoryFinder.selectAll()));
+			return ok(editmaterial.render(e.getMessage(), id, materialForm, categoryFinder.selectAll(), material.getCategory()));
 		}
 	}
 
