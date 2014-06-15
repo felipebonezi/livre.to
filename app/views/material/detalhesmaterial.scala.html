@@ -1,5 +1,5 @@
 @(material: models.classes.Material)
-@main("Detalhes")("")(false) {
+@main("Detalhes")("")(true) {
 	<h2>@material.getTitle()</h2>
 	<div style="float: left; margin-right: 20px;">
 		<img width="200" src="@routes.MaterialController.renderImage(material.getId())" />

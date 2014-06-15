@@ -165,6 +165,8 @@ public class MaterialController extends Controller {
 		if (material == null || material.getMaterialFile() == null) {
 			return notFound("Material não encontrado!");
 		} else {
+			response().setContentType("application/x-download");  
+			response().setHeader("Content-disposition","attachment; filename=" + material.getTitle().replaceAll("\\W+", "")+ ".pdf"); 
 			return ok(material.getMaterialFile()).as(MIMETYPE_PDF);
 		}
 	}
