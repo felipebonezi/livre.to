@@ -24,115 +24,114 @@ import controllers.AbstractApplication.ControllerKey;
  */
 public class AuthenticationController extends AbstractApplication {
 
-    @With(AjaxAction.class)
-    public static Result authorize() {
-        String message = "Preencha todos os dados corretamente.";
-	Map<String, String[]> form = request().body().asFormUrlEncoded();
-	if (form != null) {
-	    String login = form.get(ParameterKey.LOGIN)[0];
-	    String password = form.get(ParameterKey.PASSWORD)[0];
+	@With(AjaxAction.class)
+	public static Result authorize() {
+		String message = "Preencha todos os dados corretamente.";
+		Map<String, String[]> form = request().body().asFormUrlEncoded();
+		if (form != null) {
+			String login = form.get(ParameterKey.LOGIN)[0];
+			String password = form.get(ParameterKey.PASSWORD)[0];
 
-	    if (login != null && !login.isEmpty() && password != null
-		    && !password.isEmpty()) {
+			if (login != null && !login.isEmpty() && password != null && !password.isEmpty()) {
+				IFinder<User> finder = FinderFactory.getInstance().get(User.class);
+
+				User user = finder.selectUnique(new String[] { FinderKey.LOGIN,
+					FinderKey.PASSWORD }, new Object[] { login, password });
+
+				if (user != null && UserUtil.isAvailable(user)) {
+					String accessToken = UUID.randomUUID().toString();
+					user.setAccessToken(accessToken);
+					user.update();
+
+					Http.Session session = session();
+					session.clear();
+					session.put(ControllerKey.SESSION_AUTH, accessToken);
+					
+					// FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
+					IFinder<Material> materialFinder = FinderFactory.getInstance().get(Material.class);
+					return ok(index.render("Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page()));
+				} else {
+					message = "O login/senha informado estão incorretos...";
+				}
+			}
+		}
+
+		return unauthorized(unauthorized.render(message));
+	}
+
+	public static Result logout() {
+		Http.Session session = session();
+		session.clear();
+		
+		User user = getUser();
+		if (user != null) {
+			user.setAccessToken(null);
+			user.update();
+		}
+		
+		//FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
 		FinderFactory factory = FinderFactory.getInstance();
-		IFinder<User> finder = factory.get(User.class);
-		User user = finder.selectUnique(new String[] { FinderKey.LOGIN,
-			FinderKey.PASSWORD }, new Object[] { login, password });
-
-		if (user != null && UserUtil.isAvailable(user)) {
-		    String accessToken = UUID.randomUUID().toString();
-		    user.setAccessToken(accessToken);
-		    user.update();
-
-		    Http.Session session = session();
-		    session.clear();
-		    session.put(ControllerKey.SESSION_AUTH, accessToken);
-		    
-		    // FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
-		    IFinder<Material> materialFinder = factory.get(Material.class);
-		    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(0, 8, "id", "asc", "")));
-		} else {
-            message = "O login/senha informado estão incorretos...";
-        }
-	    }
+		IFinder<Material> materialFinder = factory.get(Material.class);
+		return ok(index.render("Logout efetuado com sucesso!", materialFinder.page(0, 8, "id", "asc", "")));
 	}
 
-	return unauthorized(unauthorized.render(message));
-    }
+	public static Result login() {
+		User user = getUser();
+		if(user != null) {
+			//FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
+			FinderFactory factory = FinderFactory.getInstance();
+			IFinder<Material> materialFinder = factory.get(Material.class);
+			return ok(index.render("Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(0, 8, "id", "asc", "")));
+		}
+		return ok(login.render()); 
+	}
 
-    public static Result logout() {
-	Http.Session session = session();
-	session.clear();
+	public static Result showPassword() {
+		return ok(password.render(""));
+	}
+
+	public static Result recoveryPassword() {
+		Map<String, String[]> form = request().body().asFormUrlEncoded();
+		if (form != null) {
+			String mail = form.get(ParameterKey.MAIL)[0];
+
+			FinderFactory factory = FinderFactory.getInstance();
+			IFinder<User> finder = factory.get(User.class);
+			User user = finder.selectUnique(new String[] { FinderKey.MAIL }, new Object[] { mail });
+			if (user != null && UserUtil.isAvailable(user)) {
+				String newPassword = UserUtil.generateAlphaNumeric();
+				user.setPassword(newPassword);
+				user.update();
+
+				return ok(password.render(newPassword));
+			}
+		}
+
+		return unauthorized(unauthorized.render("Não existe nenhum usuário com o e-mail informado!"));
+	}
+
+	public static boolean isLoggedIn() {
+		Http.Session session = session();
+		String auth = session.get(ControllerKey.SESSION_AUTH);
+
+		return (auth != null && !auth.isEmpty());
+	}
+
+	public static User getUser() {
+		Http.Session session = session();
+		String auth = session.get(ControllerKey.SESSION_AUTH);
+		IFinder<User> finder = FinderFactory.getInstance().get(User.class);
+		User user = finder.selectUnique(
+			new String[] { ControllerKey.SESSION_AUTH },
+			new Object[] { auth });
+
+		return user;
+	}
 	
-	User user = getUser();
-	if (user != null) {
-	    user.setAccessToken(null);
-	    user.update();
+	public static String getSessionAuth() {
+		Http.Session session = session();
+		String auth = session.get(ControllerKey.SESSION_AUTH);
+		
+		return auth;
 	}
-	
-	//FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
-	FinderFactory factory = FinderFactory.getInstance();
-	IFinder<Material> materialFinder = factory.get(Material.class);
-	return ok(index.render(AuthenticationController.getUser(), "Logout efetuado com sucesso!", materialFinder.page(0, 8, "id", "asc", "")));
-    }
-
-    public static Result login() {
-	User user = getUser();
-	if(user != null) {
-	    //FIXME arrumar um jeito sem precisar ficar acessando o finder sempre
-	    FinderFactory factory = FinderFactory.getInstance();
-	    IFinder<Material> materialFinder = factory.get(Material.class);
-	    return ok(index.render(AuthenticationController.getUser(), "Você efetuou login com sucesso. Bem-vindo de volta, " + user.getName() + "!", materialFinder.page(0, 8, "id", "asc", "")));
-	}
-	return ok(login.render()); 
-    }
-
-    public static Result showPassword() {
-        return ok(password.render(""));
-    }
-
-    public static Result recoveryPassword() {
-        Map<String, String[]> form = request().body().asFormUrlEncoded();
-        if (form != null) {
-            String mail = form.get(ParameterKey.MAIL)[0];
-
-            FinderFactory factory = FinderFactory.getInstance();
-            IFinder<User> finder = factory.get(User.class);
-            User user = finder.selectUnique(new String[] { FinderKey.MAIL }, new Object[] { mail });
-            if (user != null && UserUtil.isAvailable(user)) {
-                String newPassword = UserUtil.generateAlphaNumeric();
-                user.setPassword(newPassword);
-                user.update();
-
-                return ok(password.render(newPassword));
-            }
-        }
-
-        return unauthorized(unauthorized.render("Não existe nenhum usuário com o e-mail informado!"));
-    }
-
-    public static boolean isLoggedIn() {
-	Http.Session session = session();
-	String auth = session.get(ControllerKey.SESSION_AUTH);
-
-	return (auth != null && !auth.isEmpty());
-    }
-
-    public static User getUser() {
-	Http.Session session = session();
-	String auth = session.get(ControllerKey.SESSION_AUTH);
-	FinderFactory factory = FinderFactory.getInstance();
-	IFinder<User> finder = factory.get(User.class);
-	User user = finder.selectUnique(
-		new String[] { ControllerKey.SESSION_AUTH },
-		new Object[] { auth });
-
-	return user;
-    }
-    
-    public static String getSessionAuth() {
-	Http.Session session = session();
-	String auth = session.get(ControllerKey.SESSION_AUTH);
-	return auth;
-    }
 }

@@ -52,7 +52,7 @@ public class MaterialController extends Controller {
 		}
 
 		Form<Material> materialForm = form(Material.class);
-		return ok(creatematerial.render(AuthenticationController.getUser(), "", materialForm));
+		return ok(creatematerial.render("", materialForm));
 	}
 
 	public static Result edit(long id) {
@@ -61,7 +61,7 @@ public class MaterialController extends Controller {
 
 		if (material != null && UserUtil.isOwner(material, user)) {
 			Form<Material> materialForm = form(Material.class).fill(material);
-			return ok(editmaterial.render(user, "", id, materialForm));
+			return ok(editmaterial.render("", id, materialForm));
 		} else {
 			return unauthorized(unauthorized.render(ERR_UNAUTHORIZED));
 		}
@@ -72,7 +72,7 @@ public class MaterialController extends Controller {
 
 		if (material != null) {
 			Form<Material> materialForm = form(Material.class).fill(material);
-			return ok(viewmaterial.render(AuthenticationController.getUser(), "", id, materialForm));
+			return ok(viewmaterial.render("", id, materialForm));
 		} else {
 			return notFound(id);
 		}
@@ -127,7 +127,7 @@ public class MaterialController extends Controller {
 			.eq("author_id", user.getId()).findPagingList(10)
 			.setFetchAhead(false).getPage(page);
 
-		return ok(listmaterial.render(user, null, pages, sortBy, order, filter));
+		return ok(listmaterial.render(null, pages, sortBy, order, filter));
 	}
 
 	public static Result list(String message) {
@@ -135,7 +135,7 @@ public class MaterialController extends Controller {
 		FinderFactory factory = FinderFactory.getInstance();
 		IFinder<Material> finder = factory.get(Material.class);
 
-		return ok(listmaterial.render(user, message, finder.page(), "id", "asc", ""));
+		return ok(listmaterial.render(message, finder.page(), "id", "asc", ""));
 	}
 
 	public static Result upload() {
@@ -178,7 +178,7 @@ public class MaterialController extends Controller {
         User user = AuthenticationController.getUser();
 
         if (user != null && material != null) {
-            return ok(detalhesmaterial.render(user, material));
+            return ok(detalhesmaterial.render(material));
         }
 
         return unauthorized(unauthorized.render("Você não tem permissão para realizar essa ação."));
