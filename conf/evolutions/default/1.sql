@@ -30,7 +30,7 @@ create table material (
   material_thumbnail        blob,
   score                     integer default 0,
   category_id               bigint,
-  constraint ck_material_price_policy check (price_policy in ('M','V','F')),
+  constraint ck_material_price_policy check (price_policy in ('F','V','M')),
   constraint pk_material primary key (id))
 ;
 
