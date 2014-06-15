@@ -1,10 +1,23 @@
 @(material: models.classes.Material)
-@main("Detalhes")("detalhesmaterial.css")(false) {
+@main("Detalhes")("detalhesmaterial.css")(true) {
 	<h2>@material.getTitle()</h2>
-	<div style="float: left; margin-right: 20px;">
-		<img width="200" src="@routes.MaterialController.renderImage(material.getId())" />
+		
+	<div class="clearfix">
+		<p>
+			@if(material.getPricePolicy().name().equals("FREE")) {
+				<a class="btn btn-success" role="button" href="@routes.MaterialController.download(material.getId())">Baixar</a>
+			} else {
+				<a class="btn btn-primary" role="button" href="@routes.Application.index()">Comprar</a>
+			}
+			@if(controllers.AuthenticationController.getUser() != null && material.getAuthor().getId() == controllers.AuthenticationController.getUser().getId()) {
+				<a class="btn btn-default" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>
+			}
+		</p>
 	</div>
-	<div>
+	<div class="thumbnail" style="float: left; margin-right: 20px; max-width: 400px">
+		<img width="100%" src="@routes.MaterialController.renderImage(material.getId())" />
+	</div>
+		<div style="float: left;">
 		<dl>
 			<dt>Descrição:</dt>
 				<dd>
@@ -31,7 +44,7 @@
 					}
 				</dd>
 			<dt>Política de Preço:</dt>
-				<dd>@if(material.getPricePolicy().name().equals("MINIMUM_VALUE")) { Valor Mínimo }</dd>
+				<dd>@if(material.getPricePolicy().name().equals("MINIMUM_VALUE")) { Valor Mínimo } else { @if(material.getPricePolicy().name().equals("FIXED_VALUE")) { Valor Fixo } else { @if(material.getPricePolicy().name().equals("FREE")) { Gratuito } } }</dd>
 			<dt>Avaliação:</dt>
 				@if(material.getScore() != null) {
 					@if(material.getScore() > 0) {
@@ -44,12 +57,14 @@
 						}
 					}
 					@material.getScore()</span>
-		                <button id="upvote-button" class="btn">
-						  <span class="glyphicon glyphicon-arrow-up"></span>
-						</button>
-					<button id="downvote-button" class="btn">
-					  <span class="glyphicon glyphicon-arrow-down"></span>
+	                <button id="upvote-button" class="btn">
+						<span class="glyphicon glyphicon-arrow-up"></span>
 					</button>
+					<button id="downvote-button" class="btn">
+						<span class="glyphicon glyphicon-arrow-down"></span>
+					</button>
+				} else {
+					<dd><em>Não disponível</em></dd>
 				}
 			</div>
 		</dl>
@@ -58,7 +73,7 @@
 			<p>
 				<a class="btn btn-primary btn-lg" role="button" href="@routes.Application.index()">Comprar</a>
 				@if(controllers.AuthenticationController.getUser() != null && material.getAuthor().getId() == controllers.AuthenticationController.getUser().getId()) {
-				<a class="btn btn-default btn-lg" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>
+					<a class="btn btn-default btn-lg" role="button" href="@routes.MaterialController.edit(material.getId())">Editar</a>
 				}
 			</p>
 		</div>

@@ -42,6 +42,7 @@ public class MaterialController extends Controller {
 	private static final String ERR_EXPIRED = "Usuário não está logado! Sessão expirada?";
 
 	private static final String MIMETYPE_PNG = "image/png";
+	private static final String MIMETYPE_PDF = "application/pdf";
 
 	public static Result create() {
 		if (!AuthenticationController.isLoggedIn()) {
@@ -90,7 +91,7 @@ public class MaterialController extends Controller {
 		Material material = finder.selectUnique(new String[]{FinderKey.ID}, new Object[]{id});
 
 		if (material == null) {
-			return notFound(id);
+			return notFound("Material não encontrado!");
 		} else if (UserUtil.isOwner(material, user) || UserController.isAdmin()) {
 			material.delete();
 			return list(String.format("Material #%d removido com sucesso!", id));
@@ -157,41 +158,50 @@ public class MaterialController extends Controller {
 		}
 	}
 
-    public static Result detalhe(Long id) {
-        FinderFactory factory = FinderFactory.getInstance();
-        IFinder<Material> finder = factory.get(Material.class);
-        Material material = finder.selectUnique(id);
+	public static Result download(long id) {
+		IFinder<Material> finder = FinderFactory.getInstance().get(Material.class);
+		Material material = finder.selectUnique(id);
 
-        if (material != null) {
-            return ok(detalhesmaterial.render(material));
-        }
-
-        return notFound(id);
-    }
-
-	public static Result notFound(long id) {
-		return list(String.format("Material #%d não está cadastrado!", id));
-	}
-	
-    public static Result rate(Long id, boolean upvote) {
-	Result result = internalServerError();
-
-	FinderFactory factory = FinderFactory.getInstance();
-	IFinder<Material> finder = factory.get(Material.class);
-	Material material = finder.selectUnique(id);
-
-	if (material != null) {
-	    if (upvote) {
-		material.upvote();
-	    } else {
-		material.downvote();
-	    }
-	    material.update();
-	    result = ok();
-	} else {
-	    result = notFound("Material não encontrado!");
+		if (material == null || material.getMaterialFile() == null) {
+			return notFound("Material não encontrado!");
+		} else {
+			response().setContentType("application/x-download");  
+			response().setHeader("Content-disposition","attachment; filename=" + material.getTitle().replaceAll("\\W+", "")+ ".pdf"); 
+			return ok(material.getMaterialFile()).as(MIMETYPE_PDF);
+		}
 	}
 
-	return result;
-    }
+	public static Result detalhe(Long id) {
+		FinderFactory factory = FinderFactory.getInstance();
+		IFinder<Material> finder = factory.get(Material.class);
+		Material material = finder.selectUnique(id);
+
+		if (material != null) {
+			return ok(detalhesmaterial.render(material));
+		}
+
+		return notFound("Material não encontrado!");
+	}
+
+	public static Result rate(Long id, boolean upvote) {
+		Result result = internalServerError();
+
+		FinderFactory factory = FinderFactory.getInstance();
+		IFinder<Material> finder = factory.get(Material.class);
+		Material material = finder.selectUnique(id);
+
+		if (material != null) {
+			if (upvote) {
+				material.upvote();
+			} else {
+				material.downvote();
+			}
+			material.update();
+			result = ok();
+		} else {
+			result = notFound("Material não encontrado!");
+		}
+
+		return result;
+	}
 }
