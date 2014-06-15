@@ -171,7 +171,7 @@ public class MaterialController extends Controller {
 		IFinder<Material> finder = FinderFactory.getInstance().get(Material.class);
 		Material material = finder.selectUnique(id);
 
-		if (material == null || material.getMaterialFile() == null) {
+		if (material == null || material.getMaterialFile() == null || !material.getPricePolicy().equals(Material.PricePolicy.FREE)) {
 			return notFound("Material não encontrado!");
 		} else {
 			response().setContentType("application/x-download");  
