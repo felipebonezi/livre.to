@@ -2,6 +2,7 @@ package models.classes;
 
 import java.util.Date;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -62,7 +63,8 @@ public class Material extends Model {
     @Lob
     public byte[] materialThumbnail;
     
-    public Integer score;
+    @Column(columnDefinition = "integer default 0")
+    public Integer score = 0;
 
     /**
      * Generic query helper for entity Computer with id Long

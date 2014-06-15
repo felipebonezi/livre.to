@@ -114,7 +114,7 @@ public class AuthenticationController extends AbstractApplication {
 		Http.Session session = session();
 		String auth = session.get(ControllerKey.SESSION_AUTH);
 
-		return (auth != null && !auth.isEmpty());
+		return (auth != null && !auth.isEmpty() && getUser() != null);
 	}
 
 	public static User getUser() {
