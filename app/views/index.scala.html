@@ -20,7 +20,7 @@
       	<div class="row">
       	 @for(material <- currentPage.getList) {
       	 	<div class="col-md-3 book-placeholder">
-      	 		<a href="material/detalhe/@material.getId()">
+      	 		<a href="@routes.MaterialController.detalhe(material.getId())">
                     @if(material.getMaterialFile() == null) {
                         <img src="http://placehold.it/200x280/336600&text=livre.to" />
                     } else {
