@@ -3,6 +3,14 @@
 
 # --- !Ups
 
+create table comment (
+  id                        bigint not null,
+  author_id                 bigint,
+  content                   varchar(255),
+  created                   timestamp,
+  constraint pk_comment primary key (id))
+;
+
 create table material (
   id                        bigint not null,
   author_id                 bigint,
@@ -35,19 +43,33 @@ create table user (
 ;
 
 
+create table material_comment (
+  material_id                    bigint not null,
+  comment_id                     bigint not null,
+  constraint pk_material_comment primary key (material_id, comment_id))
+;
+
 create table user_has_material (
   user_id                        bigint not null,
   material_id                    bigint not null,
   constraint pk_user_has_material primary key (user_id, material_id))
 ;
+create sequence comment_seq;
+
 create sequence material_seq;
 
 create sequence user_id_seq;
 
-alter table material add constraint fk_material_author_1 foreign key (author_id) references user (id) on delete restrict on update restrict;
-create index ix_material_author_1 on material (author_id);
+alter table comment add constraint fk_comment_author_1 foreign key (author_id) references user (id) on delete restrict on update restrict;
+create index ix_comment_author_1 on comment (author_id);
+alter table material add constraint fk_material_author_2 foreign key (author_id) references user (id) on delete restrict on update restrict;
+create index ix_material_author_2 on material (author_id);
 
 
+
+alter table material_comment add constraint fk_material_comment_material_01 foreign key (material_id) references material (id) on delete restrict on update restrict;
+
+alter table material_comment add constraint fk_material_comment_comment_02 foreign key (comment_id) references comment (id) on delete restrict on update restrict;
 
 alter table user_has_material add constraint fk_user_has_material_user_01 foreign key (user_id) references user (id) on delete restrict on update restrict;
 
@@ -57,13 +79,19 @@ alter table user_has_material add constraint fk_user_has_material_material_02 fo
 
 SET REFERENTIAL_INTEGRITY FALSE;
 
+drop table if exists comment;
+
 drop table if exists material;
 
 drop table if exists user_has_material;
 
+drop table if exists material_comment;
+
 drop table if exists user;
 
 SET REFERENTIAL_INTEGRITY TRUE;
+
+drop sequence if exists comment_seq;
 
 drop sequence if exists material_seq;
 

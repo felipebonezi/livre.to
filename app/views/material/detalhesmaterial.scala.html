@@ -17,7 +17,7 @@
 	<div class="thumbnail" style="float: left; margin-right: 20px; max-width: 400px">
 		<img width="100%" src="@routes.MaterialController.renderImage(material.getId())" />
 	</div>
-		<div style="float: left;">
+	<div style="float: left;">
 		<dl>
 			<dt>Descrição:</dt>
 				<dd>
@@ -57,17 +57,47 @@
 						}
 					}
 					@material.getScore()</span>
+					@if(controllers.AuthenticationController.getUser() != null) {
 	                <button id="upvote-button" class="btn">
 						<span class="glyphicon glyphicon-arrow-up"></span>
 					</button>
 					<button id="downvote-button" class="btn">
 						<span class="glyphicon glyphicon-arrow-down"></span>
 					</button>
+					}
 				} else {
 					<dd><em>Não disponível</em></dd>
 				}
-			</div>
 		</dl>
+	</div>
+</div><div class="container">
+	<div class="clearfix comments">
+		<h4>Comentários <small>(@material.getComments.size comentários)</small></h4>
+		@for(index <- 0 until material.getComments.size){
+			<div class="clearfix">
+				<dl class="dl-horizontal">
+					<dt>Usuário:</dt>
+						<dd>@material.getComments.get(index).getAuthor().getName()</dd>
+					<dt>Comentário:</dt>
+						<dd>@material.getComments.get(index).getContent()</dd>
+				</dl>
+			</div>
+		}
+		@if(material.getComments.size == 0) {
+			<div class="clearfix">
+				<em>Nenhum comentário cadastrado. Adquira o material e seja o primeiro!</em>
+			</div>
+		}
+		@if(material.getUsers().contains(controllers.AuthenticationController.getUser())) {
+		<div class="clearfix new-comment">
+		@helper.form(action = controllers.routes.MaterialController.comment(material.getId()), 
+		'enctype -> "multipart/form-data") {
+			<h4>Novo Comentário</h4>
+			<textarea class="form-control" rows="3" id="content" name="content"></textarea>
+			<button type="submit" class="btn btn-info">Comentar</button>
+		}
+		</div>
+		}
 	</div>
 	
 	<script>

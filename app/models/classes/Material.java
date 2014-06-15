@@ -25,149 +25,162 @@ import com.avaje.ebean.annotation.EnumMapping;
 @Entity
 @SequenceGenerator(name = Material.SEQUENCE_NAME, sequenceName = Material.SEQUENCE_NAME, initialValue = 1, allocationSize = 1)
 public class Material extends Model {
-    private static final long serialVersionUID = 1L;
-    public static final String SEQUENCE_NAME = "material_seq";
+	private static final long serialVersionUID = 1L;
+	public static final String SEQUENCE_NAME = "material_seq";
 
-    @EnumMapping(nameValuePairs = "FREE=F, MINIMUM_VALUE=M, FIXED_VALUE=V")
-    public enum PricePolicy {
-	FREE, MINIMUM_VALUE, FIXED_VALUE
-    }
+	@EnumMapping(nameValuePairs = "FREE=F, MINIMUM_VALUE=M, FIXED_VALUE=V")
+	public enum PricePolicy {
+		FREE, MINIMUM_VALUE, FIXED_VALUE
+	}
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
-    public long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = SEQUENCE_NAME)
+	public long id;
 
-    @ManyToOne
-    public User author;
+	@ManyToOne
+	public User author;
 
-    @Constraints.Required
-    public String title;
+	@Constraints.Required
+	public String title;
 
-    @Constraints.Required
-    @Enumerated(value = EnumType.STRING)
-    public PricePolicy pricePolicy;
+	@Constraints.Required
+	@Enumerated(value = EnumType.STRING)
+	public PricePolicy pricePolicy;
 
-    public String price;
+	public String price;
 
-    public String description;
+	public String description;
 
-    @Constraints.Required
-    @Formats.DateTime(pattern="yyyy-MM-dd")
-    public Date created;
+	@Constraints.Required
+	@Formats.DateTime(pattern="yyyy-MM-dd")
+	public Date created;
 
-    @Formats.DateTime(pattern="yyyy-MM-dd")
-    public Date modifiedAt;
+	@Formats.DateTime(pattern="yyyy-MM-dd")
+	public Date modifiedAt;
 
-    @Constraints.Required
-    @Lob
-    public byte[] materialFile;
-    
-    @Constraints.Required
-    @Lob
-    public byte[] materialThumbnail;
-    
-    @Column(columnDefinition = "integer default 0")
-    public Integer score = 0;
+	@Constraints.Required
+	@Lob
+	public byte[] materialFile;
+	
+	@Constraints.Required
+	@Lob
+	public byte[] materialThumbnail;
+	
+	@Column(columnDefinition = "integer default 0")
+	public Integer score = 0;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "materials")
-    private List<User> users;
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "materials")
+	private List<User> users;
 
-    /**
-     * Generic query helper for entity Computer with id Long
-     */
-    public static Finder<Long, Material> find = new Finder<Long, Material>(
-	    Long.class, Material.class);
-    
-    public User getAuthor() {
-	return author;
-    }
 
-    public void setAuthor(User author) {
-	this.author = author;
-    }
+	@ManyToMany
+	@JoinTable(name = "material_comment",
+				joinColumns = @JoinColumn(name = "material_id", table = "material_comment"))
+	private List<Comment> comments;
 
-    public String getTitle() {
-	return title;
-    }
+	public List<Comment> getComments() {
+		return comments;
+	}
 
-    public void setTitle(String title) {
-	this.title = title;
-    }
+	/**
+	 * Generic query helper for entity Computer with id Long
+	 */
+	public static Finder<Long, Material> find = new Finder<Long, Material>(
+		Long.class, Material.class);
+	
+	public User getAuthor() {
+		return author;
+	}
 
-    public PricePolicy getPricePolicy() {
-	return pricePolicy;
-    }
+	public void setAuthor(User author) {
+		this.author = author;
+	}
 
-    public void setPricePolicy(PricePolicy pricePolicy) {
-	this.pricePolicy = pricePolicy;
-    }
+	public String getTitle() {
+		return title;
+	}
 
-    public String getPrice() {
-	return price;
-    }
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
-    public void setPrice(String price) {
-	this.price = price;
-    }
+	public PricePolicy getPricePolicy() {
+		return pricePolicy;
+	}
 
-    public byte[] getMaterialFile() {
-	return materialFile;
-    }
+	public void setPricePolicy(PricePolicy pricePolicy) {
+		this.pricePolicy = pricePolicy;
+	}
 
-    public void setMaterialFile(byte[] materialFile) {
-	this.materialFile = materialFile;
-    }
+	public String getPrice() {
+		return price;
+	}
 
-    public Date getCreated() {
-        return created;
-    }
+	public void setPrice(String price) {
+		this.price = price;
+	}
 
-    public void setCreated(Date created) {
-        this.created = created;
-    }
+	public byte[] getMaterialFile() {
+		return materialFile;
+	}
 
-    public Date getModifiedAt() {
-        return modifiedAt;
-    }
+	public void setMaterialFile(byte[] materialFile) {
+		this.materialFile = materialFile;
+	}
 
-    public void setModifiedAt(Date modifiedAt) {
-        this.modifiedAt = modifiedAt;
-    }
+	public Date getCreated() {
+		return created;
+	}
 
-    public long getId() {
-        return id;
-    }
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
-    public byte[] getMaterialThumbnail() {
-        return materialThumbnail;
-    }
+	public Date getModifiedAt() {
+		return modifiedAt;
+	}
 
-    public void setMaterialThumbnail(byte[] materialThumbnail) {
-        this.materialThumbnail = materialThumbnail;
-    }
+	public void setModifiedAt(Date modifiedAt) {
+		this.modifiedAt = modifiedAt;
+	}
 
-    public String getDescription() {
-        return description;
-    }
+	public long getId() {
+		return id;
+	}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+	public byte[] getMaterialThumbnail() {
+		return materialThumbnail;
+	}
 
-    public Integer getScore() {
-        return score;
-    }
+	public void setMaterialThumbnail(byte[] materialThumbnail) {
+		this.materialThumbnail = materialThumbnail;
+	}
 
-    public void setScore(Integer score) {
-        this.score = score;
-    }
+	public String getDescription() {
+		return description;
+	}
 
-    public void upvote() {
-	this.score++;
-    }
-    
-    public void downvote() {
-	this.score--;
-    }
+	public void setDescription(String description) {
+		this.description = description;
+	}
 
+	public Integer getScore() {
+		return score;
+	}
+
+	public void setScore(Integer score) {
+		this.score = score;
+	}
+
+	public void upvote() {
+		this.score++;
+	}
+	
+	public void downvote() {
+		this.score--;
+	}
+
+	public List<User> getUsers() {
+		return this.users;
+	}
 }

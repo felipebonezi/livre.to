@@ -59,7 +59,6 @@ h2 {
 }
 
 dd {
-  margin-left: 20px;
   margin-bottom: 20px;
 }
 
@@ -86,4 +85,46 @@ dd {
 
 .img-preview {
   max-width: 200px;
+}
+
+.comments {
+  border-top: 1px dotted #ccc;
+  padding-top: 20px;
+}
+
+.comments .btn {
+  margin-top: 10px;
+  float:right;
+}
+
+.comments h4 {
+  margin-bottom:15px;
+  font-weight: bold;
+}
+
+.comments dl {
+  background: white;
+  border: 1px solid #ccc;
+  padding: 15px;
+  border-radius:5px;
+  margin-top:0px;
+  margin-bottom:0px;
+  text-align: left;
+}
+
+.comments dd {
+  margin:0;
+  text-align: left;
+}
+
+.comments dt {
+  text-align: left;
+  width: auto;
+  margin-right: 5px;
+}
+
+.new-comment h4 {
+  font-weight: normal;
+  font-size: 17px;
+  margin-bottom: 5px;
 }
