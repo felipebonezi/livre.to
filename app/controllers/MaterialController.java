@@ -173,7 +173,7 @@ public class MaterialController extends Controller {
 		return list(String.format("Material #%d não está cadastrado!", id));
 	}
 	
-    public static Result rate(long id, boolean upvote) {
+    public static Result rate(Long id, boolean upvote) {
 	Result result = internalServerError();
 
 	FinderFactory factory = FinderFactory.getInstance();
